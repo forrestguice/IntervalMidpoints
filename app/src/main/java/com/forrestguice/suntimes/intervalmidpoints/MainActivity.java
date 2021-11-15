@@ -81,6 +81,11 @@ public class MainActivity extends AppCompatActivity
         suntimesInfo.getOptions(this);
         initViews();
         updateViews();
+
+    protected CharSequence createTitle(SuntimesInfo info) {
+        return (suntimesInfo != null && suntimesInfo.location != null && suntimesInfo.location.length >= 4)
+                ? suntimesInfo.location[0]
+                : getString(R.string.app_name);
     }
 
     private TextView text_date;
@@ -128,11 +133,18 @@ public class MainActivity extends AppCompatActivity
     {
         checkVersion();    // check dependencies and display warnings
 
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null)
+        {
+            actionBar.setTitle(createTitle(suntimesInfo));
+            actionBar.setSubtitle(DisplayStrings.formatLocation(this, suntimesInfo));
+        }
+
         int[] divideByValues = getResources().getIntArray(R.array.divideby_values);
         int divideBy = divideByValues[spin_divideBy.getSelectedItemPosition()];
         initData(divideBy);   // query provider for start/end times
 
-        text_date.setText(formatDate(this, date));
+        text_date.setText(DisplayStrings.formatDate(this, date));
         text_startEvent.setText(startTime >= 0 ? getString(R.string.event_from, formatTime(startTime)) : getString(R.string.event_dne));
         text_endEvent.setText(endTime >= 0 ? getString(R.string.event_to, formatTime(endTime)) : getString(R.string.event_dne));
 
@@ -156,34 +168,8 @@ public class MainActivity extends AppCompatActivity
     {
         SuntimesInfo.SuntimesOptions options = suntimesInfo.getOptions(this);
         TimeZone timezone = suntimesInfo.timezone != null ? TimeZone.getTimeZone(suntimesInfo.timezone) : TimeZone.getDefault();
-        return formatTime(this, time, timezone, options.time_is24);
+        return DisplayStrings.formatTime(this, time, timezone, options.time_is24);
     }
-    public static CharSequence formatTime(@NonNull Context context, long dateTime, TimeZone timezone, boolean is24Hr)
-    {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(dateTime);
-        String format = (is24Hr ? context.getString(R.string.format_time24) : context.getString(R.string.format_time12));
-        SimpleDateFormat timeFormat = new SimpleDateFormat(format, Locale.getDefault());
-        timeFormat.setTimeZone(timezone);
-        return timeFormat.format(calendar.getTime());
-    }
-
-    public static CharSequence formatDate(@NonNull Context context, long date)
-    {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(date);
-        return formatDate(context, calendar);
-    }
-    public static CharSequence formatDate(@NonNull Context context, Calendar date)
-    {
-        if (dateFormat == null) {
-            Locale locale = Locale.getDefault();
-            dateFormat = new SimpleDateFormat(context.getString( R.string.format_date ), locale);
-        }
-        dateFormat.setTimeZone(date.getTimeZone());
-        return dateFormat.format(date.getTime());
-    }
-    private static SimpleDateFormat dateFormat = null;
 
     private void initData(int divideBy)
     {
