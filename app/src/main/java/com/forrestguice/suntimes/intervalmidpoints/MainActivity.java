@@ -49,6 +49,7 @@ import java.util.TimeZone;
 
 public class MainActivity extends AppCompatActivity
 {
+    public static final String DIALOG_HELP = "helpDialog";
     public static final String DIALOG_ABOUT = "aboutDialog";
 
     private SuntimesInfo suntimesInfo = null;
@@ -281,6 +282,10 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
         switch (id)
         {
+            case R.id.action_help:
+                showHelp();
+                return true;
+
             case R.id.action_about:
                 showAbout();
                 return true;
@@ -304,6 +309,22 @@ public class MainActivity extends AppCompatActivity
                 Log.w(getClass().getSimpleName(), "unhandled result: " + requestCode);
                 break;
         }
+    }
+
+    protected void showHelp()
+    {
+        HelpDialog dialog = new HelpDialog();
+        if (suntimesInfo != null && suntimesInfo.appTheme != null) {
+            dialog.setTheme(getThemeResID(suntimesInfo.appTheme));
+        }
+
+        String[] help = getResources().getStringArray(R.array.help_topics);
+        String helpContent = help[0];
+        for (int i=1; i<help.length; i++) {
+            helpContent = getString(R.string.format_help, helpContent, help[i]);
+        }
+        dialog.setContent(helpContent + "<br/>");
+        dialog.show(getSupportFragmentManager(), DIALOG_HELP);
     }
 
     protected void showAbout() {

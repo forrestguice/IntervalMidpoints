@@ -19,6 +19,7 @@
     <string name="app_changelog_url">https://github.com/forrestguice/IntervalMidpoints/blob/master/CHANGELOG.md</string>   <!-- url only (no formatting) -->
     <string name="app_commit_url">https://github.com/forrestguice/IntervalMidpoints/commit/</string>   <!-- url only (no formatting) -->
 
+    <string name="action_help">Help</string>
     <string name="action_about">About</string>
 
     <string name="format_date0">MMMM d</string>                   <!-- February 27 -->
@@ -79,5 +80,9 @@
     <string name="midpoints_msg">The midpoints are at</string> <!-- display above midpoint results --> <!-- TODO -->
     <string name="midpoints_msg0">Find the midpoints between..</string>    <!-- displayed above event selection ui --> <!-- TODO -->
 
+    <string-array name="help_topics">      <!-- in order of appearance -->
+        <item>@string/help_configuration</item>
+    </string-array>
+    <string name="help_configuration"><![CDATA[<h4>App Configuration</h4>The location and other options are configured from Suntimes.]]></string>
 
 </resources>
