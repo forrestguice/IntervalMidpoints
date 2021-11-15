@@ -1,5 +1,26 @@
 <resources>
     <string name="app_name">Interval Midpoints</string>
+    <string name="app_desc">A midpoint calculator add-on for Suntimes.</string>
+    <string name="app_legal1"><![CDATA[
+        <b>Source Code:</b><br />
+        Copyright &#169 2021 Forrest Guice <br />
+        Source code available under GPLv3.
+    ]]></string>
+
+    <string name="app_version"><![CDATA[<b>Version:</b>]]> %s</string>
+    <string name="app_provider_version"><![CDATA[<b>Suntimes:</b>]]> %s</string>
+    <string name="app_support_url"><![CDATA[
+        <b>Support:</b> visit the
+        <a href="https://github.com/forrestguice/IntervalMidpoints/issues">issue tracker</a> to submit a request.
+    ]]></string>    <!-- formatted link -->
+    <string name="app_source_url"><![CDATA[
+        <a href="https://github.com/forrestguice/IntervalMidpoints/">github.com/forrestguice/IntervalMidpoints/</a>
+    ]]></string>    <!-- formatted link -->
+    <string name="app_changelog_url">https://github.com/forrestguice/IntervalMidpoints/blob/master/CHANGELOG.md</string>   <!-- url only (no formatting) -->
+    <string name="app_commit_url">https://github.com/forrestguice/IntervalMidpoints/commit/</string>   <!-- url only (no formatting) -->
+
+    <string name="action_about">About</string>
+
     <string name="format_date0">MMMM d</string>                   <!-- February 27 -->
     <string name="format_date0_long">MMMM d, yyyy</string>        <!-- February 27, 2020 -->
     <string name="format_date">MMMM d\nEEEE</string>              <!-- Thursday, February 27 -->

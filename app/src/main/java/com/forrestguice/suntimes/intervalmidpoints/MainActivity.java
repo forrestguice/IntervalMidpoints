@@ -25,10 +25,12 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -41,14 +43,14 @@ import com.forrestguice.suntimes.addon.SuntimesInfo;
 import com.forrestguice.suntimes.addon.ui.Messages;
 import com.forrestguice.suntimes.calculator.core.CalculatorProviderContract;
 
-import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Locale;
 import java.util.TimeZone;
 
 public class MainActivity extends AppCompatActivity
 {
+    public static final String DIALOG_ABOUT = "aboutDialog";
+
     private SuntimesInfo suntimesInfo = null;
 
     @Override
@@ -63,7 +65,7 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (suntimesInfo.appTheme != null) {    // override the theme
-            setTheme(suntimesInfo.appTheme.equals(SuntimesInfo.THEME_LIGHT) ? R.style.AppTheme_Light : R.style.AppTheme_Dark);
+            setTheme(getThemeResID(suntimesInfo.appTheme));
         }
         setContentView(R.layout.activity_main);
 
@@ -72,7 +74,6 @@ public class MainActivity extends AppCompatActivity
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null)
         {
-            actionBar.setTitle("");
             actionBar.setHomeButtonEnabled(true);
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setHomeAsUpIndicator(R.drawable.ic_action_suntimes);
@@ -80,7 +81,7 @@ public class MainActivity extends AppCompatActivity
 
         suntimesInfo.getOptions(this);
         initViews();
-        updateViews();
+    }
 
     protected CharSequence createTitle(SuntimesInfo info) {
         return (suntimesInfo != null && suntimesInfo.location != null && suntimesInfo.location.length >= 4)
@@ -243,6 +244,9 @@ public class MainActivity extends AppCompatActivity
         String appTheme = SuntimesInfo.queryAppTheme(getContentResolver());
         if (appTheme != null && !appTheme.equals(suntimesInfo.appTheme)) {
             recreate();
+        } else {
+            suntimesInfo = SuntimesInfo.queryInfo(MainActivity.this);    // refresh suntimesInfo
+            updateViews();
         }
     }
 
@@ -257,12 +261,30 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    @SuppressWarnings("RestrictedApi")
+    @Override
+    protected boolean onPrepareOptionsPanel(View view, Menu menu)
+    {
+        Messages.forceActionBarIcons(menu);
+        return super.onPrepareOptionsPanel(view, menu);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
         int id = item.getItemId();
         switch (id)
         {
+            case R.id.action_about:
+                showAbout();
+                return true;
+
             case android.R.id.home:
                 AddonHelper.startSuntimesActivity(this);
                 return true;
@@ -282,6 +304,26 @@ public class MainActivity extends AppCompatActivity
                 Log.w(getClass().getSimpleName(), "unhandled result: " + requestCode);
                 break;
         }
+    }
+
+    protected void showAbout() {
+        AboutDialog dialog = MainActivity.createAboutDialog(suntimesInfo);
+        dialog.show(getSupportFragmentManager(), DIALOG_ABOUT);
+    }
+    public static AboutDialog createAboutDialog(@Nullable SuntimesInfo suntimesInfo)
+    {
+        AboutDialog dialog = new AboutDialog();
+        if (suntimesInfo != null) {
+            dialog.setVersion(suntimesInfo);
+            if (suntimesInfo.appTheme != null) {
+                dialog.setTheme(getThemeResID(suntimesInfo.appTheme));
+            }
+        }
+        return dialog;
+    }
+
+    public static int getThemeResID(@NonNull String themeName) {
+        return themeName.equals(SuntimesInfo.THEME_LIGHT) ? R.style.AppTheme_Light : R.style.AppTheme_Dark;
     }
 
 }
