@@ -1,0 +1,45 @@
+<resources>
+    <string name="app_name">Interval Midpoints</string>
+
+    <string-array name="event_display">
+        <item>Morning Astronomical Twilight</item>
+        <item>Morning Nautical Twilight</item>
+        <item>Morning Civil Twilight</item>
+        <item>Sunrise</item>
+        <item>Solar Noon</item>
+        <item>Sunset</item>
+        <item>Evening Civil Twilight</item>
+        <item>Evening Nautical Twilight</item>
+        <item>Evening Astronomical Twilight</item>
+    </string-array>  <!-- TODO -->
+    <string-array name="event_values" translatable="false">  <!-- must be indexed in order of occurrence -->
+        <item>astrorise</item>
+        <item>nauticalrise</item>
+        <item>civilrise</item>
+        <item>sunrise</item>
+        <item>solarnoon</item>
+        <item>sunset</item>
+        <item>civilset</item>
+        <item>nauticalset</item>
+        <item>astroset</item>
+    </string-array>  <!-- TODO -->
+
+    <string name="divideby_msg">Divided into</string> <!-- TODO -->
+    <string-array name="divideby_display">
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+    </string-array>  <!-- TODO -->
+    <integer-array name="divideby_values" translatable="false">
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+    </integer-array>  <!-- TODO -->
+
+    <string name="event_at">at %s</string> <!-- TODO -->
+    <string name="event_from">from %s</string> <!-- TODO -->
+    <string name="event_to">to %s</string> <!-- TODO -->
+    <string name="event_dne">does not occur</string> <!-- TODO -->
+    <string name="midpoints_msg">The midpoints are at</string> <!-- TODO -->
+
+</resources>
