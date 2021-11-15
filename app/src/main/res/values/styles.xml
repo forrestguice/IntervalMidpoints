@@ -7,7 +7,12 @@
         <item name="colorPrimary">@color/colorPrimary_dark</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark_dark</item>
         <item name="colorAccent">@color/colorAccent_dark</item>
+        <item name="colorAction">@color/colorAction_dark</item>
+        <item name="colorDisabled">@color/colorDisabled_dark</item>
         <item name="toolbarTheme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
+        <item name="icAbout">@drawable/ic_about</item>
+        <item name="colorDate">@color/colorDate_dark</item>
+        <item name="colorLabel">@color/colorLabel_dark</item>
     </style>
 
     <!-- Light Theme -->
@@ -15,10 +20,15 @@
         <item name="colorPrimary">@color/colorPrimary_light</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark_light</item>
         <item name="colorAccent">@color/colorAccent_light</item>
+        <item name="colorAction">@color/colorAction_light</item>
+        <item name="colorDisabled">@color/colorDisabled_light</item>
         <item name="toolbarTheme">@style/ThemeOverlay.AppCompat.ActionBar</item>
+        <item name="icAbout">@drawable/ic_about_light</item>
+        <item name="colorDate">@color/colorDate_light</item>
+        <item name="colorLabel">@color/colorLabel_light</item>
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat" />
 
 </resources>
