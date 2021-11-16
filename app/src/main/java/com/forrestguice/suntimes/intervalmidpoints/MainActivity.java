@@ -82,6 +82,7 @@ public class MainActivity extends AppCompatActivity
 
         suntimesInfo.getOptions(this);
         initViews();
+        loadUserInput();
     }
 
     protected CharSequence createTitle(SuntimesInfo info) {
@@ -120,11 +121,51 @@ public class MainActivity extends AppCompatActivity
         text_midpoints = (TextView)findViewById(R.id.text_midpoints);
     }
 
+    protected void saveUserInput()
+    {
+        int[] divideByValues = getResources().getIntArray(R.array.divideby_values);
+        String[] events = getResources().getStringArray(R.array.event_values);
+        int startPosition = spin_startEvent.getSelectedItemPosition();
+        int endPosition = spin_endEvent.getSelectedItemPosition();
+        AppSettings.saveIntervalIDPref(this, AppSettings.getMidpointID(
+                events[startPosition], events[endPosition], divideByValues[spin_divideBy.getSelectedItemPosition()], 0));
+    }
+
+    protected void loadUserInput()
+    {
+        String[] events = getResources().getStringArray(R.array.event_values);
+        String[] interval = AppSettings.getInterval(AppSettings.loadIntervalIDPref(this));
+
+        String startEvent = (interval.length >= 1 ? interval[0] : events[0]);
+        String endEvent = (interval.length >= 2 ? interval[1] : events[0]);
+        for (int i=0; i<events.length; i++)
+        {
+            if (events[i].equals(startEvent)) {
+                spin_startEvent.setSelection(i, false);
+            }
+            if (events[i].equals(endEvent)) {
+                spin_endEvent.setSelection(i, false);
+            }
+        }
+
+        int[] divideBy = AppSettings.getMidpointIndex(interval);
+        int[] divideByValues = getResources().getIntArray(R.array.divideby_values);
+        for (int i=0; i<divideByValues.length; i++)
+        {
+            if (divideBy[0] == divideByValues[i])
+            {
+                spin_divideBy.setSelection(i, false);
+                break;
+            }
+        }
+    }
+
     private AdapterView.OnItemSelectedListener onInputChanged = new AdapterView.OnItemSelectedListener()
     {
         @Override
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
             Log.d("DEBUG", "input changed");
+            saveUserInput();
             updateViews();
         }
         @Override
