@@ -78,7 +78,7 @@
     <string name="event_to">to %s</string> <!-- TODO -->
     <string name="event_dne">does not occur</string> <!-- TODO -->
     <string name="midpoints_msg">The midpoints are at</string> <!-- display above midpoint results --> <!-- TODO -->
-    <string name="midpoints_msg0">Find the midpoints between..</string>    <!-- displayed above event selection ui --> <!-- TODO -->
+    <string name="midpoints_msg0">The interval between..</string>    <!-- displayed above event selection ui --> <!-- TODO -->
 
     <string-array name="help_topics">      <!-- in order of appearance -->
         <item>@string/help_configuration</item>
