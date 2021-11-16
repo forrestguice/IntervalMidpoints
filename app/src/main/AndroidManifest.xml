@@ -11,6 +11,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
+        <!-- Activity: Main -->
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,6 +24,13 @@
             </intent-filter>
             <meta-data android:name="SuntimesMenuItemTitle" android:value="@string/app_name" />
         </activity>
+
+        <!-- Content Provider -->
+        <provider
+            android:name="com.forrestguice.suntimes.intervalmidpoints.data.IntervalMidpointsProvider"
+            android:authorities="suntimes.intervalmidpoints.provider"
+            android:exported="true" android:permission="suntimes.permission.READ_CALCULATOR"
+            android:syncable="false" />
 
     </application>
 </manifest>
