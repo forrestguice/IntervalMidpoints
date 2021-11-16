@@ -142,6 +142,11 @@ public class MainActivity extends AppCompatActivity
             actionBar.setSubtitle(DisplayStrings.formatLocation(this, suntimesInfo));
         }
 
+        TextView timezoneText = (TextView) findViewById(R.id.bottombar_button0);
+        if (timezoneText != null) {
+            timezoneText.setText(getTimeZone().getID());
+        }
+
         int[] divideByValues = getResources().getIntArray(R.array.divideby_values);
         int divideBy = divideByValues[spin_divideBy.getSelectedItemPosition()];
         initData(divideBy);   // query provider for start/end times
@@ -169,8 +174,12 @@ public class MainActivity extends AppCompatActivity
     private CharSequence formatTime(long time)
     {
         SuntimesInfo.SuntimesOptions options = suntimesInfo.getOptions(this);
-        TimeZone timezone = suntimesInfo.timezone != null ? TimeZone.getTimeZone(suntimesInfo.timezone) : TimeZone.getDefault();
+        TimeZone timezone = getTimeZone();
         return DisplayStrings.formatTime(this, time, timezone, options.time_is24);
+    }
+
+    private TimeZone getTimeZone() {
+        return suntimesInfo.timezone != null ? TimeZone.getTimeZone(suntimesInfo.timezone) : TimeZone.getDefault();
     }
 
     private void initData(int divideBy)
