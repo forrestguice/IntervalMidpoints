@@ -31,24 +31,35 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.forrestguice.suntimes.addon.SuntimesInfo;
+import com.forrestguice.suntimes.intervalmidpoints.AppSettings;
 import com.forrestguice.suntimes.intervalmidpoints.BuildConfig;
+import com.forrestguice.suntimes.intervalmidpoints.R;
 
 import static com.forrestguice.suntimes.intervalmidpoints.data.IntervalMidpointsProviderContract.AUTHORITY;
+import static com.forrestguice.suntimes.intervalmidpoints.data.IntervalMidpointsProviderContract.COLUMN_ALARM_NAME;
+import static com.forrestguice.suntimes.intervalmidpoints.data.IntervalMidpointsProviderContract.COLUMN_ALARM_SUMMARY;
+import static com.forrestguice.suntimes.intervalmidpoints.data.IntervalMidpointsProviderContract.COLUMN_ALARM_TITLE;
 import static com.forrestguice.suntimes.intervalmidpoints.data.IntervalMidpointsProviderContract.COLUMN_CONFIG_APP_VERSION;
 import static com.forrestguice.suntimes.intervalmidpoints.data.IntervalMidpointsProviderContract.COLUMN_CONFIG_APP_VERSION_CODE;
 import static com.forrestguice.suntimes.intervalmidpoints.data.IntervalMidpointsProviderContract.COLUMN_CONFIG_PROVIDER_VERSION;
 import static com.forrestguice.suntimes.intervalmidpoints.data.IntervalMidpointsProviderContract.COLUMN_CONFIG_PROVIDER_VERSION_CODE;
+import static com.forrestguice.suntimes.intervalmidpoints.data.IntervalMidpointsProviderContract.QUERY_ALARM_INFO;
+import static com.forrestguice.suntimes.intervalmidpoints.data.IntervalMidpointsProviderContract.QUERY_ALARM_INFO_PROJECTION;
 import static com.forrestguice.suntimes.intervalmidpoints.data.IntervalMidpointsProviderContract.QUERY_CONFIG;
 import static com.forrestguice.suntimes.intervalmidpoints.data.IntervalMidpointsProviderContract.QUERY_CONFIG_PROJECTION;
 
 public class IntervalMidpointsProvider extends ContentProvider
 {
     private static final int URIMATCH_CONFIG = 0;
+    private static final int URIMATCH_ALARM_INFO = 40;
+    private static final int URIMATCH_ALARM_INFO_FOR_NAME = 50;
 
     private static final UriMatcher uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
     static
     {
         uriMatcher.addURI(AUTHORITY, QUERY_CONFIG, URIMATCH_CONFIG);
+        uriMatcher.addURI(AUTHORITY, QUERY_ALARM_INFO, URIMATCH_ALARM_INFO);
+        uriMatcher.addURI(AUTHORITY, QUERY_ALARM_INFO + "/*", URIMATCH_ALARM_INFO_FOR_NAME);
     }
 
     @Override
@@ -87,6 +98,16 @@ public class IntervalMidpointsProvider extends ContentProvider
         int uriMatch = uriMatcher.match(uri);
         switch (uriMatch)
         {
+            case URIMATCH_ALARM_INFO:
+                Log.i(getClass().getSimpleName(), "URIMATCH_ALARM_INFO");
+                cursor = queryAlarmInfo(null, uri, projection, selection, selectionArgs, sortOrder);
+                break;
+
+            case URIMATCH_ALARM_INFO_FOR_NAME:
+                Log.i(getClass().getSimpleName(), "URIMATCH_ALARM_INFO_FOR_NAME");
+                cursor = queryAlarmInfo(uri.getLastPathSegment(), uri, projection, selection, selectionArgs, sortOrder);
+                break;
+
             case URIMATCH_CONFIG:
                 Log.i(getClass().getSimpleName(), "URIMATCH_CONFIG");
                 cursor = queryConfig(uri, projection, selection, selectionArgs, sortOrder);
@@ -100,6 +121,62 @@ public class IntervalMidpointsProvider extends ContentProvider
     }
 
     /**
+     * queryAlarmInfo
+     */
+    public Cursor queryAlarmInfo(@Nullable String alarmName, @NonNull Uri uri, @Nullable String[] projection, @Nullable String selection, @Nullable String[] selectionArgs, @Nullable String sortOrder)
+    {
+        String[] columns = (projection != null ? projection : QUERY_ALARM_INFO_PROJECTION);
+        MatrixCursor cursor = new MatrixCursor(columns);
+
+        Context context = getContext();
+        if (context != null)
+        {
+            String[] alarms = (alarmName != null)
+                    ? new String[] { alarmName }
+                    : context.getResources().getStringArray(R.array.alarm_names);
+
+            for (int j=0; j<alarms.length; j++)
+            {
+                Object[] row = new Object[columns.length];
+                for (int i=0; i<columns.length; i++)
+                {
+                    switch (columns[i])
+                    {
+                        case COLUMN_ALARM_NAME:
+                            row[i] = alarms[j];
+                            break;
+
+                        case COLUMN_ALARM_TITLE:
+                            row[i] = getAlarmTitle(context, alarms[j]);
+                            break;
+
+                        case COLUMN_ALARM_SUMMARY:
+                            row[i] = getAlarmSummary(context, alarms[j]);
+                            break;
+
+                        default:
+                            row[i] = null;
+                            break;
+                    }
+                }
+                cursor.addRow(row);
+            }
+
+        } else Log.d("DEBUG", "context is null!");
+        return cursor;
+    }
+
+    public String getAlarmTitle(Context context, String alarmName)
+    {
+        String[] interval = AppSettings.getInterval(alarmName);
+        return context.getString(R.string.alarm_title_format, interval[0], interval[1], interval[3], interval[2]);
+    }
+
+    public String getAlarmSummary(Context context, String alarmName) {
+        return context.getString(R.string.alarm_summary_format);
+    }
+
+    /**
      * queryConfig
      */
     public Cursor queryConfig(@NonNull Uri uri, @Nullable String[] projection, @Nullable String selection, @Nullable String[] selectionArgs, @Nullable String sortOrder)
@@ -110,7 +187,7 @@ public class IntervalMidpointsProvider extends ContentProvider
         Context context = getContext();
         if (context != null)
         {
-            SuntimesInfo config = SuntimesInfo.queryInfo(context);
+            //SuntimesInfo config = SuntimesInfo.queryInfo(context);
             Object[] row = new Object[columns.length];
             for (int i=0; i<columns.length; i++)
             {
@@ -142,6 +219,5 @@ public class IntervalMidpointsProvider extends ContentProvider
         } else Log.d("DEBUG", "context is null!");
         return cursor;
     }
-
 
 }

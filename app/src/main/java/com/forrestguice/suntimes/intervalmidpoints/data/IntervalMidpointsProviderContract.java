@@ -40,4 +40,17 @@ public interface IntervalMidpointsProviderContract
             COLUMN_CONFIG_APP_VERSION, COLUMN_CONFIG_APP_VERSION_CODE
     };
 
+    /**
+     * ALARM
+     */
+    String COLUMN_ALARM_NAME = "alarm_name";            // String (alarm/event ID)
+    String COLUMN_ALARM_TITLE = "alarm_title";          // String (display string)
+    String COLUMN_ALARM_SUMMARY = "alarm_summary";      // String (extended display string)
+
+    String QUERY_ALARM_INFO = "alarmInfo";
+    String[] QUERY_ALARM_INFO_PROJECTION = new String[] {
+            COLUMN_ALARM_NAME, COLUMN_ALARM_TITLE, COLUMN_ALARM_SUMMARY
+    };
+
+
 }
