@@ -25,15 +25,38 @@ import android.preference.PreferenceManager;
 
 public class AppSettings
 {
+    public static final String DEF_EVENT_START = "sunset";
+    public static final String DEF_EVENT_END = "astrorise";
+    public static final int DEF_DIVIDE_BY = 2;
+
     public static final String KEY_INTERVAL = "interval";
-    public static final String DEF_INTERVAL = getMidpointID("sunset", "astrorise", 2, 0);
+    public static final String DEF_INTERVAL = getMidpointID(DEF_EVENT_START, DEF_EVENT_END, DEF_DIVIDE_BY, 0);
 
     /**
      * @param intervalID intervalID or midpointID; e.g. sunrise_sunset, sunrise_sunset_3_1, etc
      * @return interval array; 0:startEvent, 1:endEvent, 2: divideBy, 3: index
      */
-    public static String[] getInterval(String intervalID) {
-        return intervalID.split("_");
+    public static String[] getInterval(String intervalID)
+    {
+        String[] retValue = new String[4];
+        String[] parts = intervalID.split("_");
+
+        for (int i=0; i<retValue.length; i++) {
+            retValue[i] = (i <= parts.length) ? parts[i] : null;
+        }
+        if (retValue[0] == null) {
+            retValue[0] = DEF_EVENT_START;
+        }
+        if (retValue[1] == null) {
+            retValue[1] = DEF_EVENT_END;
+        }
+        if (retValue[2] == null) {
+            retValue[3] = Integer.toString(DEF_DIVIDE_BY);
+        }
+        if (retValue[3] == null) {
+            retValue[3] = "0";
+        }
+        return retValue;
     }
 
     /**
