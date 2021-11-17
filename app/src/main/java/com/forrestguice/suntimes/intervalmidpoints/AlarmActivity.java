@@ -33,6 +33,8 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.forrestguice.suntimes.addon.ui.Messages;
+import com.forrestguice.suntimes.intervalmidpoints.data.IntervalMidpointsProvider;
+import com.forrestguice.suntimes.intervalmidpoints.data.IntervalMidpointsProviderContract;
 
 /**
  * AlarmPicker version of the MainActivity; select and return an alarm
@@ -85,8 +87,12 @@ public class AlarmActivity extends MainActivity
 
     protected void onDone(String midpointID)
     {
-        Intent result = new Intent();
-        result.setData(Uri.parse(midpointID));  // TODO: return data format
+        Intent result = new Intent();    // e.g. content://suntimes.intervalmidpoints.provider/alarmInfo/sunrise_sunset_2_0
+        result.putExtra(IntervalMidpointsProviderContract.COLUMN_CONFIG_PROVIDER, IntervalMidpointsProviderContract.AUTHORITY);
+        result.putExtra(IntervalMidpointsProviderContract.COLUMN_ALARM_NAME, midpointID);
+        result.putExtra(IntervalMidpointsProviderContract.COLUMN_ALARM_TITLE, IntervalMidpointsProvider.getAlarmTitle(this, midpointID));
+        result.putExtra(IntervalMidpointsProviderContract.COLUMN_ALARM_SUMMARY, IntervalMidpointsProvider.getAlarmSummary(this, midpointID));
+        result.setData(Uri.parse("content://" + IntervalMidpointsProviderContract.AUTHORITY + "/" + IntervalMidpointsProviderContract.QUERY_ALARM_INFO + "/" + midpointID));
         setResult(Activity.RESULT_OK, result);
         finish();
     }
@@ -124,7 +130,7 @@ public class AlarmActivity extends MainActivity
                 alarmActions.setSelection(midpointID);
                 actionMode = startSupportActionMode(alarmActions);
                 if (actionMode != null) {
-                    actionMode.setTitle(midpointID);  // TODO: display string / alarm time
+                    actionMode.setTitle(IntervalMidpointsProvider.getAlarmTitle(this, midpointID));  // TODO: show/calculate alarm time
                 }
             }
             return true;

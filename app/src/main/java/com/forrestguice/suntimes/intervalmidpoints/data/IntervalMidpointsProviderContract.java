@@ -29,6 +29,7 @@ public interface IntervalMidpointsProviderContract
     /*
      * CONFIG
      */
+    String COLUMN_CONFIG_PROVIDER = "provider";                             // String (provider reference)
     String COLUMN_CONFIG_PROVIDER_VERSION = "provider_version";             // String (provider version string)
     String COLUMN_CONFIG_PROVIDER_VERSION_CODE = "provider_version_code";   // int (provider version code)
     String COLUMN_CONFIG_APP_VERSION = "app_version";                       // String (app version string)
@@ -41,16 +42,21 @@ public interface IntervalMidpointsProviderContract
     };
 
     /**
-     * ALARM
+     * ALARMS
      */
     String COLUMN_ALARM_NAME = "alarm_name";            // String (alarm/event ID)
     String COLUMN_ALARM_TITLE = "alarm_title";          // String (display string)
     String COLUMN_ALARM_SUMMARY = "alarm_summary";      // String (extended display string)
+    String COLUMN_ALARM_TIMEMILLIS = "alarm_time";      // long (timestamp millis)
 
     String QUERY_ALARM_INFO = "alarmInfo";
     String[] QUERY_ALARM_INFO_PROJECTION = new String[] {
             COLUMN_ALARM_NAME, COLUMN_ALARM_TITLE, COLUMN_ALARM_SUMMARY
     };
 
+    String QUERY_ALARM_CALC = "alarmCalc";
+    String[] QUERY_ALARM_CALC_PROJECTION = new String[] {
+            COLUMN_ALARM_NAME, COLUMN_ALARM_TIMEMILLIS
+    };
 
 }
