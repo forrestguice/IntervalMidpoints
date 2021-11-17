@@ -19,6 +19,7 @@
     <string name="app_changelog_url">https://github.com/forrestguice/IntervalMidpoints/blob/master/CHANGELOG.md</string>   <!-- url only (no formatting) -->
     <string name="app_commit_url">https://github.com/forrestguice/IntervalMidpoints/commit/</string>   <!-- url only (no formatting) -->
 
+    <string name="action_select">Select</string>
     <string name="action_help">Help</string>
     <string name="action_about">About</string>
 

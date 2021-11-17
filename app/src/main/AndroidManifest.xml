@@ -25,6 +25,10 @@
             </intent-filter>
             <meta-data android:name="SuntimesMenuItemTitle" android:value="@string/app_name" />
 
+        </activity>
+
+        <activity android:name=".AlarmActivity">
+
             <!-- tell Suntimes this activity can be used to choose alarms -->
             <intent-filter>
                 <action android:name="suntimes.action.PICK_ALARM" />
@@ -39,6 +43,7 @@
             </intent-filter>
             <meta-data android:name="AlarmInfoProvider"
                 android:value="content://suntimes.intervalmidpoints.provider" />
+
         </activity>
 
         <!-- Content Provider -->

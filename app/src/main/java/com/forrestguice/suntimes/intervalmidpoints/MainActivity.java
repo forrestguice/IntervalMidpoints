@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity
     public static final String DIALOG_HELP = "helpDialog";
     public static final String DIALOG_ABOUT = "aboutDialog";
 
-    private SuntimesInfo suntimesInfo = null;
+    protected SuntimesInfo suntimesInfo = null;
 
     @Override
     protected void attachBaseContext(Context context)
@@ -70,6 +70,15 @@ public class MainActivity extends AppCompatActivity
         }
         setContentView(R.layout.activity_main);
 
+        initToolBar();
+
+        suntimesInfo.getOptions(this);
+        initViews();
+        loadUserInput();
+    }
+
+    protected void initToolBar()
+    {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
@@ -79,10 +88,6 @@ public class MainActivity extends AppCompatActivity
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setHomeAsUpIndicator(R.drawable.ic_action_suntimes);
         }
-
-        suntimesInfo.getOptions(this);
-        initViews();
-        loadUserInput();
     }
 
     protected CharSequence createTitle(SuntimesInfo info) {
@@ -91,12 +96,12 @@ public class MainActivity extends AppCompatActivity
                 : getString(R.string.app_name);
     }
 
-    private TextView text_date;
-    private Spinner spin_startEvent , spin_endEvent, spin_divideBy;
-    private TextView text_startEvent, text_endEvent, text_midpoints;
-    private long startTime = -1L, endTime = -1L;
-    private long date = 1L;
-    private long[] midpoints = null;
+    protected TextView text_date;
+    protected Spinner spin_startEvent , spin_endEvent, spin_divideBy;
+    protected TextView text_startEvent, text_endEvent, text_midpoints;
+    protected long startTime = -1L, endTime = -1L;
+    protected long date = 1L;
+    protected long[] midpoints = null;
 
     protected void initViews()
     {
