@@ -90,14 +90,7 @@ public class DisplayStrings
             return formatLocation(context, Double.parseDouble(info.location[1]), Double.parseDouble(info.location[2]), null);
         } else {
             try {
-                double meters = Double.parseDouble(info.location[3]);
-                String altitude = formatHeight(context, meters, options.length_units, 0, true);
-                String altitudeTag = context.getString(R.string.format_tag, altitude);
-                formatter.setRoundingMode(RoundingMode.FLOOR);
-                formatter.setMinimumFractionDigits(0);
-                formatter.setMaximumFractionDigits(4);
-                String displayString = context.getString(R.string.format_location_long, formatter.format(Double.parseDouble(info.location[1])), formatter.format(Double.parseDouble(info.location[2])), altitudeTag);
-                return createRelativeSpan(null, displayString, altitudeTag, 0.5f);
+                return formatLocation(context, Double.parseDouble(info.location[1]), Double.parseDouble(info.location[2]), Double.parseDouble(info.location[3]), 4, options.length_units);
 
             } catch (NumberFormatException e) {
                 Log.e("formatLocation", "invalid altitude! " + e);
@@ -112,6 +105,17 @@ public class DisplayStrings
         formatter.setMinimumFractionDigits(0);
         formatter.setMaximumFractionDigits(places != null ? places : 4);
         return new SpannableString(context.getString(R.string.format_location, formatter.format(latitude), formatter.format(longitude)));
+    }
+
+    public static SpannableString formatLocation(@NonNull Context context, double latitude, double longitude, double meters, @Nullable Integer places, String units)
+    {
+        String altitude = formatHeight(context, meters, units, 0, true);
+        String altitudeTag = context.getString(R.string.format_tag, altitude);
+        formatter.setRoundingMode(RoundingMode.FLOOR);
+        formatter.setMinimumFractionDigits(0);
+        formatter.setMaximumFractionDigits(places != null ? places : 4);
+        String displayString = context.getString(R.string.format_location_long, formatter.format(latitude), formatter.format(longitude), altitudeTag);
+        return createRelativeSpan(null, displayString, altitudeTag, 0.5f);
     }
 
     public static String formatHeight(Context context, double meters, String units, int places, boolean shortForm)

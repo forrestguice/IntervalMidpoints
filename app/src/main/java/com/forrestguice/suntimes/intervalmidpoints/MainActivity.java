@@ -52,6 +52,13 @@ public class MainActivity extends AppCompatActivity
     public static final String DIALOG_HELP = "helpDialog";
     public static final String DIALOG_ABOUT = "aboutDialog";
 
+    public static final String EXTRA_LOCATION_LABEL = "location_label";
+    public static final String EXTRA_LOCATION_LAT = "latitude";
+    public static final String EXTRA_LOCATION_LON = "longitude";
+    public static final String EXTRA_LOCATION_ALT = "altitude";
+
+    protected String param_location;
+    protected double param_latitude = 0, param_longitude = 0, param_altitude = 0;
     protected SuntimesInfo suntimesInfo = null;
 
     @Override
@@ -71,10 +78,41 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
 
         initToolBar();
-
         suntimesInfo.getOptions(this);
+
         initViews();
         loadUserInput();
+    }
+
+    protected void initLocation(Intent intent)
+    {
+        intent.setExtrasClassLoader(getClassLoader());
+        if (intent.hasExtra(EXTRA_LOCATION_LAT) && intent.hasExtra(EXTRA_LOCATION_LON))
+        {
+            double latitude = intent.getDoubleExtra(EXTRA_LOCATION_LAT, -1000);
+            double longitude = intent.getDoubleExtra(EXTRA_LOCATION_LON, -1000);
+            if ((latitude >= -90 && latitude <= 90) && (longitude >= -180 && longitude <= 180))
+            {
+                String labelString = intent.getStringExtra(EXTRA_LOCATION_LABEL);
+                param_location = labelString != null ? labelString : "";
+                param_latitude = latitude;
+                param_longitude = longitude;
+                param_altitude = intent.getDoubleExtra(EXTRA_LOCATION_ALT, 0);
+
+            } else {
+                initLocation(suntimesInfo);
+            }
+        } else {
+            initLocation(suntimesInfo);
+        }
+    }
+
+    protected void initLocation(@NonNull SuntimesInfo info)
+    {
+        param_location = info.location[0];
+        param_latitude = Double.parseDouble(info.location[1]);
+        param_longitude = Double.parseDouble(info.location[2]);
+        param_altitude = Double.parseDouble(info.location[3]);
     }
 
     protected void initToolBar()
@@ -184,8 +222,8 @@ public class MainActivity extends AppCompatActivity
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null)
         {
-            actionBar.setTitle(createTitle(suntimesInfo));
-            actionBar.setSubtitle(DisplayStrings.formatLocation(this, suntimesInfo));
+            actionBar.setTitle(param_location != null ? param_location : createTitle(suntimesInfo));
+            actionBar.setSubtitle(DisplayStrings.formatLocation(this, param_latitude, param_longitude, param_altitude, 4, suntimesInfo.getOptions(this).length_units));
         }
 
         TextView timezoneText = (TextView) findViewById(R.id.bottombar_button0);
@@ -281,7 +319,14 @@ public class MainActivity extends AppCompatActivity
         Arrays.fill(retValue, -1);
 
         Uri uri = Uri.parse("content://" + CalculatorProviderContract.AUTHORITY + "/" + CalculatorProviderContract.QUERY_SUN + "/" + date );
-        Cursor cursor = resolver.query(uri, projection, null, null, null);
+        String selection = CalculatorProviderContract.COLUMN_CONFIG_LATITUDE + "=? AND "
+                          + CalculatorProviderContract.COLUMN_CONFIG_LONGITUDE + "=? AND "
+                          + CalculatorProviderContract.COLUMN_CONFIG_ALTITUDE + "=?";
+        String[] selectionArgs = new String[] { Double.toString(param_latitude), Double.toString(param_longitude), Double.toString(param_altitude) };
+
+        Log.d("DEBUG", "Selection Args:" + selectionArgs[0] + ", " + selectionArgs[1] + " " + selectionArgs[2]);
+
+        Cursor cursor = resolver.query(uri, projection, selection, selectionArgs, null);
         if (cursor != null)
         {
             cursor.moveToFirst();
@@ -302,6 +347,7 @@ public class MainActivity extends AppCompatActivity
             recreate();
         } else {
             suntimesInfo = SuntimesInfo.queryInfo(MainActivity.this);    // refresh suntimesInfo
+            initLocation(getIntent());
             updateViews();
         }
     }

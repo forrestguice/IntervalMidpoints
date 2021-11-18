@@ -41,6 +41,8 @@ import com.forrestguice.suntimes.intervalmidpoints.data.IntervalMidpointsProvide
  */
 public class AlarmActivity extends MainActivity
 {
+    public static final String ACTION_PICK_ALARM = "suntimes.action.PICK_ALARM";
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
