@@ -136,6 +136,7 @@ public class IntervalMidpointsProvider extends ContentProvider
      */
     public Cursor queryAlarmInfo(@Nullable String alarmName, @NonNull Uri uri, @Nullable String[] projection, @Nullable String selection, @Nullable String[] selectionArgs, @Nullable String sortOrder)
     {
+        Log.d("DEBUG", "queryAlarmInfo: " + alarmName);
         String[] columns = (projection != null ? projection : QUERY_ALARM_INFO_PROJECTION);
         MatrixCursor cursor = new MatrixCursor(columns);
 
@@ -180,7 +181,11 @@ public class IntervalMidpointsProvider extends ContentProvider
     public static String getAlarmTitle(Context context, String alarmName)
     {
         String[] interval = AppSettings.getInterval(alarmName);
-        return context.getString(R.string.alarm_title_format, interval[0], interval[1], interval[3], interval[2]);
+        int i = Integer.parseInt(interval[3]);
+        int n = Integer.parseInt(interval[2]);
+        if (n <= 2)
+            return context.getString(R.string.alarm_title_format_short, interval[0], interval[1]);
+        else return context.getString(R.string.alarm_title_format_long, interval[0], interval[1], (i+1) + "", n + "");
     }
 
     public static String getAlarmSummary(Context context, String alarmName) {
@@ -189,6 +194,7 @@ public class IntervalMidpointsProvider extends ContentProvider
 
     public Cursor queryAlarmTime(@Nullable String alarmName, @NonNull Uri uri, @Nullable String[] projection, @Nullable String selection, @Nullable String[] selectionArgs, @Nullable String sortOrder)
     {
+        Log.d("DEBUG", "queryAlarmTime: " + alarmName);
         String[] columns = (projection != null ? projection : QUERY_ALARM_CALC_PROJECTION);
         MatrixCursor cursor = new MatrixCursor(columns);
 
