@@ -35,6 +35,9 @@ import com.forrestguice.suntimes.intervalmidpoints.AppSettings;
 import com.forrestguice.suntimes.intervalmidpoints.BuildConfig;
 import com.forrestguice.suntimes.intervalmidpoints.R;
 
+import java.util.Calendar;
+import java.util.HashMap;
+
 import static com.forrestguice.suntimes.intervalmidpoints.data.IntervalMidpointsProviderContract.AUTHORITY;
 import static com.forrestguice.suntimes.intervalmidpoints.data.IntervalMidpointsProviderContract.COLUMN_ALARM_NAME;
 import static com.forrestguice.suntimes.intervalmidpoints.data.IntervalMidpointsProviderContract.COLUMN_ALARM_SUMMARY;
@@ -99,6 +102,7 @@ public class IntervalMidpointsProvider extends ContentProvider
     @Override
     public Cursor query(@NonNull Uri uri, @Nullable String[] projection, @Nullable String selection, @Nullable String[] selectionArgs, @Nullable String sortOrder)
     {
+        HashMap<String, String> selectionMap = processSelection(processSelectionArgs(selection, selectionArgs));
         long[] range;
         Cursor cursor = null;
         int uriMatch = uriMatcher.match(uri);
@@ -106,22 +110,22 @@ public class IntervalMidpointsProvider extends ContentProvider
         {
             case URIMATCH_ALARM_INFO:
                 Log.i(getClass().getSimpleName(), "URIMATCH_ALARM_INFO");
-                cursor = queryAlarmInfo(null, uri, projection, selection, selectionArgs, sortOrder);
+                cursor = queryAlarmInfo(null, uri, projection, selectionMap, sortOrder);
                 break;
 
             case URIMATCH_ALARM_INFO_FOR_NAME:
                 Log.i(getClass().getSimpleName(), "URIMATCH_ALARM_INFO_FOR_NAME");
-                cursor = queryAlarmInfo(uri.getLastPathSegment(), uri, projection, selection, selectionArgs, sortOrder);
+                cursor = queryAlarmInfo(uri.getLastPathSegment(), uri, projection, selectionMap, sortOrder);
                 break;
 
             case URIMATCH_ALARM_CALC_FOR_NAME:
                 Log.i(getClass().getSimpleName(), "URIMATCH_ALARM_CALC_FOR_NAME");
-                cursor = queryAlarmTime(uri.getLastPathSegment(), uri, projection, selection, selectionArgs, sortOrder);
+                cursor = queryAlarmTime(uri.getLastPathSegment(), uri, projection, selectionMap, sortOrder);
                 break;
 
             case URIMATCH_CONFIG:
                 Log.i(getClass().getSimpleName(), "URIMATCH_CONFIG");
-                cursor = queryConfig(uri, projection, selection, selectionArgs, sortOrder);
+                cursor = queryConfig(uri, projection, selectionMap, sortOrder);
                 break;
 
             default:
@@ -134,7 +138,7 @@ public class IntervalMidpointsProvider extends ContentProvider
     /**
      * queryAlarmInfo
      */
-    public Cursor queryAlarmInfo(@Nullable String alarmName, @NonNull Uri uri, @Nullable String[] projection, @Nullable String selection, @Nullable String[] selectionArgs, @Nullable String sortOrder)
+    public Cursor queryAlarmInfo(@Nullable String alarmName, @NonNull Uri uri, @Nullable String[] projection, HashMap<String, String> selectionMap, @Nullable String sortOrder)
     {
         Log.d("DEBUG", "queryAlarmInfo: " + alarmName);
         String[] columns = (projection != null ? projection : QUERY_ALARM_INFO_PROJECTION);
@@ -192,7 +196,7 @@ public class IntervalMidpointsProvider extends ContentProvider
         return context.getString(R.string.alarm_summary_format);
     }
 
-    public Cursor queryAlarmTime(@Nullable String alarmName, @NonNull Uri uri, @Nullable String[] projection, @Nullable String selection, @Nullable String[] selectionArgs, @Nullable String sortOrder)
+    public Cursor queryAlarmTime(@Nullable String alarmName, @NonNull Uri uri, @Nullable String[] projection, HashMap<String, String> selectionMap, @Nullable String sortOrder)
     {
         Log.d("DEBUG", "queryAlarmTime: " + alarmName);
         String[] columns = (projection != null ? projection : QUERY_ALARM_CALC_PROJECTION);
@@ -212,7 +216,7 @@ public class IntervalMidpointsProvider extends ContentProvider
                         break;
 
                     case COLUMN_ALARM_TIMEMILLIS:
-                        row[i] = calculateAlarmTime(alarmName, selection, selectionArgs);
+                        row[i] = calculateAlarmTime(alarmName, selectionMap);
                         break;
 
                     default:
@@ -226,12 +230,14 @@ public class IntervalMidpointsProvider extends ContentProvider
         return cursor;
     }
 
-    public long calculateAlarmTime(@Nullable String alarmName, String selection, String[] selectionArgs)
+    public long calculateAlarmTime(@Nullable String alarmName, HashMap<String, String> selectionMap)
     {
         if (alarmName != null)
         {
             // TODO: get 'repeat' and other options that effect scheduling via selectionArgs
-            return System.currentTimeMillis();    // TODO: calculate
+            Calendar eventTime = Calendar.getInstance();
+            eventTime.add(Calendar.HOUR_OF_DAY, 1);   // TODO: calculate
+            return eventTime.getTimeInMillis();
 
         } else {
             return -1L;
@@ -241,7 +247,7 @@ public class IntervalMidpointsProvider extends ContentProvider
     /**
      * queryConfig
      */
-    public Cursor queryConfig(@NonNull Uri uri, @Nullable String[] projection, @Nullable String selection, @Nullable String[] selectionArgs, @Nullable String sortOrder)
+    public Cursor queryConfig(@NonNull Uri uri, @Nullable String[] projection, HashMap<String, String> selectionMap, @Nullable String sortOrder)
     {
         String[] columns = (projection != null ? projection : QUERY_CONFIG_PROJECTION);
         MatrixCursor cursor = new MatrixCursor(columns);
@@ -284,6 +290,59 @@ public class IntervalMidpointsProvider extends ContentProvider
 
         } else Log.d("DEBUG", "context is null!");
         return cursor;
+    }
+
+    /**
+     * processSelection
+     * A query helper method; extracts selection columns/values to HashMap.
+     * @param selection a completed selection string (@see processSelectionArgs)
+     * @return a HashMap containing <KEY, VALUE> pairs
+     */
+    public static HashMap<String, String> processSelection(@Nullable String selection)
+    {
+        HashMap<String, String> retValue = new HashMap<>();
+        if (selection != null)
+        {
+            String[] expressions = selection.split(" or | OR | and | AND ");  // just separators in this context (all interpreted the same)
+            for (String expression : expressions)
+            {
+                String[] parts = expression.split("=");
+                if (parts.length == 2) {
+                    retValue.put(parts[0].trim(), parts[1].trim());
+                } else Log.w("CalendarProvider", "processSelection: Too many parts! " + expression);
+            }
+        }
+        return retValue;
+    }
+
+    /**
+     * processSelectionArgs
+     * A query helper method; inserts arguments into selection string.
+     * @param selection a selection string (as passed to query)
+     * @param selectionArgs a list of selection arguments
+     * @return a completed selection string containing substituted arguments
+     */
+    @Nullable
+    public static String processSelectionArgs(@Nullable String selection, @Nullable String[] selectionArgs)
+    {
+        String retValue = selection;
+        if (selectionArgs != null && selection != null)
+        {
+            for (int i=0; i<selectionArgs.length; i++)
+            {
+                if (selectionArgs[i] != null)
+                {
+                    if (retValue.contains("?")) {
+                        retValue = retValue.replaceFirst("\\?", selectionArgs[i]);
+
+                    } else {
+                        Log.w("CalendarProvider", "processSelectionArgs: Too many arguments! Given " + selectionArgs.length + " arguments, but selection contains only " + (i+1));
+                        break;
+                    }
+                }
+            }
+        }
+        return retValue;
     }
 
 }
