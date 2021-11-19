@@ -22,6 +22,7 @@ package com.forrestguice.suntimes.intervalmidpoints;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.support.annotation.Nullable;
 
 public class AppSettings
 {
@@ -51,12 +52,43 @@ public class AppSettings
             retValue[1] = DEF_EVENT_END;
         }
         if (retValue[2] == null) {
-            retValue[3] = Integer.toString(DEF_DIVIDE_BY);
+            retValue[2] = Integer.toString(DEF_DIVIDE_BY);
         }
         if (retValue[3] == null) {
             retValue[3] = "0";
         }
         return retValue;
+    }
+
+    public static boolean isValidIntervalID(@Nullable String intervalID)
+    {
+        if (intervalID == null) {
+            return false;
+        }
+
+        int expectedLength = 4;
+        String[] parts = intervalID.split("_");
+        if (parts.length != expectedLength) {
+            return false;
+        }
+
+        for (String part : parts) {
+            if (part == null) {
+                return false;
+            }
+        }
+
+        try {
+            int divideBy = Integer.parseInt(parts[2]);
+            int i = Integer.parseInt(parts[3]);
+            if (i < 0 || divideBy < 2 || i >= (divideBy-1)) {
+                return false;
+            }
+        } catch (NumberFormatException e) {
+            return false;
+        }
+
+        return true;
     }
 
     /**
