@@ -35,6 +35,7 @@ import com.forrestguice.suntimes.intervalmidpoints.AppSettings;
 import com.forrestguice.suntimes.intervalmidpoints.BuildConfig;
 import com.forrestguice.suntimes.intervalmidpoints.R;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 
@@ -48,6 +49,13 @@ import static com.forrestguice.suntimes.intervalmidpoints.data.IntervalMidpoints
 import static com.forrestguice.suntimes.intervalmidpoints.data.IntervalMidpointsProviderContract.COLUMN_CONFIG_PROVIDER;
 import static com.forrestguice.suntimes.intervalmidpoints.data.IntervalMidpointsProviderContract.COLUMN_CONFIG_PROVIDER_VERSION;
 import static com.forrestguice.suntimes.intervalmidpoints.data.IntervalMidpointsProviderContract.COLUMN_CONFIG_PROVIDER_VERSION_CODE;
+import static com.forrestguice.suntimes.intervalmidpoints.data.IntervalMidpointsProviderContract.EXTRA_ALARM_NOW;
+import static com.forrestguice.suntimes.intervalmidpoints.data.IntervalMidpointsProviderContract.EXTRA_ALARM_OFFSET;
+import static com.forrestguice.suntimes.intervalmidpoints.data.IntervalMidpointsProviderContract.EXTRA_ALARM_REPEAT;
+import static com.forrestguice.suntimes.intervalmidpoints.data.IntervalMidpointsProviderContract.EXTRA_ALARM_REPEAT_DAYS;
+import static com.forrestguice.suntimes.intervalmidpoints.data.IntervalMidpointsProviderContract.EXTRA_LOCATION_ALT;
+import static com.forrestguice.suntimes.intervalmidpoints.data.IntervalMidpointsProviderContract.EXTRA_LOCATION_LAT;
+import static com.forrestguice.suntimes.intervalmidpoints.data.IntervalMidpointsProviderContract.EXTRA_LOCATION_LON;
 import static com.forrestguice.suntimes.intervalmidpoints.data.IntervalMidpointsProviderContract.QUERY_ALARM_CALC;
 import static com.forrestguice.suntimes.intervalmidpoints.data.IntervalMidpointsProviderContract.QUERY_ALARM_CALC_PROJECTION;
 import static com.forrestguice.suntimes.intervalmidpoints.data.IntervalMidpointsProviderContract.QUERY_ALARM_INFO;
@@ -230,13 +238,57 @@ public class IntervalMidpointsProvider extends ContentProvider
         return cursor;
     }
 
+    protected ArrayList<Integer> getRepeatDays(@Nullable String repeatDaysString)
+    {
+        ArrayList<Integer> result = new ArrayList<>();
+        if (repeatDaysString != null)
+        {
+            repeatDaysString = repeatDaysString.replaceAll("\\[", "");
+            repeatDaysString = repeatDaysString.replaceAll("]", "");
+            String[] repeatDaysArray = repeatDaysString.split(",");
+            for (int i=0; i<repeatDaysArray.length; i++) {
+                result.add(Integer.parseInt(repeatDaysArray[i]));
+            }
+        }
+        return result;
+    }
+
+    public Calendar getNowCalendar(String nowString)
+    {
+        long nowMillis = (nowString != null ? Long.parseLong(nowString) : System.currentTimeMillis());
+        Calendar now = Calendar.getInstance();
+        now.setTimeInMillis(nowMillis);
+        return now;
+    }
+
     public long calculateAlarmTime(@Nullable String alarmName, HashMap<String, String> selectionMap)
     {
         if (alarmName != null)
         {
-            // TODO: get 'repeat' and other options that effect scheduling via selectionArgs
+            Calendar now = getNowCalendar(selectionMap.get(EXTRA_ALARM_NOW));
+            long nowMillis = now.getTimeInMillis();
+
+            String offsetString = selectionMap.get(EXTRA_ALARM_OFFSET);
+            long offset = offsetString != null ? Long.parseLong(offsetString) : 0L;
+
+            boolean repeat = Boolean.parseBoolean(selectionMap.get(EXTRA_ALARM_REPEAT));
+            ArrayList<Integer> repeatDays = getRepeatDays(selectionMap.get(EXTRA_ALARM_REPEAT_DAYS));
+
+            String latitudeString = selectionMap.get(EXTRA_LOCATION_LAT);
+            String longitudeString = selectionMap.get(EXTRA_LOCATION_LON);
+            String altitudeString = selectionMap.get(EXTRA_LOCATION_ALT);
+            Double latitude = latitudeString != null ? Double.parseDouble(latitudeString) : null;
+            Double longitude = longitudeString != null ? Double.parseDouble(longitudeString) : null;
+            Double altitude = altitudeString != null ? Double.parseDouble(altitudeString) : null;
+
+            Log.d("DEBUG", "calculateAlarmTime: now: " + nowMillis + ", offset: " + offset + ", repeat: " + repeat + ", repeatDays: " + selectionMap.get(EXTRA_ALARM_REPEAT_DAYS)
+                    + ", latitude: " + latitude + ", longitude: " + longitude + ", altitude: " + altitude);
+
+            // TODO: if latitude, longitude != null then use them to override the location
+
             Calendar eventTime = Calendar.getInstance();
-            eventTime.add(Calendar.HOUR_OF_DAY, 1);   // TODO: calculate
+            eventTime.setTimeInMillis(nowMillis);           // TODO: calculate alarm time
+            eventTime.add(Calendar.HOUR_OF_DAY, 1);
             return eventTime.getTimeInMillis();
 
         } else {

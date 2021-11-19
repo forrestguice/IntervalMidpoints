@@ -59,4 +59,13 @@ public interface IntervalMidpointsProviderContract
             COLUMN_ALARM_NAME, COLUMN_ALARM_TIMEMILLIS
     };
 
+    String EXTRA_ALARM_NOW = "alarm_now";                  // long (millis)
+    String EXTRA_ALARM_REPEAT = "alarm_repeat";            // boolean
+    String EXTRA_ALARM_REPEAT_DAYS = "alarm_repeat_days";  // boolean[] .. [m,t,w,t,f,s,s]
+    String EXTRA_ALARM_OFFSET = "alarm_offset";            // long (millis)
+
+    String EXTRA_LOCATION_LABEL = "location_label";        // String
+    String EXTRA_LOCATION_LAT = "latitude";                // double (DD)
+    String EXTRA_LOCATION_LON = "longitude";               // double (DD)
+    String EXTRA_LOCATION_ALT = "altitude";                // double (meters)
 }
