@@ -38,6 +38,8 @@ import com.forrestguice.suntimes.intervalmidpoints.R;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 import static com.forrestguice.suntimes.intervalmidpoints.data.IntervalMidpointsProviderContract.AUTHORITY;
 import static com.forrestguice.suntimes.intervalmidpoints.data.IntervalMidpointsProviderContract.COLUMN_ALARM_NAME;
@@ -213,7 +215,6 @@ public class IntervalMidpointsProvider extends ContentProvider
         Context context = getContext();
         if (context != null)
         {
-
             Object[] row = new Object[columns.length];
             for (int i=0; i<columns.length; i++)
             {
@@ -224,7 +225,7 @@ public class IntervalMidpointsProvider extends ContentProvider
                         break;
 
                     case COLUMN_ALARM_TIMEMILLIS:
-                        row[i] = calculateAlarmTime(alarmName, selectionMap);
+                        row[i] = calculateAlarmTime(context, alarmName, selectionMap);
                         break;
 
                     default:
@@ -238,7 +239,7 @@ public class IntervalMidpointsProvider extends ContentProvider
         return cursor;
     }
 
-    protected ArrayList<Integer> getRepeatDays(@Nullable String repeatDaysString)
+    public static ArrayList<Integer> getRepeatDays(@Nullable String repeatDaysString)
     {
         ArrayList<Integer> result = new ArrayList<>();
         if (repeatDaysString != null)
@@ -247,13 +248,16 @@ public class IntervalMidpointsProvider extends ContentProvider
             repeatDaysString = repeatDaysString.replaceAll("]", "");
             String[] repeatDaysArray = repeatDaysString.split(",");
             for (int i=0; i<repeatDaysArray.length; i++) {
-                result.add(Integer.parseInt(repeatDaysArray[i]));
+                String element = repeatDaysArray[i].trim();
+                if (!element.isEmpty()) {
+                    result.add(Integer.parseInt(element));
+                }
             }
         }
         return result;
     }
 
-    public Calendar getNowCalendar(String nowString)
+    public static Calendar getNowCalendar(String nowString)
     {
         long nowMillis = (nowString != null ? Long.parseLong(nowString) : System.currentTimeMillis());
         Calendar now = Calendar.getInstance();
@@ -261,9 +265,9 @@ public class IntervalMidpointsProvider extends ContentProvider
         return now;
     }
 
-    public long calculateAlarmTime(@Nullable String alarmName, HashMap<String, String> selectionMap)
+    public long calculateAlarmTime(@NonNull Context context, @Nullable String alarmName, HashMap<String, String> selectionMap)
     {
-        if (alarmName != null)
+        if (AppSettings.isValidIntervalID(alarmName))
         {
             Calendar now = getNowCalendar(selectionMap.get(EXTRA_ALARM_NOW));
             long nowMillis = now.getTimeInMillis();
@@ -271,24 +275,66 @@ public class IntervalMidpointsProvider extends ContentProvider
             String offsetString = selectionMap.get(EXTRA_ALARM_OFFSET);
             long offset = offsetString != null ? Long.parseLong(offsetString) : 0L;
 
-            boolean repeat = Boolean.parseBoolean(selectionMap.get(EXTRA_ALARM_REPEAT));
-            ArrayList<Integer> repeatDays = getRepeatDays(selectionMap.get(EXTRA_ALARM_REPEAT_DAYS));
+            boolean repeating = Boolean.parseBoolean(selectionMap.get(EXTRA_ALARM_REPEAT));
+            ArrayList<Integer> repeatingDays = getRepeatDays(selectionMap.get(EXTRA_ALARM_REPEAT_DAYS));
 
             String latitudeString = selectionMap.get(EXTRA_LOCATION_LAT);
             String longitudeString = selectionMap.get(EXTRA_LOCATION_LON);
             String altitudeString = selectionMap.get(EXTRA_LOCATION_ALT);
             Double latitude = latitudeString != null ? Double.parseDouble(latitudeString) : null;
             Double longitude = longitudeString != null ? Double.parseDouble(longitudeString) : null;
-            Double altitude = altitudeString != null ? Double.parseDouble(altitudeString) : null;
+            double altitude = altitudeString != null ? Double.parseDouble(altitudeString) : 0;
+            if (latitude == null || longitude == null)
+            {
+                SuntimesInfo info = SuntimesInfo.queryInfo(context);
+                latitude = Double.parseDouble(info.location[1]);
+                longitude = Double.parseDouble(info.location[2]);
+                altitude = Double.parseDouble(info.location[3]);
+            }
 
-            Log.d("DEBUG", "calculateAlarmTime: now: " + nowMillis + ", offset: " + offset + ", repeat: " + repeat + ", repeatDays: " + selectionMap.get(EXTRA_ALARM_REPEAT_DAYS)
+            Log.d("DEBUG", "calculateAlarmTime: now: " + nowMillis + ", offset: " + offset + ", repeat: " + repeating + ", repeatDays: " + selectionMap.get(EXTRA_ALARM_REPEAT_DAYS)
                     + ", latitude: " + latitude + ", longitude: " + longitude + ", altitude: " + altitude);
 
-            // TODO: if latitude, longitude != null then use them to override the location
+            IntervalMidpointsCalculator calculator = new IntervalMidpointsCalculator();
+            IntervalMidpointsData data = new IntervalMidpointsData(alarmName, latitude, longitude, altitude);
 
-            Calendar eventTime = Calendar.getInstance();
-            eventTime.setTimeInMillis(nowMillis);           // TODO: calculate alarm time
-            eventTime.add(Calendar.HOUR_OF_DAY, 1);
+            Calendar alarmTime = Calendar.getInstance();
+            Calendar eventTime;
+
+            Calendar day = Calendar.getInstance();
+            data.setDate(day.getTimeInMillis());
+            calculator.calculateData(context, data);
+            eventTime = data.getMidpoint(data.index);
+            if (eventTime != null)
+            {
+                eventTime.set(Calendar.SECOND, 0);
+                alarmTime.setTimeInMillis(eventTime.getTimeInMillis() + offset);
+            }
+
+            int c = 0;
+            Set<Long> timestamps = new HashSet<>();
+            while (now.after(alarmTime)
+                    || eventTime == null
+                    || (repeating && !repeatingDays.contains(eventTime.get(Calendar.DAY_OF_WEEK))))
+            {
+                if (!timestamps.add(alarmTime.getTimeInMillis()) && c > 365) {
+                    Log.e(getClass().getSimpleName(), "updateAlarmTime: encountered same timestamp twice! (breaking loop)");
+                    return -1L;
+                }
+
+                Log.w(getClass().getSimpleName(), "updateAlarmTime: advancing by 1 day..");
+                day.add(Calendar.DAY_OF_YEAR, 1);
+                data.setDate(day.getTimeInMillis());
+                calculator.calculateData(context, data);
+                eventTime = data.getMidpoint(data.index);
+                if (eventTime != null)
+                {
+                    eventTime.set(Calendar.SECOND, 0);
+                    alarmTime.setTimeInMillis(eventTime.getTimeInMillis() + offset);
+                }
+                c++;
+            }
+
             return eventTime.getTimeInMillis();
 
         } else {
