@@ -42,6 +42,7 @@ import com.forrestguice.suntimes.addon.LocaleHelper;
 import com.forrestguice.suntimes.addon.SuntimesInfo;
 import com.forrestguice.suntimes.addon.ui.Messages;
 import com.forrestguice.suntimes.calculator.core.CalculatorProviderContract;
+import com.forrestguice.suntimes.intervalmidpoints.ui.DisplayStrings;
 
 import java.util.Arrays;
 import java.util.Calendar;

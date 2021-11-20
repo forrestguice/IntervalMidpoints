@@ -33,6 +33,8 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import com.forrestguice.suntimes.intervalmidpoints.ui.DisplayStrings;
+
 public class HelpDialog extends BottomSheetDialogFragment
 {
     public static final String KEY_HELPTEXT = "helpText";
@@ -49,7 +51,7 @@ public class HelpDialog extends BottomSheetDialogFragment
         return rawContent;
     }
     public void setContent( String content ) {
-        setContent((CharSequence)DisplayStrings.fromHtml(content));
+        setContent((CharSequence) DisplayStrings.fromHtml(content));
     }
 
     public void setContent( CharSequence content )

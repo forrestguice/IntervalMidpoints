@@ -35,6 +35,7 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.forrestguice.suntimes.addon.SuntimesInfo;
+import com.forrestguice.suntimes.intervalmidpoints.ui.DisplayStrings;
 
 public class AboutDialog extends BottomSheetDialogFragment
 {

@@ -17,7 +17,7 @@
     along with Suntimes.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package com.forrestguice.suntimes.intervalmidpoints;
+package com.forrestguice.suntimes.intervalmidpoints.ui;
 
 import android.content.Context;
 import android.os.Build;
@@ -32,6 +32,7 @@ import android.text.style.RelativeSizeSpan;
 import android.util.Log;
 
 import com.forrestguice.suntimes.addon.SuntimesInfo;
+import com.forrestguice.suntimes.intervalmidpoints.R;
 
 import java.math.RoundingMode;
 import java.text.NumberFormat;

@@ -27,7 +27,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.forrestguice.suntimes.addon.SuntimesInfo;
-import com.forrestguice.suntimes.intervalmidpoints.DisplayStrings;
 import com.forrestguice.suntimes.intervalmidpoints.R;
 
 import java.lang.ref.WeakReference;
