@@ -17,7 +17,7 @@
     along with Suntimes.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package com.forrestguice.suntimes.intervalmidpoints;
+package com.forrestguice.suntimes.intervalmidpoints.ui;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -33,6 +33,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import com.forrestguice.suntimes.intervalmidpoints.R;
 import com.forrestguice.suntimes.intervalmidpoints.ui.DisplayStrings;
 
 public class HelpDialog extends BottomSheetDialogFragment
