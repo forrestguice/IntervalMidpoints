@@ -12,10 +12,10 @@
         android:layout_width="wrap_content" android:layout_height="wrap_content"
         android:text="@string/midpoints_msg0"  android:layout_marginTop="8dp" android:layout_marginBottom="8dp" />
 
-    <LinearLayout
-        android:layout_width="wrap_content" android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:orientation="vertical">
+    <LinearLayout android:id="@+id/layout_startevent"
+        android:background="?attr/selectableItemBackground"
+        android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp" android:orientation="vertical">
 
         <Spinner android:id="@+id/spin_startevent"
             android:layout_width="wrap_content" android:layout_height="wrap_content"
@@ -30,8 +30,9 @@
 
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="wrap_content" android:layout_height="wrap_content"
+    <LinearLayout android:id="@+id/layout_endevent"
+        android:background="?attr/selectableItemBackground"
+        android:layout_width="match_parent" android:layout_height="wrap_content"
         android:orientation="vertical" android:layout_marginBottom="8dp">
 
         <Spinner android:id="@+id/spin_endevent"

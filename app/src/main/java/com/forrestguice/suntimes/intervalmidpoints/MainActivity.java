@@ -151,17 +151,43 @@ public class MainActivity extends AppCompatActivity
         }
         text_startEvent = (TextView)findViewById(R.id.text_startevent);
 
+        View layout_startEvent = findViewById(R.id.layout_startevent);
+        if (layout_startEvent != null) {
+            layout_startEvent.setOnClickListener(getClickListener(spin_startEvent));
+        }
+
         spin_endEvent = (Spinner)findViewById(R.id.spin_endevent);
         if (spin_endEvent != null) {
             spin_endEvent.setOnItemSelectedListener(onInputChanged);
         }
         text_endEvent = (TextView)findViewById(R.id.text_endevent);
 
+        View layout_endEvent = findViewById(R.id.layout_endevent);
+        if (layout_endEvent != null) {
+            layout_endEvent.setOnClickListener(getClickListener(spin_endEvent));
+        }
+
         spin_divideBy = (Spinner)findViewById(R.id.spin_divideby);
         if (spin_divideBy != null) {
             spin_divideBy.setOnItemSelectedListener(onInputChanged);
         }
         text_midpoints = (TextView)findViewById(R.id.text_midpoints);
+
+        //View layout_divideBy = findViewById(R.id.layout_divideby);
+        //if (layout_divideBy != null) {
+        //    layout_divideBy.setOnClickListener(getClickListener(spin_divideBy));
+        //}
+    }
+
+    private View.OnClickListener getClickListener(final Spinner spinner) {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (spinner != null) {
+                    spinner.performClick();
+                }
+            }
+        };
     }
 
     protected void saveUserInput()
