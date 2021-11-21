@@ -63,7 +63,7 @@ public class IntervalMidpointsCalculator
 
         data.startTime = startData[0];
         data.endTime = endData[0];
-        Log.d("DEBUG", "startTime: " + data.startTime + " .. endTime: " + data.endTime);
+        //Log.d("DEBUG", "startTime: " + data.startTime + " .. endTime: " + data.endTime);
         data.midpoints = (data.startTime > 0 && data.endTime > 0) ? findMidpoints(data.startTime, data.endTime, data.divideBy) : null;
         return true;
     }
@@ -94,8 +94,7 @@ public class IntervalMidpointsCalculator
                 + CalculatorProviderContract.COLUMN_CONFIG_LONGITUDE + "=? AND "
                 + CalculatorProviderContract.COLUMN_CONFIG_ALTITUDE + "=?";
         String[] selectionArgs = new String[] { Double.toString(latitude), Double.toString(longitude), Double.toString(altitude) };
-
-        Log.d("DEBUG", "Selection Args:" + selectionArgs[0] + ", " + selectionArgs[1] + " " + selectionArgs[2]);
+        //Log.d("DEBUG", "Selection Args:" + selectionArgs[0] + ", " + selectionArgs[1] + " " + selectionArgs[2]);
 
         Cursor cursor = resolver.query(uri, projection, selection, selectionArgs, null);
         if (cursor != null)
