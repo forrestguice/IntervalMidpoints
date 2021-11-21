@@ -5,4 +5,5 @@
     <attr name="icAbout" format="reference" />
     <attr name="colorDate" format="reference" />
     <attr name="colorLabel" format="reference" />
+    <attr name="colorSelect" format="reference" />
 </resources>

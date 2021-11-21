@@ -65,7 +65,7 @@ public class IntervalResultsViewHolder extends RecyclerView.ViewHolder
 
         if (isSelected)
         {
-            int[] colorAttrs = { android.R.attr.colorMultiSelectHighlight };  // TODO: color
+            int[] colorAttrs = { R.attr.colorSelect };
             TypedArray typedArray = context.obtainStyledAttributes(colorAttrs);
             card1.setBackgroundColor(ContextCompat.getColor(context, typedArray.getResourceId(0, R.color.card_dark_selected)));
             typedArray.recycle();

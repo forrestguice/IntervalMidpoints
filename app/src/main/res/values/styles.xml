@@ -15,6 +15,7 @@
         <item name="icAbout">@drawable/ic_about</item>
         <item name="colorDate">@color/colorDate_dark</item>
         <item name="colorLabel">@color/colorLabel_dark</item>
+        <item name="colorSelect">@color/deep_teal_500</item>
         <item name="windowActionModeOverlay">true</item>
     </style>
 
@@ -31,6 +32,7 @@
         <item name="icAbout">@drawable/ic_about_light</item>
         <item name="colorDate">@color/colorDate_light</item>
         <item name="colorLabel">@color/colorLabel_light</item>
+        <item name="colorSelect">@color/deep_teal_200</item>
         <item name="windowActionModeOverlay">true</item>
     </style>
 
