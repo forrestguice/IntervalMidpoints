@@ -45,6 +45,7 @@ import com.forrestguice.suntimes.addon.ui.Messages;
 import com.forrestguice.suntimes.intervalmidpoints.data.IntervalMidpointsCalculator;
 import com.forrestguice.suntimes.intervalmidpoints.data.IntervalMidpointsData;
 import com.forrestguice.suntimes.intervalmidpoints.data.IntervalMidpointsProvider;
+import com.forrestguice.suntimes.intervalmidpoints.data.IntervalMidpointsProviderContract;
 import com.forrestguice.suntimes.intervalmidpoints.ui.AboutDialog;
 import com.forrestguice.suntimes.intervalmidpoints.ui.DisplayStrings;
 import com.forrestguice.suntimes.intervalmidpoints.ui.HelpDialog;
@@ -550,7 +551,9 @@ public class MainActivity extends AppCompatActivity
                 {
                     case R.id.action_alarm:
                     case R.id.action_select:
-                        // TODO
+                        String midpointUri = IntervalMidpointsProvider.getAlarmInfoUri(midpointID);
+                        String label = IntervalMidpointsProvider.getAlarmTitle(MainActivity.this, midpointID);
+                        startActivity(AddonHelper.scheduleAlarm("ALARM", label, -1, -1, getTimeZone(), midpointUri));
                         mode.finish();
                         return true;
                 }

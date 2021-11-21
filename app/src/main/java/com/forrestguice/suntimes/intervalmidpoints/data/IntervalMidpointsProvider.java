@@ -443,4 +443,8 @@ public class IntervalMidpointsProvider extends ContentProvider
         return retValue;
     }
 
+    public static String getAlarmInfoUri(String midpointID) {
+        return "content://" + IntervalMidpointsProviderContract.AUTHORITY + "/" + IntervalMidpointsProviderContract.QUERY_ALARM_INFO + "/" + midpointID;
+    }
+
 }
