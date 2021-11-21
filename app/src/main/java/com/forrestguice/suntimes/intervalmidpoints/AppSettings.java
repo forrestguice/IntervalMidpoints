@@ -43,7 +43,7 @@ public class AppSettings
         String[] parts = intervalID.split("_");
 
         for (int i=0; i<retValue.length; i++) {
-            retValue[i] = (i <= parts.length) ? parts[i] : null;
+            retValue[i] = (i < parts.length) ? parts[i] : null;
         }
         if (retValue[0] == null) {
             retValue[0] = DEF_EVENT_START;
