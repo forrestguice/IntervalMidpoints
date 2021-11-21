@@ -119,12 +119,15 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    protected void initLocation(@NonNull SuntimesInfo info)
+    protected void initLocation(@Nullable SuntimesInfo info)
     {
-        param_location = info.location[0];
-        param_latitude = Double.parseDouble(info.location[1]);
-        param_longitude = Double.parseDouble(info.location[2]);
-        param_altitude = Double.parseDouble(info.location[3]);
+        if (info != null && info.location != null)
+        {
+            param_location = info.location[0];
+            param_latitude = Double.parseDouble(info.location[1]);
+            param_longitude = Double.parseDouble(info.location[2]);
+            param_altitude = Double.parseDouble(info.location[3]);
+        }
     }
 
     protected void initToolBar()
@@ -553,7 +556,7 @@ public class MainActivity extends AppCompatActivity
                     case R.id.action_select:
                         String midpointUri = IntervalMidpointsProvider.getAlarmInfoUri(midpointID);
                         String label = IntervalMidpointsProvider.getAlarmTitle(MainActivity.this, midpointID);
-                        startActivity(AddonHelper.scheduleAlarm("ALARM", label, -1, -1, getTimeZone(), midpointUri));
+                        startActivity(AddonHelper.scheduleAlarm("ALARM", label, -1, -1, getTimeZone(), midpointUri));    // TODO: try/catch in case missing
                         mode.finish();
                         return true;
                 }
