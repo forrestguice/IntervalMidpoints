@@ -43,12 +43,27 @@ import com.forrestguice.suntimes.intervalmidpoints.ui.IntervalResultsViewHolder;
 public class AlarmActivity extends MainActivity
 {
     public static final String ACTION_PICK_ALARM = "suntimes.action.PICK_ALARM";
+    public static final String EXTRA_ALARM_EVENT = "alarm_event";
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setResult(Activity.RESULT_CANCELED, new Intent());
+
+        Intent intent = getIntent();
+        if (intent.hasExtra(EXTRA_ALARM_EVENT))
+        {
+            String alarmID = intent.getStringExtra(EXTRA_ALARM_EVENT);
+            if (alarmID != null)
+            {
+                Uri alarmUri = Uri.parse(alarmID);
+                String intervalID = alarmUri.getLastPathSegment();
+                if (AppSettings.isValidIntervalID(intervalID)) {
+                    loadUserInput(intervalID, false);
+                }
+            }
+        }
     }
 
     @Override

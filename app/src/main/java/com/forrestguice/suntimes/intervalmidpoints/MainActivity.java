@@ -28,6 +28,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.view.ActionMode;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -67,6 +68,8 @@ public class MainActivity extends AppCompatActivity
     protected String param_location;
     protected double param_latitude = 0, param_longitude = 0, param_altitude = 0;
     protected SuntimesInfo suntimesInfo = null;
+
+    protected ActionMode actionMode = null;
 
     @Override
     protected void attachBaseContext(Context context)
@@ -203,13 +206,13 @@ public class MainActivity extends AppCompatActivity
             public void onCardClick(int position)
             {
                 Log.d("DEBUG", "click " + position);
-                onResultClicked(resultsCardAdapter.getData(position));
+                onResultClicked(position, resultsCardAdapter.getData(position));
             }
         });
         resultsCardView.setAdapter(resultsCardAdapter);
     }
 
-    protected void onResultClicked(IntervalResultsViewHolder.IntervalResultsData data)
+    protected void onResultClicked(int position, IntervalResultsViewHolder.IntervalResultsData data)
     {
         /* EMPTY */
     }
@@ -239,20 +242,31 @@ public class MainActivity extends AppCompatActivity
                 events[startPosition], events[endPosition], divideByValues[spin_divideBy.getSelectedItemPosition()], 0));
     }
 
-    protected void loadUserInput()
+    protected void loadUserInput() {
+        loadUserInput(AppSettings.loadIntervalIDPref(this), false);
+    }
+
+    protected void loadUserInput(String intervalID, boolean animate)
     {
+        Log.d("DEBUG", "loadUserInput: " + intervalID);
         String[] events = getResources().getStringArray(R.array.event_values);
-        String[] interval = AppSettings.getInterval(AppSettings.loadIntervalIDPref(this));
+        String[] interval = AppSettings.getInterval(intervalID);
 
         startEvent = (interval.length >= 1 ? interval[0] : events[0]);
         endEvent = (interval.length >= 2 ? interval[1] : events[0]);
         for (int i=0; i<events.length; i++)
         {
             if (events[i].equals(startEvent)) {
-                spin_startEvent.setSelection(i, false);
+                AdapterView.OnItemSelectedListener listener = spin_startEvent.getOnItemSelectedListener();
+                spin_startEvent.setOnItemSelectedListener(null);
+                spin_startEvent.setSelection(i, animate);
+                spin_startEvent.setOnItemSelectedListener(listener);
             }
             if (events[i].equals(endEvent)) {
-                spin_endEvent.setSelection(i, false);
+                AdapterView.OnItemSelectedListener listener = spin_endEvent.getOnItemSelectedListener();
+                spin_endEvent.setOnItemSelectedListener(null);
+                spin_endEvent.setSelection(i, animate);
+                spin_endEvent.setOnItemSelectedListener(listener);
             }
         }
 
@@ -260,9 +274,12 @@ public class MainActivity extends AppCompatActivity
         int[] divideByValues = getResources().getIntArray(R.array.divideby_values);
         for (int i=0; i<divideByValues.length; i++)
         {
-            if (divideBy[0] == divideByValues[i])
+            if (divideBy[1] == divideByValues[i])
             {
-                spin_divideBy.setSelection(i, false);
+                AdapterView.OnItemSelectedListener listener = spin_divideBy.getOnItemSelectedListener();
+                spin_divideBy.setOnItemSelectedListener(null);
+                spin_divideBy.setSelection(i, animate);
+                spin_divideBy.setOnItemSelectedListener(listener);
                 break;
             }
         }
@@ -395,8 +412,7 @@ public class MainActivity extends AppCompatActivity
                           + CalculatorProviderContract.COLUMN_CONFIG_LONGITUDE + "=? AND "
                           + CalculatorProviderContract.COLUMN_CONFIG_ALTITUDE + "=?";
         String[] selectionArgs = new String[] { Double.toString(param_latitude), Double.toString(param_longitude), Double.toString(param_altitude) };
-
-        Log.d("DEBUG", "Selection Args:" + selectionArgs[0] + ", " + selectionArgs[1] + " " + selectionArgs[2]);
+        //Log.d("DEBUG", "Selection Args:" + selectionArgs[0] + ", " + selectionArgs[1] + " " + selectionArgs[2]);
 
         Cursor cursor = resolver.query(uri, projection, selection, selectionArgs, null);
         if (cursor != null)
