@@ -291,11 +291,19 @@ public class MainActivity extends AppCompatActivity
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
             Log.d("DEBUG", "input changed");
             saveUserInput();
+            finishActionMode();
             updateViews();
         }
         @Override
         public void onNothingSelected(AdapterView<?> parent) {}
     };
+
+    protected void finishActionMode()
+    {
+        if (actionMode != null) {
+            actionMode.finish();
+        }
+    }
 
     protected void updateViews()
     {

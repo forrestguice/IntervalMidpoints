@@ -141,7 +141,6 @@ public class AlarmActivity extends MainActivity
         }
     }
 
-    protected ActionMode actionMode = null;
     protected AlarmActionCompat alarmActions;
 
     private boolean triggerActionMode(View view, String midpointID)
