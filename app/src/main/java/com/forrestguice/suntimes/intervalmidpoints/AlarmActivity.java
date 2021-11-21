@@ -31,7 +31,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.SpinnerAdapter;
 
 import com.forrestguice.suntimes.addon.ui.Messages;
 import com.forrestguice.suntimes.intervalmidpoints.data.IntervalMidpointsProvider;
@@ -84,24 +83,7 @@ public class AlarmActivity extends MainActivity
     protected void initViews()
     {
         super.initViews();
-
         alarmActions = new AlarmActionCompat();
-        /*text_midpoints.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                triggerActionMode(view, AppSettings.loadIntervalIDPref(AlarmActivity.this));   // TODO: user selection
-            }
-        });*/
-    }
-
-    /*@Override
-    protected void updateViews() {
-        super.updateViews();
-    }*/
-
-    @Override
-    protected void onResume() {
-        super.onResume();
     }
 
     @Override

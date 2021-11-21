@@ -64,6 +64,12 @@ public class IntervalMidpointsCalculator
         data.startTime = startData[0];
         data.endTime = endData[0];
         //Log.d("DEBUG", "startTime: " + data.startTime + " .. endTime: " + data.endTime);
+        calculateMidpoints(context, data);
+        return true;
+    }
+
+    public boolean calculateMidpoints(@NonNull Context context, @NonNull IntervalMidpointsData data)
+    {
         data.midpoints = (data.startTime > 0 && data.endTime > 0) ? findMidpoints(data.startTime, data.endTime, data.divideBy) : null;
         return true;
     }

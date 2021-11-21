@@ -32,10 +32,20 @@ public class IntervalMidpointsData
     protected int divideBy = 2;
     protected String startEvent, endEvent;
     protected long startTime = -1L, endTime = -1L;
+    protected long date = -1L;
 
-    protected long date = 1L;
     public void setDate(long date) {
         this.date = date;
+    }
+    public long getDate() {
+        return date;
+    }
+
+    public void setDivideBy(int divideBy) {
+        this.divideBy = divideBy;
+    }
+    public int getDivideBy() {
+        return divideBy;
     }
 
     public Calendar getMidpoint(int i)
@@ -48,6 +58,23 @@ public class IntervalMidpointsData
             calendar.setTimeInMillis(midpoints[i]);
             return calendar;
         }
+    }
+    public long[] getMidpoints() {
+        return midpoints;
+    }
+
+    public String getStartEvent() {
+        return startEvent;
+    }
+    public long getStartTime() {
+        return startTime;
+    }
+
+    public String getEndEvent() {
+        return endEvent;
+    }
+    public long getEndTime() {
+        return endTime;
     }
 
     public IntervalMidpointsData(String intervalID, double latitude, double longitude, double altitude)

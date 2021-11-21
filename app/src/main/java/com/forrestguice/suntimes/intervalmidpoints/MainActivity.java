@@ -18,11 +18,8 @@
 
 package com.forrestguice.suntimes.intervalmidpoints;
 
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -44,14 +41,15 @@ import com.forrestguice.suntimes.addon.AddonHelper;
 import com.forrestguice.suntimes.addon.LocaleHelper;
 import com.forrestguice.suntimes.addon.SuntimesInfo;
 import com.forrestguice.suntimes.addon.ui.Messages;
-import com.forrestguice.suntimes.calculator.core.CalculatorProviderContract;
+import com.forrestguice.suntimes.intervalmidpoints.data.IntervalMidpointsCalculator;
+import com.forrestguice.suntimes.intervalmidpoints.data.IntervalMidpointsData;
 import com.forrestguice.suntimes.intervalmidpoints.ui.AboutDialog;
 import com.forrestguice.suntimes.intervalmidpoints.ui.DisplayStrings;
 import com.forrestguice.suntimes.intervalmidpoints.ui.HelpDialog;
 import com.forrestguice.suntimes.intervalmidpoints.ui.IntervalResultsViewHolder;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+
 import java.util.Calendar;
 import java.util.TimeZone;
 
@@ -148,10 +146,8 @@ public class MainActivity extends AppCompatActivity
     protected Spinner spin_startEvent , spin_endEvent, spin_divideBy;
     protected TextView text_startEvent, text_endEvent, text_midpoints;
 
-    protected String startEvent, endEvent;
-    protected long startTime = -1L, endTime = -1L;
-    protected long date = 1L;
-    protected long[] midpoints = null;
+    protected IntervalMidpointsCalculator calculator = new IntervalMidpointsCalculator();
+    protected IntervalMidpointsData data = null;
 
     protected RecyclerView resultsCardView;
     protected LinearLayoutManager resultsCardLayout;
@@ -205,7 +201,7 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onCardClick(int position)
             {
-                Log.d("DEBUG", "click " + position);
+                //Log.d("DEBUG", "click " + position);
                 onResultClicked(position, resultsCardAdapter.getData(position));
             }
         });
@@ -252,8 +248,8 @@ public class MainActivity extends AppCompatActivity
         String[] events = getResources().getStringArray(R.array.event_values);
         String[] interval = AppSettings.getInterval(intervalID);
 
-        startEvent = (interval.length >= 1 ? interval[0] : events[0]);
-        endEvent = (interval.length >= 2 ? interval[1] : events[0]);
+        String startEvent = (interval.length >= 1 ? interval[0] : events[0]);
+        String endEvent = (interval.length >= 2 ? interval[1] : events[0]);
         for (int i=0; i<events.length; i++)
         {
             if (events[i].equals(startEvent)) {
@@ -321,9 +317,13 @@ public class MainActivity extends AppCompatActivity
             timezoneText.setText(getTimeZone().getID());
         }
 
-        int[] divideByValues = getResources().getIntArray(R.array.divideby_values);
-        int divideBy = divideByValues[spin_divideBy.getSelectedItemPosition()];
-        initData(divideBy);   // query provider for start/end times
+        initData();   // query provider for start/end times
+        String startEvent = data.getStartEvent();
+        String endEvent = data.getEndEvent();
+        long startTime = data.getStartTime();
+        long endTime = data.getEndTime();
+        long date = data.getDate();
+        int divideBy = data.getDivideBy();
 
         text_date.setText(DisplayStrings.formatDate(this, date));
         text_startEvent.setText(startTime >= 0 ? getString(R.string.event_from, formatTime(startTime)) : getString(R.string.event_dne));
@@ -332,11 +332,12 @@ public class MainActivity extends AppCompatActivity
         resultsCardAdapter.clearItems();
         if (startTime > 0 && endTime > 0)
         {
-            ArrayList<IntervalResultsViewHolder.IntervalResultsData> data = new ArrayList<>();
+            ArrayList<IntervalResultsViewHolder.IntervalResultsData> resultData = new ArrayList<>();
+            long[] midpoints = data.getMidpoints();
             for (int i=0; i<midpoints.length; i++) {
-                data.add(new IntervalResultsViewHolder.IntervalResultsData(AppSettings.getMidpointID(startEvent, endEvent, divideBy, i), midpoints[i]));
+                resultData.add(new IntervalResultsViewHolder.IntervalResultsData(AppSettings.getMidpointID(startEvent, endEvent, divideBy, i), midpoints[i]));
             }
-            resultsCardAdapter.setItems(data);
+            resultsCardAdapter.setItems(resultData);
 
             StringBuilder midpointString = new StringBuilder(getString(R.string.midpoints_msg));
             /*for (int i=0; i<midpoints.length; i++)
@@ -347,7 +348,6 @@ public class MainActivity extends AppCompatActivity
             text_midpoints.setText(midpointString);
 
         } else {
-            midpoints = null;
             text_midpoints.setText("");
         }
     }
@@ -363,75 +363,19 @@ public class MainActivity extends AppCompatActivity
         return suntimesInfo.timezone != null ? TimeZone.getTimeZone(suntimesInfo.timezone) : TimeZone.getDefault();
     }
 
-    private void initData(int divideBy)
+    private void initData()
     {
-        date = Calendar.getInstance().getTimeInMillis();
+        int[] divideByValues = getResources().getIntArray(R.array.divideby_values);
+        int divideBy = divideByValues[spin_divideBy.getSelectedItemPosition()];
 
+        String[] eventValues = getResources().getStringArray(R.array.event_values);
         int startPosition = spin_startEvent.getSelectedItemPosition();
         int endPosition = spin_endEvent.getSelectedItemPosition();
 
-        String[] events = getResources().getStringArray(R.array.event_values);
-        startEvent = events[startPosition];
-        endEvent = events[endPosition];
-
-        Calendar today = Calendar.getInstance();
-        today.setTimeInMillis(date);
-
-        Calendar other = Calendar.getInstance();
-        other.setTimeInMillis(date);
-
-        if (startPosition >= endPosition) {
-            other.add(Calendar.DAY_OF_YEAR, 1);
-        }
-
-        ContentResolver resolver = getContentResolver();
-        long[] startData = queryTwilight(resolver, today.getTimeInMillis(), new String[] { startEvent });
-        long[] endData = queryTwilight(resolver, other.getTimeInMillis(), new String[] { endEvent });
-
-        startTime = startData[0];
-        endTime = endData[0];
-        Log.d("DEBUG", "startTime: " + startTime + " .. endTime: " + endTime);
-        midpoints = (startTime > 0 && endTime > 0) ? findMidpoints(startTime, endTime, divideBy) : null;
-    }
-
-    private static long[] findMidpoints(long startTime, long endTime, int divideBy)
-    {
-        if (divideBy < 2 || divideBy > 4) {
-            throw new IllegalArgumentException("divideBy must be between [2, 4]");
-        }
-
-        long span = endTime - startTime;
-        long chunk = span / divideBy;
-
-        long[] result = new long[divideBy - 1];
-        for (int i=0; i<divideBy - 1; i++) {
-            result[i] = startTime + ((i + 1) * chunk);
-        }
-        return result;
-    }
-
-    public long[] queryTwilight(ContentResolver resolver, long date, String[] projection)
-    {
-        long[] retValue = new long[projection.length];
-        Arrays.fill(retValue, -1);
-
-        Uri uri = Uri.parse("content://" + CalculatorProviderContract.AUTHORITY + "/" + CalculatorProviderContract.QUERY_SUN + "/" + date );
-        String selection = CalculatorProviderContract.COLUMN_CONFIG_LATITUDE + "=? AND "
-                          + CalculatorProviderContract.COLUMN_CONFIG_LONGITUDE + "=? AND "
-                          + CalculatorProviderContract.COLUMN_CONFIG_ALTITUDE + "=?";
-        String[] selectionArgs = new String[] { Double.toString(param_latitude), Double.toString(param_longitude), Double.toString(param_altitude) };
-        //Log.d("DEBUG", "Selection Args:" + selectionArgs[0] + ", " + selectionArgs[1] + " " + selectionArgs[2]);
-
-        Cursor cursor = resolver.query(uri, projection, selection, selectionArgs, null);
-        if (cursor != null)
-        {
-            cursor.moveToFirst();
-            for (int i=0; i<projection.length; i++) {
-                retValue[i] = cursor.isNull(i) ? -1 : cursor.getLong(i);
-            }
-            cursor.close();
-        }
-        return retValue;
+        data = new IntervalMidpointsData(AppSettings.getIntervalID(eventValues[startPosition], eventValues[endPosition]), param_latitude, param_longitude, param_altitude);
+        data.setDate(Calendar.getInstance().getTimeInMillis());
+        data.setDivideBy(divideBy);
+        calculator.calculateData(this, data);
     }
 
     @Override
