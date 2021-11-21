@@ -198,7 +198,7 @@ public class IntervalResultsViewHolder extends RecyclerView.ViewHolder
         }
 
         private void detachClickListeners(@NonNull IntervalResultsViewHolder holder) {
-            holder.text_time.setOnClickListener(null);
+            holder.card0.setOnClickListener(null);
         }
 
         public void setCardAdapterListener( @NonNull IntervalResultsAdapterListener listener ) {
