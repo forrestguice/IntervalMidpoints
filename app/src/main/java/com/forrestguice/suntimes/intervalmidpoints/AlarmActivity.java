@@ -31,6 +31,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.SpinnerAdapter;
 
 import com.forrestguice.suntimes.addon.ui.Messages;
 import com.forrestguice.suntimes.intervalmidpoints.data.IntervalMidpointsProvider;
@@ -98,14 +99,16 @@ public class AlarmActivity extends MainActivity
         super.updateViews();
     }*/
 
-    /*@Override
+    @Override
     protected void onResume() {
         super.onResume();
-    }*/
+    }
 
     @Override
-    protected void onResultClicked(IntervalResultsViewHolder.IntervalResultsData data) {
+    protected void onResultClicked(int position, IntervalResultsViewHolder.IntervalResultsData data)
+    {
         triggerActionMode(text_midpoints, data.intervalID);
+        resultsCardAdapter.setSelectedIndex(position);
     }
 
     protected void onDone(String midpointID)
@@ -189,6 +192,7 @@ public class AlarmActivity extends MainActivity
         public void onDestroyActionMode(ActionMode mode)
         {
             actionMode = null;
+            resultsCardAdapter.setSelectedIndex(-1);
         }
 
         @Override
