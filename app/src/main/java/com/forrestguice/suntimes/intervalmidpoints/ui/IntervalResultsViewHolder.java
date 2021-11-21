@@ -19,7 +19,10 @@
 package com.forrestguice.suntimes.intervalmidpoints.ui;
 
 import android.content.Context;
+import android.content.res.TypedArray;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,22 +42,37 @@ import java.util.TimeZone;
  */
 public class IntervalResultsViewHolder extends RecyclerView.ViewHolder
 {
-    public View card;
+    public View card0, card1;
     public TextView text_time;
     public IntervalResultsData data;
+    public boolean isSelected = false;
 
     public IntervalResultsViewHolder(@NonNull View itemView, IntervalResultsAdapterOptions options)
     {
         super(itemView);
-        card = itemView.findViewById(R.id.card_time);
+        card0 = itemView.findViewById(R.id.card_time0);
+        card1 = itemView.findViewById(R.id.card_time1);
         text_time = (TextView) itemView.findViewById(R.id.text_time);
     }
 
-    public void onBindViewHolder(@NonNull Context context, int position, IntervalResultsData data, IntervalResultsAdapterOptions options)
+    public void onBindViewHolder(@NonNull Context context, int position, boolean isSelected, IntervalResultsData data, IntervalResultsAdapterOptions options)
     {
         this.data = data;
+        this.isSelected = isSelected;
+
         TimeZone timezone = options.timezone != null ? options.timezone : TimeZone.getDefault();
         text_time.setText(DisplayStrings.formatTime(context, data.timeMillis, timezone, options.suntimes_options.time_is24));
+
+        if (isSelected)
+        {
+            int[] colorAttrs = { android.R.attr.colorMultiSelectHighlight };  // TODO: color
+            TypedArray typedArray = context.obtainStyledAttributes(colorAttrs);
+            card1.setBackgroundColor(ContextCompat.getColor(context, typedArray.getResourceId(0, R.color.card_dark_selected)));
+            typedArray.recycle();
+
+        } else {
+            card1.setBackgroundColor(Color.TRANSPARENT);
+        }
     }
 
     /**
@@ -98,6 +116,12 @@ public class IntervalResultsViewHolder extends RecyclerView.ViewHolder
         protected WeakReference<Context> contextRef;
         protected ArrayList<IntervalResultsData> items = new ArrayList<>();
 
+        protected int selectedIndex = -1;
+        public void setSelectedIndex(int i) {
+            selectedIndex = i;
+            notifyDataSetChanged();
+        }
+
         public IntervalResultsAdapter(Context context, IntervalResultsAdapterOptions options)
         {
             this.contextRef = new WeakReference<>(context);
@@ -125,7 +149,7 @@ public class IntervalResultsViewHolder extends RecyclerView.ViewHolder
         {
             Context context = contextRef.get();
             if (context != null) {
-                holder.onBindViewHolder(context, position, items.get(position), options);
+                holder.onBindViewHolder(context, position, (selectedIndex == position), items.get(position), options);
                 attachClickListeners(holder, position);
             }
         }
@@ -154,7 +178,9 @@ public class IntervalResultsViewHolder extends RecyclerView.ViewHolder
             } else return null;
         }
 
-        public void setItems(List<IntervalResultsData> data) {
+        public void setItems(List<IntervalResultsData> data)
+        {
+            selectedIndex = -1;
             items.clear();
             items.addAll(data);
             notifyDataSetChanged();
@@ -162,12 +188,13 @@ public class IntervalResultsViewHolder extends RecyclerView.ViewHolder
 
         public void clearItems()
         {
+            selectedIndex = -1;
             items.clear();
             notifyDataSetChanged();
         }
 
         private void attachClickListeners(@NonNull final IntervalResultsViewHolder holder, int position) {
-            holder.card.setOnClickListener(onCardClick(holder));
+            holder.card0.setOnClickListener(onCardClick(holder));
         }
 
         private void detachClickListeners(@NonNull IntervalResultsViewHolder holder) {
