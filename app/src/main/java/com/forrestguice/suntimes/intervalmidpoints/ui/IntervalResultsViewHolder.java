@@ -98,6 +98,12 @@ public class IntervalResultsViewHolder extends RecyclerView.ViewHolder
         protected WeakReference<Context> contextRef;
         protected ArrayList<IntervalResultsData> items = new ArrayList<>();
 
+        public IntervalResultsAdapter(Context context, IntervalResultsAdapterOptions options)
+        {
+            this.contextRef = new WeakReference<>(context);
+            this.options = options;
+        }
+
         public IntervalResultsAdapter(Context context, List<IntervalResultsData> data, IntervalResultsAdapterOptions options)
         {
             this.contextRef = new WeakReference<>(context);
@@ -140,6 +146,12 @@ public class IntervalResultsViewHolder extends RecyclerView.ViewHolder
         @Override
         public int getItemCount() {
             return items.size();
+        }
+
+        public IntervalResultsData getData(int position) {
+            if (position >= 0 && position<items.size()) {
+                return items.get(position);
+            } else return null;
         }
 
         public void setItems(List<IntervalResultsData> data) {

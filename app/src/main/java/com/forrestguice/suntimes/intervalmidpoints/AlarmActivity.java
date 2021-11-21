@@ -35,6 +35,7 @@ import android.view.View;
 import com.forrestguice.suntimes.addon.ui.Messages;
 import com.forrestguice.suntimes.intervalmidpoints.data.IntervalMidpointsProvider;
 import com.forrestguice.suntimes.intervalmidpoints.data.IntervalMidpointsProviderContract;
+import com.forrestguice.suntimes.intervalmidpoints.ui.IntervalResultsViewHolder;
 
 /**
  * AlarmPicker version of the MainActivity; select and return an alarm
@@ -69,12 +70,12 @@ public class AlarmActivity extends MainActivity
         super.initViews();
 
         alarmActions = new AlarmActionCompat();
-        text_midpoints.setOnClickListener(new View.OnClickListener() {
+        /*text_midpoints.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 triggerActionMode(view, AppSettings.loadIntervalIDPref(AlarmActivity.this));   // TODO: user selection
             }
-        });
+        });*/
     }
 
     /*@Override
@@ -86,6 +87,11 @@ public class AlarmActivity extends MainActivity
     protected void onResume() {
         super.onResume();
     }*/
+
+    @Override
+    protected void onResultClicked(IntervalResultsViewHolder.IntervalResultsData data) {
+        triggerActionMode(text_midpoints, data.intervalID);
+    }
 
     protected void onDone(String midpointID)
     {

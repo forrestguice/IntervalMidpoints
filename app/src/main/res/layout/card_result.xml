@@ -27,7 +27,12 @@
     <TextView android:id="@+id/text_midpoints"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        tools:text="Midpoints occur at\n9:30 PM and 1:27 AM " />
+        android:layout_marginBottom="4dp"
+        tools:text="Midpoints occur at " />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/resultsView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
 </LinearLayout>

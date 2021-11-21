@@ -28,6 +28,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -45,7 +47,9 @@ import com.forrestguice.suntimes.calculator.core.CalculatorProviderContract;
 import com.forrestguice.suntimes.intervalmidpoints.ui.AboutDialog;
 import com.forrestguice.suntimes.intervalmidpoints.ui.DisplayStrings;
 import com.forrestguice.suntimes.intervalmidpoints.ui.HelpDialog;
+import com.forrestguice.suntimes.intervalmidpoints.ui.IntervalResultsViewHolder;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.TimeZone;
@@ -140,9 +144,15 @@ public class MainActivity extends AppCompatActivity
     protected TextView text_date;
     protected Spinner spin_startEvent , spin_endEvent, spin_divideBy;
     protected TextView text_startEvent, text_endEvent, text_midpoints;
+
+    protected String startEvent, endEvent;
     protected long startTime = -1L, endTime = -1L;
     protected long date = 1L;
     protected long[] midpoints = null;
+
+    protected RecyclerView resultsCardView;
+    protected LinearLayoutManager resultsCardLayout;
+    protected IntervalResultsViewHolder.IntervalResultsAdapter resultsCardAdapter;
 
     protected void initViews()
     {
@@ -180,6 +190,32 @@ public class MainActivity extends AppCompatActivity
         //if (layout_divideBy != null) {
         //    layout_divideBy.setOnClickListener(getClickListener(spin_divideBy));
         //}
+
+        resultsCardView = (RecyclerView) findViewById(R.id.resultsView);
+        resultsCardView.setHasFixedSize(true);
+        resultsCardView.setLayoutManager(resultsCardLayout = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        //resultsView.addItemDecoration(cardDecoration);
+
+        resultsCardAdapter = new IntervalResultsViewHolder.IntervalResultsAdapter(this, getResultCardOptions(this));
+        resultsCardAdapter.setCardAdapterListener(new IntervalResultsViewHolder.IntervalResultsAdapterListener()
+        {
+            @Override
+            public void onCardClick(int position)
+            {
+                Log.d("DEBUG", "click " + position);
+                onResultClicked(resultsCardAdapter.getData(position));
+            }
+        });
+        resultsCardView.setAdapter(resultsCardAdapter);
+    }
+
+    protected void onResultClicked(IntervalResultsViewHolder.IntervalResultsData data)
+    {
+        /* EMPTY */
+    }
+
+    private IntervalResultsViewHolder.IntervalResultsAdapterOptions getResultCardOptions(Context context) {
+        return new IntervalResultsViewHolder.IntervalResultsAdapterOptions(context, suntimesInfo, TimeZone.getTimeZone(suntimesInfo.timezone), suntimesInfo.getOptions(context).time_is24);
     }
 
     private View.OnClickListener getClickListener(final Spinner spinner) {
@@ -208,8 +244,8 @@ public class MainActivity extends AppCompatActivity
         String[] events = getResources().getStringArray(R.array.event_values);
         String[] interval = AppSettings.getInterval(AppSettings.loadIntervalIDPref(this));
 
-        String startEvent = (interval.length >= 1 ? interval[0] : events[0]);
-        String endEvent = (interval.length >= 2 ? interval[1] : events[0]);
+        startEvent = (interval.length >= 1 ? interval[0] : events[0]);
+        endEvent = (interval.length >= 2 ? interval[1] : events[0]);
         for (int i=0; i<events.length; i++)
         {
             if (events[i].equals(startEvent)) {
@@ -268,14 +304,21 @@ public class MainActivity extends AppCompatActivity
         text_startEvent.setText(startTime >= 0 ? getString(R.string.event_from, formatTime(startTime)) : getString(R.string.event_dne));
         text_endEvent.setText(endTime >= 0 ? getString(R.string.event_to, formatTime(endTime)) : getString(R.string.event_dne));
 
+        resultsCardAdapter.clearItems();
         if (startTime > 0 && endTime > 0)
         {
+            ArrayList<IntervalResultsViewHolder.IntervalResultsData> data = new ArrayList<>();
+            for (int i=0; i<midpoints.length; i++) {
+                data.add(new IntervalResultsViewHolder.IntervalResultsData(AppSettings.getMidpointID(startEvent, endEvent, divideBy, i), midpoints[i]));
+            }
+            resultsCardAdapter.setItems(data);
+
             StringBuilder midpointString = new StringBuilder(getString(R.string.midpoints_msg));
-            for (int i=0; i<midpoints.length; i++)
+            /*for (int i=0; i<midpoints.length; i++)
             {
                 midpointString.append("\n");
                 midpointString.append(formatTime(midpoints[i]));
-            }
+            }*/
             text_midpoints.setText(midpointString);
 
         } else {
@@ -303,8 +346,8 @@ public class MainActivity extends AppCompatActivity
         int endPosition = spin_endEvent.getSelectedItemPosition();
 
         String[] events = getResources().getStringArray(R.array.event_values);
-        String startEvent = events[startPosition];
-        String endEvent = events[endPosition];
+        startEvent = events[startPosition];
+        endEvent = events[endPosition];
 
         Calendar today = Calendar.getInstance();
         today.setTimeInMillis(date);
