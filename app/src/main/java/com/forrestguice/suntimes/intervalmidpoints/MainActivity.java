@@ -31,6 +31,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -43,6 +44,7 @@ import com.forrestguice.suntimes.addon.SuntimesInfo;
 import com.forrestguice.suntimes.addon.ui.Messages;
 import com.forrestguice.suntimes.intervalmidpoints.data.IntervalMidpointsCalculator;
 import com.forrestguice.suntimes.intervalmidpoints.data.IntervalMidpointsData;
+import com.forrestguice.suntimes.intervalmidpoints.data.IntervalMidpointsProvider;
 import com.forrestguice.suntimes.intervalmidpoints.ui.AboutDialog;
 import com.forrestguice.suntimes.intervalmidpoints.ui.DisplayStrings;
 import com.forrestguice.suntimes.intervalmidpoints.ui.HelpDialog;
@@ -68,6 +70,7 @@ public class MainActivity extends AppCompatActivity
     protected SuntimesInfo suntimesInfo = null;
 
     protected ActionMode actionMode = null;
+    protected MidpointActionCompat midpointActions;
 
     @Override
     protected void attachBaseContext(Context context)
@@ -155,6 +158,7 @@ public class MainActivity extends AppCompatActivity
 
     protected void initViews()
     {
+        midpointActions = onCreateMidpointActions();
         text_date = (TextView)findViewById(R.id.text_date);
 
         spin_startEvent = (Spinner)findViewById(R.id.spin_startevent);
@@ -210,7 +214,8 @@ public class MainActivity extends AppCompatActivity
 
     protected void onResultClicked(int position, IntervalResultsViewHolder.IntervalResultsData data)
     {
-        /* EMPTY */
+        triggerActionMode(text_midpoints, data.intervalID);
+        resultsCardAdapter.setSelectedIndex(position);
     }
 
     private IntervalResultsViewHolder.IntervalResultsAdapterOptions getResultCardOptions(Context context) {
@@ -293,6 +298,35 @@ public class MainActivity extends AppCompatActivity
         @Override
         public void onNothingSelected(AdapterView<?> parent) {}
     };
+
+    protected boolean triggerActionMode(View view, String midpointID)
+    {
+        if (actionMode == null)
+        {
+            if (midpointID != null) {
+                onTriggerActionMode(midpointID);
+            }
+            return true;
+
+        } else {
+            actionMode.finish();
+            triggerActionMode(view, midpointID);
+            return false;
+        }
+    }
+
+    protected void onTriggerActionMode(@NonNull String midpointID)
+    {
+        midpointActions.setSelection(midpointID);
+        actionMode = startSupportActionMode(midpointActions);
+        if (actionMode != null) {
+            actionMode.setTitle(IntervalMidpointsProvider.getAlarmTitle(this, midpointID));  // TODO: show/calculate alarm time
+        }
+    }
+
+    protected MidpointActionCompat onCreateMidpointActions() {
+        return new MidpointActionCompat1();
+    }
 
     protected void finishActionMode()
     {
@@ -413,7 +447,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu_main0, menu);
         return true;
     }
 
@@ -487,5 +521,73 @@ public class MainActivity extends AppCompatActivity
     public static int getThemeResID(@NonNull String themeName) {
         return themeName.equals(SuntimesInfo.THEME_LIGHT) ? R.style.AppTheme_Light : R.style.AppTheme_Dark;
     }
+
+    /**
+     * MidpointActionCompat
+     */
+    private class MidpointActionCompat1 extends MidpointActionCompat
+    {
+        public MidpointActionCompat1() {
+        }
+
+        protected int getMenuResId() {
+            return R.menu.menu_main;
+        }
+
+        @Override
+        public void onDestroyActionMode(ActionMode mode)
+        {
+            actionMode = null;
+            resultsCardAdapter.setSelectedIndex(-1);
+        }
+
+        @Override
+        public boolean onActionItemClicked(android.support.v7.view.ActionMode mode, MenuItem item)
+        {
+            if (midpointID != null)
+            {
+                switch (item.getItemId())
+                {
+                    case R.id.action_alarm:
+                    case R.id.action_select:
+                        // TODO
+                        mode.finish();
+                        return true;
+                }
+            }
+            mode.finish();
+            return false;
+        }
+    }
+
+    /**
+     * AlarmActionCompat
+     */
+    public static abstract class MidpointActionCompat implements android.support.v7.view.ActionMode.Callback
+    {
+        public MidpointActionCompat() {}
+        protected abstract int getMenuResId();
+
+        protected String midpointID = null;
+        public void setSelection(String midpointID ) {
+            this.midpointID = midpointID;
+        }
+
+        @Override
+        public boolean onCreateActionMode(android.support.v7.view.ActionMode mode, Menu menu)
+        {
+            MenuInflater inflater = mode.getMenuInflater();
+            inflater.inflate(getMenuResId(), menu);
+            return true;
+        }
+
+        @Override
+        public boolean onPrepareActionMode(android.support.v7.view.ActionMode mode, Menu menu)
+        {
+            Messages.forceActionBarIcons(menu);
+            return false;
+        }
+    }
+
 
 }

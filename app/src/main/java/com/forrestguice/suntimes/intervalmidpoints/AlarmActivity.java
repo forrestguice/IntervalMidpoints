@@ -28,14 +28,10 @@ import android.support.v7.view.ActionMode;
 import android.support.v7.widget.Toolbar;
 
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 
-import com.forrestguice.suntimes.addon.ui.Messages;
 import com.forrestguice.suntimes.intervalmidpoints.data.IntervalMidpointsProvider;
 import com.forrestguice.suntimes.intervalmidpoints.data.IntervalMidpointsProviderContract;
-import com.forrestguice.suntimes.intervalmidpoints.ui.IntervalResultsViewHolder;
 
 /**
  * AlarmPicker version of the MainActivity; select and return an alarm
@@ -80,17 +76,8 @@ public class AlarmActivity extends MainActivity
     }
 
     @Override
-    protected void initViews()
-    {
-        super.initViews();
-        alarmActions = new AlarmActionCompat();
-    }
-
-    @Override
-    protected void onResultClicked(int position, IntervalResultsViewHolder.IntervalResultsData data)
-    {
-        triggerActionMode(text_midpoints, data.intervalID);
-        resultsCardAdapter.setSelectedIndex(position);
+    protected MidpointActionCompat onCreateMidpointActions() {
+        return new AlarmActionCompat();
     }
 
     protected void onDone(String midpointID)
@@ -126,48 +113,17 @@ public class AlarmActivity extends MainActivity
         }
     }
 
-    protected AlarmActionCompat alarmActions;
-
-    private boolean triggerActionMode(View view, String midpointID)
-    {
-        if (actionMode == null)
-        {
-            if (midpointID != null)
-            {
-                alarmActions.setSelection(midpointID);
-                actionMode = startSupportActionMode(alarmActions);
-                if (actionMode != null) {
-                    actionMode.setTitle(IntervalMidpointsProvider.getAlarmTitle(this, midpointID));  // TODO: show/calculate alarm time
-                }
-            }
-            return true;
-
-        } else {
-            actionMode.finish();
-            triggerActionMode(view, midpointID);
-            return false;
-        }
-    }
-
     /**
      * AlarmActionCompat
      */
-    private class AlarmActionCompat implements android.support.v7.view.ActionMode.Callback
+    private class AlarmActionCompat extends MidpointActionCompat
     {
         public AlarmActionCompat() {
         }
 
-        private String midpointID = null;
-        public void setSelection(String midpointID ) {
-            this.midpointID = midpointID;
-        }
-
         @Override
-        public boolean onCreateActionMode(android.support.v7.view.ActionMode mode, Menu menu)
-        {
-            MenuInflater inflater = mode.getMenuInflater();
-            inflater.inflate(R.menu.menu_addalarm, menu);
-            return true;
+        protected int getMenuResId() {
+            return R.menu.menu_addalarm;
         }
 
         @Override
@@ -175,13 +131,6 @@ public class AlarmActivity extends MainActivity
         {
             actionMode = null;
             resultsCardAdapter.setSelectedIndex(-1);
-        }
-
-        @Override
-        public boolean onPrepareActionMode(android.support.v7.view.ActionMode mode, Menu menu)
-        {
-            Messages.forceActionBarIcons(menu);
-            return false;
         }
 
         @Override
