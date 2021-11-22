@@ -45,7 +45,6 @@ import com.forrestguice.suntimes.addon.ui.Messages;
 import com.forrestguice.suntimes.intervalmidpoints.data.IntervalMidpointsCalculator;
 import com.forrestguice.suntimes.intervalmidpoints.data.IntervalMidpointsData;
 import com.forrestguice.suntimes.intervalmidpoints.data.IntervalMidpointsProvider;
-import com.forrestguice.suntimes.intervalmidpoints.data.IntervalMidpointsProviderContract;
 import com.forrestguice.suntimes.intervalmidpoints.ui.AboutDialog;
 import com.forrestguice.suntimes.intervalmidpoints.ui.DisplayStrings;
 import com.forrestguice.suntimes.intervalmidpoints.ui.HelpDialog;

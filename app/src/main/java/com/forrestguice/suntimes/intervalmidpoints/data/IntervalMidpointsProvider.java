@@ -31,6 +31,7 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.forrestguice.suntimes.addon.SuntimesInfo;
+import com.forrestguice.suntimes.alarm.AlarmHelper;
 import com.forrestguice.suntimes.intervalmidpoints.AppSettings;
 import com.forrestguice.suntimes.intervalmidpoints.BuildConfig;
 import com.forrestguice.suntimes.intervalmidpoints.R;
@@ -112,7 +113,7 @@ public class IntervalMidpointsProvider extends ContentProvider
     @Override
     public Cursor query(@NonNull Uri uri, @Nullable String[] projection, @Nullable String selection, @Nullable String[] selectionArgs, @Nullable String sortOrder)
     {
-        HashMap<String, String> selectionMap = processSelection(processSelectionArgs(selection, selectionArgs));
+        HashMap<String, String> selectionMap = AlarmHelper.processSelection(AlarmHelper.processSelectionArgs(selection, selectionArgs));
         long[] range;
         Cursor cursor = null;
         int uriMatch = uriMatcher.match(uri);
@@ -239,44 +240,18 @@ public class IntervalMidpointsProvider extends ContentProvider
         return cursor;
     }
 
-    public static ArrayList<Integer> getRepeatDays(@Nullable String repeatDaysString)
-    {
-        ArrayList<Integer> result = new ArrayList<>();
-        if (repeatDaysString != null)
-        {
-            repeatDaysString = repeatDaysString.replaceAll("\\[", "");
-            repeatDaysString = repeatDaysString.replaceAll("]", "");
-            String[] repeatDaysArray = repeatDaysString.split(",");
-            for (int i=0; i<repeatDaysArray.length; i++) {
-                String element = repeatDaysArray[i].trim();
-                if (!element.isEmpty()) {
-                    result.add(Integer.parseInt(element));
-                }
-            }
-        }
-        return result;
-    }
-
-    public static Calendar getNowCalendar(String nowString)
-    {
-        long nowMillis = (nowString != null ? Long.parseLong(nowString) : System.currentTimeMillis());
-        Calendar now = Calendar.getInstance();
-        now.setTimeInMillis(nowMillis);
-        return now;
-    }
-
     public long calculateAlarmTime(@NonNull Context context, @Nullable String alarmName, HashMap<String, String> selectionMap)
     {
         if (AppSettings.isValidIntervalID(alarmName))
         {
-            Calendar now = getNowCalendar(selectionMap.get(EXTRA_ALARM_NOW));
+            Calendar now = AlarmHelper.getNowCalendar(selectionMap.get(EXTRA_ALARM_NOW));
             long nowMillis = now.getTimeInMillis();
 
             String offsetString = selectionMap.get(EXTRA_ALARM_OFFSET);
             long offset = offsetString != null ? Long.parseLong(offsetString) : 0L;
 
             boolean repeating = Boolean.parseBoolean(selectionMap.get(EXTRA_ALARM_REPEAT));
-            ArrayList<Integer> repeatingDays = getRepeatDays(selectionMap.get(EXTRA_ALARM_REPEAT_DAYS));
+            ArrayList<Integer> repeatingDays = AlarmHelper.getRepeatDays(selectionMap.get(EXTRA_ALARM_REPEAT_DAYS));
 
             String latitudeString = selectionMap.get(EXTRA_LOCATION_LAT);
             String longitudeString = selectionMap.get(EXTRA_LOCATION_LON);
@@ -388,59 +363,6 @@ public class IntervalMidpointsProvider extends ContentProvider
 
         } else Log.d("DEBUG", "context is null!");
         return cursor;
-    }
-
-    /**
-     * processSelection
-     * A query helper method; extracts selection columns/values to HashMap.
-     * @param selection a completed selection string (@see processSelectionArgs)
-     * @return a HashMap containing <KEY, VALUE> pairs
-     */
-    public static HashMap<String, String> processSelection(@Nullable String selection)
-    {
-        HashMap<String, String> retValue = new HashMap<>();
-        if (selection != null)
-        {
-            String[] expressions = selection.split(" or | OR | and | AND ");  // just separators in this context (all interpreted the same)
-            for (String expression : expressions)
-            {
-                String[] parts = expression.split("=");
-                if (parts.length == 2) {
-                    retValue.put(parts[0].trim(), parts[1].trim());
-                } else Log.w("CalendarProvider", "processSelection: Too many parts! " + expression);
-            }
-        }
-        return retValue;
-    }
-
-    /**
-     * processSelectionArgs
-     * A query helper method; inserts arguments into selection string.
-     * @param selection a selection string (as passed to query)
-     * @param selectionArgs a list of selection arguments
-     * @return a completed selection string containing substituted arguments
-     */
-    @Nullable
-    public static String processSelectionArgs(@Nullable String selection, @Nullable String[] selectionArgs)
-    {
-        String retValue = selection;
-        if (selectionArgs != null && selection != null)
-        {
-            for (int i=0; i<selectionArgs.length; i++)
-            {
-                if (selectionArgs[i] != null)
-                {
-                    if (retValue.contains("?")) {
-                        retValue = retValue.replaceFirst("\\?", selectionArgs[i]);
-
-                    } else {
-                        Log.w("CalendarProvider", "processSelectionArgs: Too many arguments! Given " + selectionArgs.length + " arguments, but selection contains only " + (i+1));
-                        break;
-                    }
-                }
-            }
-        }
-        return retValue;
     }
 
     public static String getAlarmInfoUri(String midpointID) {

@@ -19,6 +19,8 @@
 
 package com.forrestguice.suntimes.intervalmidpoints.data;
 
+import com.forrestguice.suntimes.alarm.AlarmHelper;
+
 public interface IntervalMidpointsProviderContract
 {
     String AUTHORITY = "suntimes.intervalmidpoints.provider";
@@ -44,28 +46,25 @@ public interface IntervalMidpointsProviderContract
     /**
      * ALARMS
      */
-    String COLUMN_ALARM_NAME = "alarm_name";            // String (alarm/event ID)
-    String COLUMN_ALARM_TITLE = "alarm_title";          // String (display string)
-    String COLUMN_ALARM_SUMMARY = "alarm_summary";      // String (extended display string)
-    String COLUMN_ALARM_TIMEMILLIS = "alarm_time";      // long (timestamp millis)
+    String COLUMN_ALARM_NAME = AlarmHelper.COLUMN_ALARM_NAME;              // String (alarm/event ID)
+    String COLUMN_ALARM_TITLE = AlarmHelper.COLUMN_ALARM_TITLE;            // String (display string)
+    String COLUMN_ALARM_SUMMARY = AlarmHelper.COLUMN_ALARM_SUMMARY;        // String (extended display string)
+    String COLUMN_ALARM_TIMEMILLIS = AlarmHelper.COLUMN_ALARM_TIMEMILLIS;  // long (timestamp millis)
 
-    String QUERY_ALARM_INFO = "alarmInfo";
-    String[] QUERY_ALARM_INFO_PROJECTION = new String[] {
-            COLUMN_ALARM_NAME, COLUMN_ALARM_TITLE, COLUMN_ALARM_SUMMARY
-    };
+    String QUERY_ALARM_INFO = AlarmHelper.QUERY_ALARM_INFO;
+    String[] QUERY_ALARM_INFO_PROJECTION = AlarmHelper.QUERY_ALARM_INFO_PROJECTION;
 
-    String QUERY_ALARM_CALC = "alarmCalc";
-    String[] QUERY_ALARM_CALC_PROJECTION = new String[] {
-            COLUMN_ALARM_NAME, COLUMN_ALARM_TIMEMILLIS
-    };
+    String QUERY_ALARM_CALC = AlarmHelper.QUERY_ALARM_CALC;
+    String[] QUERY_ALARM_CALC_PROJECTION = AlarmHelper.QUERY_ALARM_CALC_PROJECTION;
 
-    String EXTRA_ALARM_NOW = "alarm_now";                  // long (millis)
-    String EXTRA_ALARM_REPEAT = "alarm_repeat";            // boolean
-    String EXTRA_ALARM_REPEAT_DAYS = "alarm_repeat_days";  // boolean[] .. [m,t,w,t,f,s,s]
-    String EXTRA_ALARM_OFFSET = "alarm_offset";            // long (millis)
+    String EXTRA_ALARM_NOW = AlarmHelper.EXTRA_ALARM_NOW;                  // long (millis)
+    String EXTRA_ALARM_REPEAT = AlarmHelper.EXTRA_ALARM_REPEAT;            // boolean
+    String EXTRA_ALARM_REPEAT_DAYS = AlarmHelper.EXTRA_ALARM_REPEAT_DAYS;  // boolean[] .. [m,t,w,t,f,s,s]
+    String EXTRA_ALARM_OFFSET = AlarmHelper.EXTRA_ALARM_OFFSET;            // long (millis)
+    String EXTRA_ALARM_EVENT = AlarmHelper.EXTRA_ALARM_EVENT;              // eventID
 
-    String EXTRA_LOCATION_LABEL = "location_label";        // String
-    String EXTRA_LOCATION_LAT = "latitude";                // double (DD)
-    String EXTRA_LOCATION_LON = "longitude";               // double (DD)
-    String EXTRA_LOCATION_ALT = "altitude";                // double (meters)
+    String EXTRA_LOCATION_LABEL = AlarmHelper.EXTRA_LOCATION_LABEL;        // String
+    String EXTRA_LOCATION_LAT = AlarmHelper.EXTRA_LOCATION_LAT;            // double (DD)
+    String EXTRA_LOCATION_LON = AlarmHelper.EXTRA_LOCATION_LON;            // double (DD)
+    String EXTRA_LOCATION_ALT = AlarmHelper.EXTRA_LOCATION_ALT;            // double (meters)
 }

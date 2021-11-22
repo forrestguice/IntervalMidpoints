@@ -38,9 +38,6 @@ import com.forrestguice.suntimes.intervalmidpoints.data.IntervalMidpointsProvide
  */
 public class AlarmActivity extends MainActivity
 {
-    public static final String ACTION_PICK_ALARM = "suntimes.action.PICK_ALARM";
-    public static final String EXTRA_ALARM_EVENT = "alarm_event";
-
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -48,9 +45,9 @@ public class AlarmActivity extends MainActivity
         setResult(Activity.RESULT_CANCELED, new Intent());
 
         Intent intent = getIntent();
-        if (intent.hasExtra(EXTRA_ALARM_EVENT))
+        if (intent.hasExtra(IntervalMidpointsProviderContract.EXTRA_ALARM_EVENT))
         {
-            String alarmID = intent.getStringExtra(EXTRA_ALARM_EVENT);
+            String alarmID = intent.getStringExtra(IntervalMidpointsProviderContract.EXTRA_ALARM_EVENT);
             if (alarmID != null)
             {
                 Uri alarmUri = Uri.parse(alarmID);
