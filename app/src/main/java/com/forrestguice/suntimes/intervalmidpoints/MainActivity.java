@@ -18,6 +18,7 @@
 
 package com.forrestguice.suntimes.intervalmidpoints;
 
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -557,7 +558,13 @@ public class MainActivity extends AppCompatActivity
                     case R.id.action_select:
                         String midpointUri = AlarmHelper.getAlarmInfoUri(IntervalMidpointsProviderContract.AUTHORITY, midpointID);
                         String label = IntervalMidpointsProvider.getAlarmTitle(MainActivity.this, midpointID);
-                        startActivity(AddonHelper.scheduleAlarm("ALARM", label, -1, -1, getTimeZone(), midpointUri));    // TODO: try/catch in case missing
+                        try {
+                            startActivity(AddonHelper.scheduleAlarm("ALARM", label, -1, -1, getTimeZone(), midpointUri));
+
+                        } catch (ActivityNotFoundException e) {
+                            Log.e(getClass().getSimpleName(), "Failed to schedule alarm: " + e);
+                            // TODO: display user visible error message?
+                        }
                         mode.finish();
                         return true;
                 }
