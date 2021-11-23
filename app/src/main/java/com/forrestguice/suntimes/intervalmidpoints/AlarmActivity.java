@@ -30,6 +30,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.forrestguice.suntimes.alarm.AlarmHelper;
 import com.forrestguice.suntimes.intervalmidpoints.data.IntervalMidpointsProvider;
 import com.forrestguice.suntimes.intervalmidpoints.data.IntervalMidpointsProviderContract;
 
@@ -84,7 +85,7 @@ public class AlarmActivity extends MainActivity
         result.putExtra(IntervalMidpointsProviderContract.COLUMN_ALARM_NAME, midpointID);
         result.putExtra(IntervalMidpointsProviderContract.COLUMN_ALARM_TITLE, IntervalMidpointsProvider.getAlarmTitle(this, midpointID));
         result.putExtra(IntervalMidpointsProviderContract.COLUMN_ALARM_SUMMARY, IntervalMidpointsProvider.getAlarmSummary(this, midpointID));
-        result.setData(Uri.parse(IntervalMidpointsProvider.getAlarmInfoUri(midpointID)));
+        result.setData(Uri.parse(AlarmHelper.getAlarmInfoUri(IntervalMidpointsProviderContract.AUTHORITY, midpointID)));
         setResult(Activity.RESULT_OK, result);
         finish();
     }

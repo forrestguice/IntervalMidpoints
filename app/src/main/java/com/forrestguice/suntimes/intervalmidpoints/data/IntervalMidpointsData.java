@@ -19,6 +19,8 @@
 
 package com.forrestguice.suntimes.intervalmidpoints.data;
 
+import android.support.annotation.Nullable;
+
 import com.forrestguice.suntimes.intervalmidpoints.AppSettings;
 
 import java.util.Calendar;
@@ -48,6 +50,7 @@ public class IntervalMidpointsData
         return divideBy;
     }
 
+    @Nullable
     public Calendar getMidpoint(int i)
     {
         if (i < 0 || i >= midpoints.length || midpoints[i] == -1L) {

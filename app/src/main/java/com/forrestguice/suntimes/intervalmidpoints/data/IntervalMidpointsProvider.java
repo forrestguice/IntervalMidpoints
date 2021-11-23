@@ -309,7 +309,6 @@ public class IntervalMidpointsProvider extends ContentProvider
                 }
                 c++;
             }
-
             return eventTime.getTimeInMillis();
 
         } else {
@@ -364,9 +363,5 @@ public class IntervalMidpointsProvider extends ContentProvider
         } else Log.d("DEBUG", "context is null!");
         return cursor;
     }
-
-    public static String getAlarmInfoUri(String midpointID) {
-        return "content://" + IntervalMidpointsProviderContract.AUTHORITY + "/" + IntervalMidpointsProviderContract.QUERY_ALARM_INFO + "/" + midpointID;
-    }
-
+    
 }
