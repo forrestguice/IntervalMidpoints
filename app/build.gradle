@@ -26,7 +26,7 @@ android {
 }
 
 dependencies {
-    implementation 'com.github.forrestguice:SuntimesAddon:135022f9cfa45cbad9ee85d4c86d02b65b6e5697'
+    implementation 'com.github.forrestguice:SuntimesAddon:5c36f2ee3906696c4c0abe3daae3815cb4d4c42b'
     implementation 'com.android.support:design:25.4.0'
     implementation 'com.android.support:appcompat-v7:25.4.0'
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'
