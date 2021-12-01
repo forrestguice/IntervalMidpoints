@@ -198,9 +198,36 @@ public class IntervalMidpointsProvider extends ContentProvider
         String[] interval = AppSettings.getInterval(alarmName);
         int i = Integer.parseInt(interval[3]);
         int n = Integer.parseInt(interval[2]);
-        if (n <= 2)
+
+        String tag = getAlarmTag(context, i, n);
+        if (n <= 2 || tag == null)
             return context.getString(R.string.alarm_title_format_short, interval[0], interval[1]);
-        else return context.getString(R.string.alarm_title_format_long, interval[0], interval[1], (i+1) + "", n + "");
+        else return context.getString(R.string.alarm_title_format_long, interval[0], interval[1], tag);
+    }
+
+    @Nullable
+    public static String getAlarmTag(Context context, int i, int n)
+    {
+        switch (n)
+        {
+            case 2: return null;
+            /*case 3:
+                switch (i)
+                {
+                    case 0: return "⅓";            // TODO: are these glyphs supported by all phones?
+                    case 1: return "⅔";
+                    default: return (i+1) + "/" + n;
+                }*/
+            case 4:
+                switch (i)
+                {
+                    case 0: return "¼";
+                    case 1: return null;
+                    case 2: return "¾";
+                    default: return context.getString(R.string.alarm_title_tag_format, (i+1) + "", n + "");
+                }
+            default: return context.getString(R.string.alarm_title_tag_format, (i+1) + "", n + "");
+        }
     }
 
     public static String getAlarmSummary(Context context, String alarmName) {

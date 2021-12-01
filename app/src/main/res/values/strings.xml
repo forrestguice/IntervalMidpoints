@@ -67,7 +67,8 @@
         <item>sunrise_sunset_2_0</item>
     </string-array>  <!-- TODO -->
     <string name="alarm_title_format_short">%s ¦ %s</string>  <!-- TODO -->
-    <string name="alarm_title_format_long">%s ¦ %s [%s/%s]</string>  <!-- TODO -->
+    <string name="alarm_title_format_long">%s ¦ %s [%s]</string>  <!-- TODO -->
+    <string name="alarm_title_tag_format">%s/%s</string>  <!-- TODO -->
     <string name="alarm_summary_format">@string/app_name</string>  <!-- TODO -->
 
     <string name="divideby_msg">Divided into</string> <!-- TODO -->
