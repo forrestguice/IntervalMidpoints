@@ -347,12 +347,13 @@ public class MainActivity extends AppCompatActivity
     protected void updateViews()
     {
         checkVersion();    // check dependencies and display warnings
+        SuntimesInfo.SuntimesOptions options = suntimesInfo.getOptions(this);
 
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null)
         {
             actionBar.setTitle(param_location != null ? param_location : createTitle(suntimesInfo));
-            actionBar.setSubtitle(DisplayStrings.formatLocation(this, param_latitude, param_longitude, param_altitude, 4, suntimesInfo.getOptions(this).length_units));
+            actionBar.setSubtitle(DisplayStrings.formatLocation(this, param_latitude, param_longitude, (options.use_altitude ? param_altitude : 0), 4, options.length_units));
         }
 
         TimeZone timezone = getTimeZone();
@@ -373,7 +374,6 @@ public class MainActivity extends AppCompatActivity
         calendar.setTimeInMillis(date);
         calendar.setTimeZone(timezone);
 
-        SuntimesInfo.SuntimesOptions options = suntimesInfo.getOptions(this);
         text_date.setText(utils.calendarDateDisplayString(this, calendar, true, false).getValue());
         text_interval.setText(getString(R.string.interval_msg0, utils.timeDeltaLongDisplayString(endTime, startTime, false, true, options.time_showSeconds).getValue()));
         text_startEvent.setText(startTime >= 0 ? getString(R.string.event_from, formatTime(startTime)) : getString(R.string.event_dne));
@@ -424,7 +424,8 @@ public class MainActivity extends AppCompatActivity
         int startPosition = spin_startEvent.getSelectedItemPosition();
         int endPosition = spin_endEvent.getSelectedItemPosition();
 
-        data = new IntervalMidpointsData(AppSettings.getIntervalID(eventValues[startPosition], eventValues[endPosition]), param_latitude, param_longitude, param_altitude);
+        SuntimesInfo.SuntimesOptions options = suntimesInfo.getOptions(this);
+        data = new IntervalMidpointsData(AppSettings.getIntervalID(eventValues[startPosition], eventValues[endPosition]), param_latitude, param_longitude, (options.use_altitude ? param_altitude : 0));
         data.setDate(Calendar.getInstance().getTimeInMillis());
         data.setDivideBy(divideBy);
         calculator.calculateData(this, data);
