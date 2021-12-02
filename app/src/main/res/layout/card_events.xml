@@ -1,12 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
-    style="@style/SuntimesCard" android:layout_marginLeft="@dimen/activity_margin" android:layout_marginRight="@dimen/activity_margin"
+    style="@style/SuntimesCard" android:layout_marginLeft="@dimen/activity_margin" android:layout_marginRight="@dimen/activity_margin" android:layout_marginTop="@dimen/activity_margin"
     android:layout_width="match_parent" android:layout_height="wrap_content"
     android:orientation="vertical"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintLeft_toLeftOf="parent"
     app:layout_constraintRight_toRightOf="parent"
     app:layout_constraintTop_toTopOf="parent">
+
+    <TextView android:id="@+id/text_date" android:layout_marginTop="4dp"
+        android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:textAppearance="@android:style/TextAppearance.Medium"
+        tools:text="November 7" />
 
     <TextView android:id="@+id/text_interval"
         android:layout_width="wrap_content" android:layout_height="wrap_content"
