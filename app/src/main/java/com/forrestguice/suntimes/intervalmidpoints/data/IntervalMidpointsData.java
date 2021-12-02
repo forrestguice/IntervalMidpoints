@@ -80,6 +80,14 @@ public class IntervalMidpointsData
         return endTime;
     }
 
+    public long getLength() {
+        return endTime - startTime;
+    }
+
+    public long getPeriodMillis() {
+        return getLength() / divideBy;
+    }
+
     public IntervalMidpointsData(String intervalID, double latitude, double longitude, double altitude)
     {
         initFromInterval(AppSettings.getInterval(intervalID));
