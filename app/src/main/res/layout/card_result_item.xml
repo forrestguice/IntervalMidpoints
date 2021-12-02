@@ -1,19 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
     android:background="?attr/selectableItemBackground" android:clickable="true" android:focusable="true"
-    android:layout_width="wrap_content" android:layout_height="wrap_content"
-    android:minHeight="48dp" android:minWidth="96dp" android:gravity="center"
+    android:layout_width="wrap_content" android:layout_height="wrap_content" android:gravity="center"
+    android:minHeight="48dp" android:minWidth="96dp"
     android:orientation="vertical"
     android:id="@+id/card_time0">
 
     <FrameLayout android:id="@+id/card_time1"
-        android:layout_width="match_parent" android:layout_height="match_parent"
-        android:layout_gravity="center" android:padding="@dimen/activity_margin"
-        android:background="@color/deep_teal_200">
+        android:layout_width="wrap_content" android:layout_height="match_parent"
+        android:layout_gravity="center">
 
-        <TextView tools:text="9:30 PM"
-            android:id="@+id/text_time"
-            android:layout_width="wrap_content" android:layout_height="wrap_content" />
+        <TextView tools:text="9:30 PM" style="@style/ChipText"
+            android:id="@+id/text_time" android:gravity="center" android:minHeight="32dp" android:minWidth="96dp"
+            android:layout_width="wrap_content" android:layout_height="match_parent" />
 
     </FrameLayout>
 

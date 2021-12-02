@@ -6,8 +6,8 @@
     <item
         android:id="@+id/action_alarm"
         android:orderInCategory="800"
-        android:icon="@drawable/ic_action_suntimes"
-        android:title="@string/action_select"
+        android:icon="?attr/icDone"
+        android:title="@string/action_alarm"
         app:showAsAction="always" />
 
 </menu>

@@ -10,6 +10,8 @@
         <item name="colorAction">@color/colorAction_dark</item>
         <item name="colorDisabled">@color/colorDisabled_dark</item>
         <item name="toolbarTheme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
+        <item name="chipBackground">@drawable/chip_dark</item>
+        <item name="chipTrayBackground">@drawable/chip_tray_dark</item>
         <item name="icDone">@drawable/ic_done</item>
         <item name="icHelp">@drawable/ic_help</item>
         <item name="icAbout">@drawable/ic_about</item>
@@ -27,6 +29,8 @@
         <item name="colorAction">@color/colorAction_light</item>
         <item name="colorDisabled">@color/colorDisabled_light</item>
         <item name="toolbarTheme">@style/ThemeOverlay.AppCompat.ActionBar</item>
+        <item name="chipBackground">@drawable/chip_light</item>
+        <item name="chipTrayBackground">@drawable/chip_tray_light</item>
         <item name="icDone">@drawable/ic_done_light</item>
         <item name="icHelp">@drawable/ic_help_light</item>
         <item name="icAbout">@drawable/ic_about_light</item>
