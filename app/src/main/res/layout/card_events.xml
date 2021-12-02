@@ -8,9 +8,13 @@
     app:layout_constraintRight_toRightOf="parent"
     app:layout_constraintTop_toTopOf="parent">
 
+    <TextView android:id="@+id/text_interval"
+        android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:text="@string/interval_msg0"  android:layout_marginTop="8dp" />
+
     <TextView
         android:layout_width="wrap_content" android:layout_height="wrap_content"
-        android:text="@string/midpoints_msg0"  android:layout_marginTop="8dp" android:layout_marginBottom="8dp" />
+        android:text="@string/interval_msg1" android:layout_marginBottom="8dp" />
 
     <LinearLayout android:id="@+id/layout_startevent"
         android:background="?attr/selectableItemBackground"

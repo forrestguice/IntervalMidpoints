@@ -20,6 +20,7 @@
 package com.forrestguice.suntimes.intervalmidpoints.ui;
 
 import android.content.DialogInterface;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -27,6 +28,8 @@ import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.design.widget.BottomSheetDialogFragment;
 import android.support.v7.view.ContextThemeWrapper;
+import android.text.Html;
+import android.text.Spanned;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,7 +37,6 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.forrestguice.suntimes.intervalmidpoints.R;
-import com.forrestguice.suntimes.intervalmidpoints.ui.DisplayStrings;
 
 public class HelpDialog extends BottomSheetDialogFragment
 {
@@ -52,7 +54,7 @@ public class HelpDialog extends BottomSheetDialogFragment
         return rawContent;
     }
     public void setContent( String content ) {
-        setContent((CharSequence) DisplayStrings.fromHtml(content));
+        setContent((CharSequence) fromHtml(content));
     }
 
     public void setContent( CharSequence content )
@@ -104,5 +106,12 @@ public class HelpDialog extends BottomSheetDialogFragment
         out.putCharSequence(KEY_HELPTEXT, rawContent);
         out.putInt(KEY_DIALOGTHEME, themeResID);
         super.onSaveInstanceState(out);
+    }
+
+    public static Spanned fromHtml(String htmlString )
+    {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
+            return Html.fromHtml(htmlString, Html.FROM_HTML_MODE_LEGACY);
+        else return Html.fromHtml(htmlString);
     }
 }

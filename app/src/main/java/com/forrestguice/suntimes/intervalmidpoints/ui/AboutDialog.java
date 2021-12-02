@@ -35,6 +35,7 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.forrestguice.suntimes.addon.SuntimesInfo;
+import com.forrestguice.suntimes.addon.ui.SuntimesUtils;
 import com.forrestguice.suntimes.intervalmidpoints.BuildConfig;
 import com.forrestguice.suntimes.intervalmidpoints.R;
 import com.forrestguice.suntimes.intervalmidpoints.ui.DisplayStrings;
@@ -71,22 +72,22 @@ public class AboutDialog extends BottomSheetDialogFragment
 
         TextView version = (TextView)dialogContent.findViewById(R.id.txt_about_version);
         version.setMovementMethod(LinkMovementMethod.getInstance());
-        version.setText(DisplayStrings.fromHtml(htmlVersionString()));
+        version.setText(SuntimesUtils.fromHtml(htmlVersionString()));
 
         TextView providerView = (TextView) dialogContent.findViewById(R.id.txt_about_provider);
-        providerView.setText(DisplayStrings.fromHtml(providerVersionString()));
+        providerView.setText(SuntimesUtils.fromHtml(providerVersionString()));
 
         TextView support = (TextView)dialogContent.findViewById(R.id.txt_about_support);
         support.setMovementMethod(LinkMovementMethod.getInstance());
-        support.setText(DisplayStrings.fromHtml(getString(R.string.app_support_url)));
+        support.setText(SuntimesUtils.fromHtml(getString(R.string.app_support_url)));
 
         TextView legalView1 = (TextView) dialogContent.findViewById(R.id.txt_about_legal1);
         legalView1.setMovementMethod(LinkMovementMethod.getInstance());
-        legalView1.setText(DisplayStrings.fromHtml(getString(R.string.app_legal1)));
+        legalView1.setText(SuntimesUtils.fromHtml(getString(R.string.app_legal1)));
 
         TextView url = (TextView)dialogContent.findViewById(R.id.txt_about_url);
         url.setMovementMethod(LinkMovementMethod.getInstance());
-        url.setText(DisplayStrings.fromHtml(getString(R.string.app_url)));
+        url.setText(SuntimesUtils.fromHtml(getString(R.string.app_url)));
 
         return dialogContent;
     }

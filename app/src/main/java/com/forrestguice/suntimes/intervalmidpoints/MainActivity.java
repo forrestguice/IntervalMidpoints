@@ -43,6 +43,7 @@ import com.forrestguice.suntimes.addon.AddonHelper;
 import com.forrestguice.suntimes.addon.LocaleHelper;
 import com.forrestguice.suntimes.addon.SuntimesInfo;
 import com.forrestguice.suntimes.addon.ui.Messages;
+import com.forrestguice.suntimes.addon.ui.SuntimesUtils;
 import com.forrestguice.suntimes.alarm.AlarmHelper;
 import com.forrestguice.suntimes.intervalmidpoints.data.IntervalMidpointsCalculator;
 import com.forrestguice.suntimes.intervalmidpoints.data.IntervalMidpointsData;
@@ -71,6 +72,7 @@ public class MainActivity extends AppCompatActivity
     protected String param_location;
     protected double param_latitude = 0, param_longitude = 0, param_altitude = 0;
     protected SuntimesInfo suntimesInfo = null;
+    protected SuntimesUtils utils = new SuntimesUtils();
 
     protected ActionMode actionMode = null;
     protected MidpointActionCompat midpointActions;
@@ -92,7 +94,7 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
 
         initToolBar();
-        suntimesInfo.getOptions(this);
+        SuntimesUtils.initDisplayStrings(this, suntimesInfo.getOptions(this).time_is24);
 
         initViews();
         loadUserInput();
@@ -153,7 +155,7 @@ public class MainActivity extends AppCompatActivity
 
     protected TextView text_date;
     protected Spinner spin_startEvent , spin_endEvent, spin_divideBy;
-    protected TextView text_startEvent, text_endEvent, text_midpoints;
+    protected TextView text_interval, text_startEvent, text_endEvent, text_midpoints;
 
     protected IntervalMidpointsCalculator calculator = new IntervalMidpointsCalculator();
     protected IntervalMidpointsData data = null;
@@ -166,6 +168,7 @@ public class MainActivity extends AppCompatActivity
     {
         midpointActions = onCreateMidpointActions();
         text_date = (TextView)findViewById(R.id.text_date);
+        text_interval = (TextView)findViewById(R.id.text_interval);
 
         spin_startEvent = (Spinner)findViewById(R.id.spin_startevent);
         if (spin_startEvent != null) {
@@ -352,9 +355,10 @@ public class MainActivity extends AppCompatActivity
             actionBar.setSubtitle(DisplayStrings.formatLocation(this, param_latitude, param_longitude, param_altitude, 4, suntimesInfo.getOptions(this).length_units));
         }
 
+        TimeZone timezone = getTimeZone();
         TextView timezoneText = (TextView) findViewById(R.id.bottombar_button0);
         if (timezoneText != null) {
-            timezoneText.setText(getTimeZone().getID());
+            timezoneText.setText(timezone.getID());
         }
 
         initData();   // query provider for start/end times
@@ -365,7 +369,13 @@ public class MainActivity extends AppCompatActivity
         long date = data.getDate();
         int divideBy = data.getDivideBy();
 
-        text_date.setText(DisplayStrings.formatDate(this, date));
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(date);
+        calendar.setTimeZone(timezone);
+
+        SuntimesInfo.SuntimesOptions options = suntimesInfo.getOptions(this);
+        text_date.setText(utils.calendarDateDisplayString(this, calendar, true, false).getValue());
+        text_interval.setText(getString(R.string.interval_msg0, utils.timeDeltaLongDisplayString(endTime, startTime, false, true, options.time_showSeconds).getValue()));
         text_startEvent.setText(startTime >= 0 ? getString(R.string.event_from, formatTime(startTime)) : getString(R.string.event_dne));
         text_endEvent.setText(endTime >= 0 ? getString(R.string.event_to, formatTime(endTime)) : getString(R.string.event_dne));
 
@@ -395,8 +405,10 @@ public class MainActivity extends AppCompatActivity
     private CharSequence formatTime(long time)
     {
         SuntimesInfo.SuntimesOptions options = suntimesInfo.getOptions(this);
-        TimeZone timezone = getTimeZone();
-        return DisplayStrings.formatTime(this, time, timezone, options.time_is24);
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(time);
+        calendar.setTimeZone(getTimeZone());
+        return utils.calendarTimeShortDisplayString(this, calendar, options.time_showSeconds, (options.time_is24 ? SuntimesUtils.TimeFormatMode.MODE_24HR : SuntimesUtils.TimeFormatMode.MODE_12HR)).toString();
     }
 
     private TimeZone getTimeZone() {
@@ -427,6 +439,7 @@ public class MainActivity extends AppCompatActivity
             recreate();
         } else {
             suntimesInfo = SuntimesInfo.queryInfo(MainActivity.this);    // refresh suntimesInfo
+            SuntimesUtils.initDisplayStrings(this, suntimesInfo.getOptions(this).time_is24);
             initLocation(getIntent());
             updateViews();
         }

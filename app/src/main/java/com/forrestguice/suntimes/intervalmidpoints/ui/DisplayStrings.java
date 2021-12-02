@@ -20,18 +20,14 @@
 package com.forrestguice.suntimes.intervalmidpoints.ui;
 
 import android.content.Context;
-import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.text.Html;
-import android.text.Spannable;
+
 import android.text.SpannableString;
-import android.text.Spanned;
-import android.text.style.ForegroundColorSpan;
-import android.text.style.RelativeSizeSpan;
 import android.util.Log;
 
 import com.forrestguice.suntimes.addon.SuntimesInfo;
+import com.forrestguice.suntimes.addon.ui.SuntimesUtils;
 import com.forrestguice.suntimes.intervalmidpoints.R;
 
 import java.math.RoundingMode;
@@ -39,7 +35,6 @@ import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
-import java.util.TimeZone;
 
 public class DisplayStrings
 {
@@ -67,17 +62,6 @@ public class DisplayStrings
         return dateFormat.format(date.getTime());
     }
     private static SimpleDateFormat dateFormat_short = null, dateFormat_long = null;
-
-
-    public static CharSequence formatTime(@NonNull Context context, long dateTime, TimeZone timezone, boolean is24Hr)
-    {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(dateTime);
-        String format = (is24Hr ? context.getString(R.string.format_time24) : context.getString(R.string.format_time12));
-        SimpleDateFormat timeFormat = new SimpleDateFormat(format, Locale.getDefault());
-        timeFormat.setTimeZone(timezone);
-        return timeFormat.format(calendar.getTime());
-    }
 
     public static SpannableString formatLocation(@NonNull Context context, @NonNull SuntimesInfo info)
     {
@@ -116,7 +100,7 @@ public class DisplayStrings
         formatter.setMinimumFractionDigits(0);
         formatter.setMaximumFractionDigits(places != null ? places : 4);
         String displayString = context.getString(R.string.format_location_long, formatter.format(latitude), formatter.format(longitude), altitudeTag);
-        return createRelativeSpan(null, displayString, altitudeTag, 0.5f);
+        return SuntimesUtils.createRelativeSpan(null, displayString, altitudeTag, 0.5f);
     }
 
     public static String formatHeight(Context context, double meters, String units, int places, boolean shortForm)
@@ -137,39 +121,5 @@ public class DisplayStrings
         return context.getString(R.string.format_location_altitude, formatter.format(value), unitsString);
     }
     private static NumberFormat formatter = NumberFormat.getInstance();
-
-    public static SpannableString createRelativeSpan(@Nullable SpannableString span, @NonNull String text, @NonNull String toRelative, float relativeSize)
-    {
-        if (span == null) {
-            span = new SpannableString(text);
-        }
-        int start = text.indexOf(toRelative);
-        if (start >= 0) {
-            int end = start + toRelative.length();
-            span.setSpan(new RelativeSizeSpan(relativeSize), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        }
-        return span;
-    }
-
-    public static SpannableString createColorSpan(SpannableString span, String text, String toColorize, int color)
-    {
-        if (span == null) {
-            span = new SpannableString(text);
-        }
-        int start = text.indexOf(toColorize);
-        if (start >= 0)
-        {
-            int end = start + toColorize.length();
-            span.setSpan(new ForegroundColorSpan(color), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        }
-        return span;
-    }
-
-    public static Spanned fromHtml(String htmlString )
-    {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
-            return Html.fromHtml(htmlString, Html.FROM_HTML_MODE_LEGACY);
-        else return Html.fromHtml(htmlString);
-    }
 
 }

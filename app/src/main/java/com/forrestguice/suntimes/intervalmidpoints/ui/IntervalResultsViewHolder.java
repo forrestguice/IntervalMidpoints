@@ -30,10 +30,12 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.forrestguice.suntimes.addon.SuntimesInfo;
+import com.forrestguice.suntimes.addon.ui.SuntimesUtils;
 import com.forrestguice.suntimes.intervalmidpoints.R;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.TimeZone;
 
@@ -46,6 +48,7 @@ public class IntervalResultsViewHolder extends RecyclerView.ViewHolder
     public TextView text_time;
     public IntervalResultsData data;
     public boolean isSelected = false;
+    private SuntimesUtils utils = new SuntimesUtils();
 
     public IntervalResultsViewHolder(@NonNull View itemView, IntervalResultsAdapterOptions options)
     {
@@ -61,7 +64,12 @@ public class IntervalResultsViewHolder extends RecyclerView.ViewHolder
         this.isSelected = isSelected;
 
         TimeZone timezone = options.timezone != null ? options.timezone : TimeZone.getDefault();
-        text_time.setText(DisplayStrings.formatTime(context, data.timeMillis, timezone, options.suntimes_options.time_is24));
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(data.timeMillis);
+        calendar.setTimeZone(timezone);
+
+        text_time.setText(utils.calendarTimeShortDisplayString(context, calendar, options.suntimes_options.time_showSeconds,
+                (options.suntimes_options.time_is24 ? SuntimesUtils.TimeFormatMode.MODE_24HR : SuntimesUtils.TimeFormatMode.MODE_12HR)).toString());
 
         if (isSelected)
         {
