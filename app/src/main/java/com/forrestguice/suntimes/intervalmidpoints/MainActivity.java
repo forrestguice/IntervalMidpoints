@@ -353,7 +353,7 @@ public class MainActivity extends AppCompatActivity
         if (actionBar != null)
         {
             actionBar.setTitle(param_location != null ? param_location : createTitle(suntimesInfo));
-            actionBar.setSubtitle(DisplayStrings.formatLocation(this, param_latitude, param_longitude, (options.use_altitude ? param_altitude : 0), 4, options.length_units));
+            actionBar.setSubtitle(SuntimesUtils.formatLocation(this, param_latitude, param_longitude, (options.use_altitude ? param_altitude : 0), 4, options.length_units));
         }
 
         TimeZone timezone = getTimeZone();
@@ -374,7 +374,7 @@ public class MainActivity extends AppCompatActivity
         calendar.setTimeInMillis(date);
         calendar.setTimeZone(timezone);
 
-        text_date.setText(utils.calendarDateDisplayString(this, calendar, true, false).getValue());
+        text_date.setText(utils.calendarDateDisplayString(this, calendar, false).getValue());
         text_interval.setText(getString(R.string.interval_msg0, utils.timeDeltaLongDisplayString(endTime, startTime, false, true, options.time_showSeconds).getValue()));
         text_startEvent.setText(startTime >= 0 ? getString(R.string.event_from, formatTime(startTime)) : getString(R.string.event_dne));
         text_endEvent.setText(endTime >= 0 ? getString(R.string.event_to, formatTime(endTime)) : getString(R.string.event_dne));
@@ -389,12 +389,13 @@ public class MainActivity extends AppCompatActivity
             }
             resultsCardAdapter.setItems(resultData);
 
-            StringBuilder midpointString = new StringBuilder(getString(R.string.midpoints_msg));
-            /*for (int i=0; i<midpoints.length; i++)
+            /*StringBuilder midpointString = new StringBuilder(getString(R.string.midpoints_msg));
+            for (int i=0; i<midpoints.length; i++)
             {
                 midpointString.append("\n");
                 midpointString.append(formatTime(midpoints[i]));
             }*/
+            String midpointString = getResources().getQuantityString(R.plurals.midpoints_plural, midpoints.length, midpoints.length);
             text_midpoints.setText(midpointString);
 
         } else {

@@ -74,21 +74,27 @@
 
     <string name="divideby_msg">Divided into</string> <!-- TODO -->
     <string-array name="divideby_display">
-        <item>2</item>
-        <item>3</item>
-        <item>4</item>
+        <item>2 periods</item>
+        <item>3 periods</item>
+        <item>4 periods</item>
     </string-array>  <!-- TODO -->
     <integer-array name="divideby_values" translatable="false">
         <item>2</item>
         <item>3</item>
         <item>4</item>
     </integer-array>  <!-- TODO -->
+    <string name="period_msg">of %s</string> <!-- TODO -->
 
     <string name="event_at">at %s</string> <!-- TODO -->
     <string name="event_from">from %s</string> <!-- TODO -->
     <string name="event_to">to %s</string> <!-- TODO -->
     <string name="event_dne">does not occur</string> <!-- TODO -->
     <string name="midpoints_msg">The midpoints are at</string> <!-- display above midpoint results --> <!-- TODO -->
+    <plurals name="midpoints_plural">
+        <item quantity="one">The midpoint is at</item>
+        <item quantity="other">The midpoints are at</item>
+    </plurals>
+
     <string name="interval_msg0">An interval of %s</string>    <!-- displayed above event selection ui --> <!-- TODO -->
     <string name="interval_msg1">between..</string>    <!-- displayed above event selection ui --> <!-- TODO -->
 

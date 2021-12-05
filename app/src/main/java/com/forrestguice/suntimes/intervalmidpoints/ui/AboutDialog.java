@@ -38,7 +38,6 @@ import com.forrestguice.suntimes.addon.SuntimesInfo;
 import com.forrestguice.suntimes.addon.ui.SuntimesUtils;
 import com.forrestguice.suntimes.intervalmidpoints.BuildConfig;
 import com.forrestguice.suntimes.intervalmidpoints.R;
-import com.forrestguice.suntimes.intervalmidpoints.ui.DisplayStrings;
 
 public class AboutDialog extends BottomSheetDialogFragment
 {
