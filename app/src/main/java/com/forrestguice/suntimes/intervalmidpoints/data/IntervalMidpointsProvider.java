@@ -34,6 +34,7 @@ import com.forrestguice.suntimes.addon.SuntimesInfo;
 import com.forrestguice.suntimes.alarm.AlarmHelper;
 import com.forrestguice.suntimes.intervalmidpoints.AppSettings;
 import com.forrestguice.suntimes.intervalmidpoints.BuildConfig;
+import com.forrestguice.suntimes.intervalmidpoints.MainActivity;
 import com.forrestguice.suntimes.intervalmidpoints.R;
 
 import java.util.ArrayList;
@@ -43,15 +44,15 @@ import java.util.HashSet;
 import java.util.Set;
 
 import static com.forrestguice.suntimes.intervalmidpoints.data.IntervalMidpointsProviderContract.AUTHORITY;
-import static com.forrestguice.suntimes.intervalmidpoints.data.IntervalMidpointsProviderContract.COLUMN_ALARM_NAME;
-import static com.forrestguice.suntimes.intervalmidpoints.data.IntervalMidpointsProviderContract.COLUMN_ALARM_SUMMARY;
-import static com.forrestguice.suntimes.intervalmidpoints.data.IntervalMidpointsProviderContract.COLUMN_ALARM_TIMEMILLIS;
-import static com.forrestguice.suntimes.intervalmidpoints.data.IntervalMidpointsProviderContract.COLUMN_ALARM_TITLE;
 import static com.forrestguice.suntimes.intervalmidpoints.data.IntervalMidpointsProviderContract.COLUMN_CONFIG_APP_VERSION;
 import static com.forrestguice.suntimes.intervalmidpoints.data.IntervalMidpointsProviderContract.COLUMN_CONFIG_APP_VERSION_CODE;
 import static com.forrestguice.suntimes.intervalmidpoints.data.IntervalMidpointsProviderContract.COLUMN_CONFIG_PROVIDER;
 import static com.forrestguice.suntimes.intervalmidpoints.data.IntervalMidpointsProviderContract.COLUMN_CONFIG_PROVIDER_VERSION;
 import static com.forrestguice.suntimes.intervalmidpoints.data.IntervalMidpointsProviderContract.COLUMN_CONFIG_PROVIDER_VERSION_CODE;
+import static com.forrestguice.suntimes.intervalmidpoints.data.IntervalMidpointsProviderContract.COLUMN_EVENT_NAME;
+import static com.forrestguice.suntimes.intervalmidpoints.data.IntervalMidpointsProviderContract.COLUMN_EVENT_SUMMARY;
+import static com.forrestguice.suntimes.intervalmidpoints.data.IntervalMidpointsProviderContract.COLUMN_EVENT_TIMEMILLIS;
+import static com.forrestguice.suntimes.intervalmidpoints.data.IntervalMidpointsProviderContract.COLUMN_EVENT_TITLE;
 import static com.forrestguice.suntimes.intervalmidpoints.data.IntervalMidpointsProviderContract.EXTRA_ALARM_NOW;
 import static com.forrestguice.suntimes.intervalmidpoints.data.IntervalMidpointsProviderContract.EXTRA_ALARM_OFFSET;
 import static com.forrestguice.suntimes.intervalmidpoints.data.IntervalMidpointsProviderContract.EXTRA_ALARM_REPEAT;
@@ -59,12 +60,12 @@ import static com.forrestguice.suntimes.intervalmidpoints.data.IntervalMidpoints
 import static com.forrestguice.suntimes.intervalmidpoints.data.IntervalMidpointsProviderContract.EXTRA_LOCATION_ALT;
 import static com.forrestguice.suntimes.intervalmidpoints.data.IntervalMidpointsProviderContract.EXTRA_LOCATION_LAT;
 import static com.forrestguice.suntimes.intervalmidpoints.data.IntervalMidpointsProviderContract.EXTRA_LOCATION_LON;
-import static com.forrestguice.suntimes.intervalmidpoints.data.IntervalMidpointsProviderContract.QUERY_ALARM_CALC;
-import static com.forrestguice.suntimes.intervalmidpoints.data.IntervalMidpointsProviderContract.QUERY_ALARM_CALC_PROJECTION;
-import static com.forrestguice.suntimes.intervalmidpoints.data.IntervalMidpointsProviderContract.QUERY_ALARM_INFO;
-import static com.forrestguice.suntimes.intervalmidpoints.data.IntervalMidpointsProviderContract.QUERY_ALARM_INFO_PROJECTION;
+import static com.forrestguice.suntimes.intervalmidpoints.data.IntervalMidpointsProviderContract.QUERY_EVENT_CALC;
+import static com.forrestguice.suntimes.intervalmidpoints.data.IntervalMidpointsProviderContract.QUERY_EVENT_CALC_PROJECTION;
+import static com.forrestguice.suntimes.intervalmidpoints.data.IntervalMidpointsProviderContract.QUERY_EVENT_INFO;
 import static com.forrestguice.suntimes.intervalmidpoints.data.IntervalMidpointsProviderContract.QUERY_CONFIG;
 import static com.forrestguice.suntimes.intervalmidpoints.data.IntervalMidpointsProviderContract.QUERY_CONFIG_PROJECTION;
+import static com.forrestguice.suntimes.intervalmidpoints.data.IntervalMidpointsProviderContract.QUERY_EVENT_INFO_PROJECTION;
 
 public class IntervalMidpointsProvider extends ContentProvider
 {
@@ -72,14 +73,17 @@ public class IntervalMidpointsProvider extends ContentProvider
     private static final int URIMATCH_ALARM_INFO = 40;
     private static final int URIMATCH_ALARM_INFO_FOR_NAME = 50;
     private static final int URIMATCH_ALARM_CALC_FOR_NAME = 60;
+    private static final int URIMATCH_EVENT_INFO = 40;
+    private static final int URIMATCH_EVENT_INFO_FOR_NAME = 50;
+    private static final int URIMATCH_EVENT_CALC_FOR_NAME = 60;
 
     private static final UriMatcher uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
     static
     {
         uriMatcher.addURI(AUTHORITY, QUERY_CONFIG, URIMATCH_CONFIG);
-        uriMatcher.addURI(AUTHORITY, QUERY_ALARM_INFO, URIMATCH_ALARM_INFO);
-        uriMatcher.addURI(AUTHORITY, QUERY_ALARM_INFO + "/*", URIMATCH_ALARM_INFO_FOR_NAME);
-        uriMatcher.addURI(AUTHORITY, QUERY_ALARM_CALC + "/*", URIMATCH_ALARM_CALC_FOR_NAME);
+        uriMatcher.addURI(AUTHORITY, QUERY_EVENT_INFO, URIMATCH_EVENT_INFO);
+        uriMatcher.addURI(AUTHORITY, QUERY_EVENT_INFO + "/*", URIMATCH_EVENT_INFO_FOR_NAME);
+        uriMatcher.addURI(AUTHORITY, QUERY_EVENT_CALC + "/*", URIMATCH_EVENT_CALC_FOR_NAME);
     }
 
     @Override
@@ -119,19 +123,19 @@ public class IntervalMidpointsProvider extends ContentProvider
         int uriMatch = uriMatcher.match(uri);
         switch (uriMatch)
         {
-            case URIMATCH_ALARM_INFO:
-                Log.i(getClass().getSimpleName(), "URIMATCH_ALARM_INFO");
-                cursor = queryAlarmInfo(null, uri, projection, selectionMap, sortOrder);
+            case URIMATCH_EVENT_INFO:
+                Log.i(getClass().getSimpleName(), "URIMATCH_EVENT_INFO");
+                cursor = queryEventInfo(null, uri, projection, selectionMap, sortOrder);
                 break;
 
-            case URIMATCH_ALARM_INFO_FOR_NAME:
-                Log.i(getClass().getSimpleName(), "URIMATCH_ALARM_INFO_FOR_NAME");
-                cursor = queryAlarmInfo(uri.getLastPathSegment(), uri, projection, selectionMap, sortOrder);
+            case URIMATCH_EVENT_INFO_FOR_NAME:
+                Log.i(getClass().getSimpleName(), "URIMATCH_EVENT_INFO_FOR_NAME");
+                cursor = queryEventInfo(uri.getLastPathSegment(), uri, projection, selectionMap, sortOrder);
                 break;
 
-            case URIMATCH_ALARM_CALC_FOR_NAME:
-                Log.i(getClass().getSimpleName(), "URIMATCH_ALARM_CALC_FOR_NAME");
-                cursor = queryAlarmTime(uri.getLastPathSegment(), uri, projection, selectionMap, sortOrder);
+            case URIMATCH_EVENT_CALC_FOR_NAME:
+                Log.i(getClass().getSimpleName(), "URIMATCH_EVENT_CALC_FOR_NAME");
+                cursor = queryEventTime(uri.getLastPathSegment(), uri, projection, selectionMap, sortOrder);
                 break;
 
             case URIMATCH_CONFIG:
@@ -147,19 +151,19 @@ public class IntervalMidpointsProvider extends ContentProvider
     }
 
     /**
-     * queryAlarmInfo
+     * queryEventInfo
      */
-    public Cursor queryAlarmInfo(@Nullable String alarmName, @NonNull Uri uri, @Nullable String[] projection, HashMap<String, String> selectionMap, @Nullable String sortOrder)
+    public Cursor queryEventInfo(@Nullable String eventName, @NonNull Uri uri, @Nullable String[] projection, HashMap<String, String> selectionMap, @Nullable String sortOrder)
     {
-        Log.d("DEBUG", "queryAlarmInfo: " + alarmName);
-        String[] columns = (projection != null ? projection : QUERY_ALARM_INFO_PROJECTION);
+        Log.d("DEBUG", "queryEventInfo: " + eventName);
+        String[] columns = (projection != null ? projection : QUERY_EVENT_INFO_PROJECTION);
         MatrixCursor cursor = new MatrixCursor(columns);
 
         Context context = getContext();
         if (context != null)
         {
-            String[] alarms = (alarmName != null)
-                    ? new String[] { alarmName }
+            String[] alarms = (eventName != null)
+                    ? new String[] { eventName }
                     : context.getResources().getStringArray(R.array.alarm_names);
 
             for (int j=0; j<alarms.length; j++)
@@ -169,16 +173,16 @@ public class IntervalMidpointsProvider extends ContentProvider
                 {
                     switch (columns[i])
                     {
-                        case COLUMN_ALARM_NAME:
+                        case COLUMN_EVENT_NAME:
                             row[i] = alarms[j];
                             break;
 
-                        case COLUMN_ALARM_TITLE:
-                            row[i] = getAlarmTitle(context, alarms[j]);
+                        case COLUMN_EVENT_TITLE:
+                            row[i] = getEventTitle(context, alarms[j]);
                             break;
 
-                        case COLUMN_ALARM_SUMMARY:
-                            row[i] = getAlarmSummary(context, alarms[j]);
+                        case COLUMN_EVENT_SUMMARY:
+                            row[i] = getEventSummary(context, alarms[j]);
                             break;
 
                         default:
@@ -193,20 +197,20 @@ public class IntervalMidpointsProvider extends ContentProvider
         return cursor;
     }
 
-    public static String getAlarmTitle(Context context, String alarmName)
+    public static String getEventTitle(Context context, String eventName)
     {
-        String[] interval = AppSettings.getInterval(alarmName);
+        String[] interval = AppSettings.getInterval(eventName);
         int i = Integer.parseInt(interval[3]);
         int n = Integer.parseInt(interval[2]);
 
-        String tag = getAlarmTag(context, i, n);
+        String tag = getEventTag(context, i, n);
         if (n <= 2 || tag == null)
             return context.getString(R.string.alarm_title_format_short, interval[0], interval[1]);
         else return context.getString(R.string.alarm_title_format_long, interval[0], interval[1], tag);
     }
 
     @Nullable
-    public static String getAlarmTag(Context context, int i, int n)
+    public static String getEventTag(Context context, int i, int n)
     {
         switch (n)
         {
@@ -230,14 +234,14 @@ public class IntervalMidpointsProvider extends ContentProvider
         }
     }
 
-    public static String getAlarmSummary(Context context, String alarmName) {
+    public static String getEventSummary(Context context, String eventName) {
         return context.getString(R.string.alarm_summary_format);
     }
 
-    public Cursor queryAlarmTime(@Nullable String alarmName, @NonNull Uri uri, @Nullable String[] projection, HashMap<String, String> selectionMap, @Nullable String sortOrder)
+    public Cursor queryEventTime(@Nullable String eventName, @NonNull Uri uri, @Nullable String[] projection, HashMap<String, String> selectionMap, @Nullable String sortOrder)
     {
-        Log.d("DEBUG", "queryAlarmTime: " + alarmName);
-        String[] columns = (projection != null ? projection : QUERY_ALARM_CALC_PROJECTION);
+        Log.d("DEBUG", "queryEventTime: " + eventName);
+        String[] columns = (projection != null ? projection : QUERY_EVENT_CALC_PROJECTION);
         MatrixCursor cursor = new MatrixCursor(columns);
 
         Context context = getContext();
@@ -248,12 +252,12 @@ public class IntervalMidpointsProvider extends ContentProvider
             {
                 switch (columns[i])
                 {
-                    case COLUMN_ALARM_NAME:
-                        row[i] = alarmName;
+                    case COLUMN_EVENT_NAME:
+                        row[i] = eventName;
                         break;
 
-                    case COLUMN_ALARM_TIMEMILLIS:
-                        row[i] = calculateAlarmTime(context, alarmName, selectionMap);
+                    case COLUMN_EVENT_TIMEMILLIS:
+                        row[i] = calculateEventTime(context, eventName, selectionMap);
                         break;
 
                     default:
@@ -267,9 +271,9 @@ public class IntervalMidpointsProvider extends ContentProvider
         return cursor;
     }
 
-    public long calculateAlarmTime(@NonNull Context context, @Nullable String alarmName, HashMap<String, String> selectionMap)
+    public long calculateEventTime(@NonNull Context context, @Nullable String eventName, HashMap<String, String> selectionMap)
     {
-        if (AppSettings.isValidIntervalID(alarmName))
+        if (AppSettings.isValidIntervalID(eventName))
         {
             Calendar now = AlarmHelper.getNowCalendar(selectionMap.get(EXTRA_ALARM_NOW));
             long nowMillis = now.getTimeInMillis();
@@ -298,7 +302,7 @@ public class IntervalMidpointsProvider extends ContentProvider
                     + ", latitude: " + latitude + ", longitude: " + longitude + ", altitude: " + altitude);
 
             IntervalMidpointsCalculator calculator = new IntervalMidpointsCalculator();
-            IntervalMidpointsData data = new IntervalMidpointsData(alarmName, latitude, longitude, altitude);
+            IntervalMidpointsData data = new IntervalMidpointsData(eventName, latitude, longitude, altitude);
 
             Calendar alarmTime = Calendar.getInstance();
             Calendar eventTime;

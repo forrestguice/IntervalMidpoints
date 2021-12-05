@@ -82,9 +82,9 @@ public class AlarmActivity extends MainActivity
     {
         Intent result = new Intent();    // e.g. content://suntimes.intervalmidpoints.provider/alarmInfo/sunrise_sunset_2_0
         result.putExtra(IntervalMidpointsProviderContract.COLUMN_CONFIG_PROVIDER, IntervalMidpointsProviderContract.AUTHORITY);
-        result.putExtra(IntervalMidpointsProviderContract.COLUMN_ALARM_NAME, midpointID);
-        result.putExtra(IntervalMidpointsProviderContract.COLUMN_ALARM_TITLE, IntervalMidpointsProvider.getAlarmTitle(this, midpointID));
-        result.putExtra(IntervalMidpointsProviderContract.COLUMN_ALARM_SUMMARY, IntervalMidpointsProvider.getAlarmSummary(this, midpointID));
+        result.putExtra(IntervalMidpointsProviderContract.COLUMN_EVENT_NAME, midpointID);
+        result.putExtra(IntervalMidpointsProviderContract.COLUMN_EVENT_TITLE, IntervalMidpointsProvider.getEventTitle(this, midpointID));
+        result.putExtra(IntervalMidpointsProviderContract.COLUMN_EVENT_SUMMARY, IntervalMidpointsProvider.getEventSummary(this, midpointID));
         result.setData(Uri.parse(AlarmHelper.getAlarmInfoUri(IntervalMidpointsProviderContract.AUTHORITY, midpointID)));
         setResult(Activity.RESULT_OK, result);
         finish();

@@ -329,7 +329,7 @@ public class MainActivity extends AppCompatActivity
         midpointActions.setSelection(midpointID);
         actionMode = startSupportActionMode(midpointActions);
         if (actionMode != null) {
-            actionMode.setTitle(IntervalMidpointsProvider.getAlarmTitle(this, midpointID));  // TODO: show/calculate alarm time
+            actionMode.setTitle(IntervalMidpointsProvider.getEventTitle(this, midpointID));  // TODO: show/calculate alarm time
         }
     }
 
@@ -575,7 +575,7 @@ public class MainActivity extends AppCompatActivity
                     case R.id.action_alarm:
                     case R.id.action_select:
                         String midpointUri = AlarmHelper.getAlarmInfoUri(IntervalMidpointsProviderContract.AUTHORITY, midpointID);
-                        String label = IntervalMidpointsProvider.getAlarmTitle(MainActivity.this, midpointID);
+                        String label = IntervalMidpointsProvider.getEventTitle(MainActivity.this, midpointID);
                         try {
                             startActivity(AddonHelper.scheduleAlarm("ALARM", label, -1, -1, getTimeZone(), midpointUri));
 
