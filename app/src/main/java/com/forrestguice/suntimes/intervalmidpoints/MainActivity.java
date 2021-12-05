@@ -50,7 +50,6 @@ import com.forrestguice.suntimes.intervalmidpoints.data.IntervalMidpointsData;
 import com.forrestguice.suntimes.intervalmidpoints.data.IntervalMidpointsProvider;
 import com.forrestguice.suntimes.intervalmidpoints.data.IntervalMidpointsProviderContract;
 import com.forrestguice.suntimes.intervalmidpoints.ui.AboutDialog;
-import com.forrestguice.suntimes.intervalmidpoints.ui.DisplayStrings;
 import com.forrestguice.suntimes.intervalmidpoints.ui.HelpDialog;
 import com.forrestguice.suntimes.intervalmidpoints.ui.IntervalResultsViewHolder;
 
@@ -155,7 +154,7 @@ public class MainActivity extends AppCompatActivity
 
     protected TextView text_date;
     protected Spinner spin_startEvent , spin_endEvent, spin_divideBy;
-    protected TextView text_interval, text_startEvent, text_endEvent, text_midpoints;
+    protected TextView text_interval, text_period, text_startEvent, text_endEvent, text_midpoints;
 
     protected IntervalMidpointsCalculator calculator = new IntervalMidpointsCalculator();
     protected IntervalMidpointsData data = null;
@@ -169,6 +168,7 @@ public class MainActivity extends AppCompatActivity
         midpointActions = onCreateMidpointActions();
         text_date = (TextView)findViewById(R.id.text_date);
         text_interval = (TextView)findViewById(R.id.text_interval);
+        text_period = (TextView)findViewById(R.id.text_period_length);
 
         spin_startEvent = (Spinner)findViewById(R.id.spin_startevent);
         if (spin_startEvent != null) {
@@ -382,6 +382,9 @@ public class MainActivity extends AppCompatActivity
         resultsCardAdapter.clearItems();
         if (startTime > 0 && endTime > 0)
         {
+            String periodDisplay = utils.timeDeltaLongDisplayString(startTime + data.getPeriodMillis(), startTime, false, true, options.time_showSeconds).getValue();
+            text_period.setText(getString(R.string.period_msg, periodDisplay));
+
             ArrayList<IntervalResultsViewHolder.IntervalResultsData> resultData = new ArrayList<>();
             long[] midpoints = data.getMidpoints();
             for (int i=0; i<midpoints.length; i++) {

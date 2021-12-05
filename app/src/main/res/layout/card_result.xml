@@ -23,6 +23,10 @@
             android:minHeight="32dp" android:minWidth="96dp"
             android:entries="@array/divideby_display" />
 
+        <TextView android:id="@+id/text_period_length"
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:text="@string/period_msg" />
+
     </LinearLayout>
 
     <TextView android:id="@+id/text_midpoints"
