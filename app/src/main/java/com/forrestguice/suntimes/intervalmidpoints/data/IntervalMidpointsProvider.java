@@ -30,6 +30,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.forrestguice.suntimes.actions.SuntimesActionsContract;
 import com.forrestguice.suntimes.addon.SuntimesInfo;
 import com.forrestguice.suntimes.alarm.AlarmHelper;
 import com.forrestguice.suntimes.intervalmidpoints.AppSettings;
@@ -42,6 +43,12 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
+
+import static com.forrestguice.suntimes.intervalmidpoints.data.IntervalMidpointsProviderContract.COLUMN_ACTION_CLASS;
+import static com.forrestguice.suntimes.intervalmidpoints.data.IntervalMidpointsProviderContract.COLUMN_ACTION_DESC;
+import static com.forrestguice.suntimes.intervalmidpoints.data.IntervalMidpointsProviderContract.COLUMN_ACTION_NAME;
+import static com.forrestguice.suntimes.intervalmidpoints.data.IntervalMidpointsProviderContract.COLUMN_ACTION_TITLE;
+import static com.forrestguice.suntimes.intervalmidpoints.data.IntervalMidpointsProviderContract.COLUMN_ACTION_TYPE;
 
 import static com.forrestguice.suntimes.intervalmidpoints.data.IntervalMidpointsProviderContract.AUTHORITY;
 import static com.forrestguice.suntimes.intervalmidpoints.data.IntervalMidpointsProviderContract.COLUMN_CONFIG_APP_VERSION;
@@ -60,6 +67,7 @@ import static com.forrestguice.suntimes.intervalmidpoints.data.IntervalMidpoints
 import static com.forrestguice.suntimes.intervalmidpoints.data.IntervalMidpointsProviderContract.EXTRA_LOCATION_ALT;
 import static com.forrestguice.suntimes.intervalmidpoints.data.IntervalMidpointsProviderContract.EXTRA_LOCATION_LAT;
 import static com.forrestguice.suntimes.intervalmidpoints.data.IntervalMidpointsProviderContract.EXTRA_LOCATION_LON;
+import static com.forrestguice.suntimes.intervalmidpoints.data.IntervalMidpointsProviderContract.QUERY_ACTIONS;
 import static com.forrestguice.suntimes.intervalmidpoints.data.IntervalMidpointsProviderContract.QUERY_EVENT_CALC;
 import static com.forrestguice.suntimes.intervalmidpoints.data.IntervalMidpointsProviderContract.QUERY_EVENT_CALC_PROJECTION;
 import static com.forrestguice.suntimes.intervalmidpoints.data.IntervalMidpointsProviderContract.QUERY_EVENT_INFO;
@@ -70,9 +78,10 @@ import static com.forrestguice.suntimes.intervalmidpoints.data.IntervalMidpoints
 public class IntervalMidpointsProvider extends ContentProvider
 {
     private static final int URIMATCH_CONFIG = 0;
-    private static final int URIMATCH_ALARM_INFO = 40;
-    private static final int URIMATCH_ALARM_INFO_FOR_NAME = 50;
-    private static final int URIMATCH_ALARM_CALC_FOR_NAME = 60;
+
+    private static final int URIMATCH_ACTION_INFO = 20;
+    private static final int URIMATCH_ACTION_INFO_FOR_NAME = 30;
+
     private static final int URIMATCH_EVENT_INFO = 40;
     private static final int URIMATCH_EVENT_INFO_FOR_NAME = 50;
     private static final int URIMATCH_EVENT_CALC_FOR_NAME = 60;
@@ -81,6 +90,10 @@ public class IntervalMidpointsProvider extends ContentProvider
     static
     {
         uriMatcher.addURI(AUTHORITY, QUERY_CONFIG, URIMATCH_CONFIG);
+
+        uriMatcher.addURI(AUTHORITY, QUERY_ACTIONS, URIMATCH_ACTION_INFO);
+        uriMatcher.addURI(AUTHORITY, QUERY_ACTIONS + "/*", URIMATCH_ACTION_INFO_FOR_NAME);
+        
         uriMatcher.addURI(AUTHORITY, QUERY_EVENT_INFO, URIMATCH_EVENT_INFO);
         uriMatcher.addURI(AUTHORITY, QUERY_EVENT_INFO + "/*", URIMATCH_EVENT_INFO_FOR_NAME);
         uriMatcher.addURI(AUTHORITY, QUERY_EVENT_CALC + "/*", URIMATCH_EVENT_CALC_FOR_NAME);
@@ -123,6 +136,16 @@ public class IntervalMidpointsProvider extends ContentProvider
         int uriMatch = uriMatcher.match(uri);
         switch (uriMatch)
         {
+            case URIMATCH_ACTION_INFO:
+                Log.i(getClass().getSimpleName(), "URIMATCH_ACTION_INFO");
+                cursor = queryActionInfo(null, uri, projection, selectionMap, sortOrder);
+                break;
+
+            case URIMATCH_ACTION_INFO_FOR_NAME:
+                Log.i(getClass().getSimpleName(), "URIMATCH_ACTION_INFO_FOR_NAME");
+                cursor = queryActionInfo(uri.getLastPathSegment(), uri, projection, selectionMap, sortOrder);
+                break;
+
             case URIMATCH_EVENT_INFO:
                 Log.i(getClass().getSimpleName(), "URIMATCH_EVENT_INFO");
                 cursor = queryEventInfo(null, uri, projection, selectionMap, sortOrder);
@@ -147,6 +170,53 @@ public class IntervalMidpointsProvider extends ContentProvider
                 Log.e(getClass().getSimpleName(), "Unrecognized URI! " + uri);
                 break;
         }
+        return cursor;
+    }
+
+    public static final String ACTION_INTERVAL_MIDPOINTS = "INTERVAL_MIDPOINTS";
+    public static final String[] ACTIONS = new String[] { ACTION_INTERVAL_MIDPOINTS };
+
+    public String[] getAllActionIDs() {
+        return ACTIONS;
+    }
+    public ContentValues getActionInfo(Context context, String actionID) {
+        if (actionID.equals(ACTION_INTERVAL_MIDPOINTS)) {
+            return createDefaultAction(context);
+        } else return null;
+    }
+
+    public ContentValues createDefaultAction(Context context)
+    {
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_ACTION_NAME, ACTION_INTERVAL_MIDPOINTS);
+        values.put(COLUMN_ACTION_TITLE, context.getString(R.string.app_name));
+        values.put(COLUMN_ACTION_DESC, context.getString(R.string.app_name));
+        values.put(COLUMN_ACTION_TYPE, SuntimesActionsContract.TYPE_ACTIVITY);
+        values.put(COLUMN_ACTION_CLASS, MainActivity.class.getName());
+        return values;
+    }
+
+    public Cursor queryActionInfo(@Nullable String actionName, @NonNull Uri uri, @Nullable String[] projection, HashMap<String, String> selectionMap, @Nullable String sortOrder)
+    {
+        Log.d("DEBUG", "queryActionInfo: " + actionName);
+        String[] columns = (projection != null ? projection : SuntimesActionsContract.QUERY_ACTION_PROJECTION_MIN);
+        MatrixCursor cursor = new MatrixCursor(columns);
+
+        Context context = getContext();
+        if (context != null)
+        {
+            String[] actions = (actionName != null) ? new String[] { actionName } : getAllActionIDs();
+            for (int j=0; j<actions.length; j++)
+            {
+                ContentValues actionValues = getActionInfo(context, actions[j]);
+                Object[] row = new Object[columns.length];
+                for (int i=0; i<columns.length; i++) {
+                    row[i] = actionValues.getAsString(columns[i]);
+                }
+                cursor.addRow(row);
+            }
+
+        } else Log.d("DEBUG", "context is null!");
         return cursor;
     }
 

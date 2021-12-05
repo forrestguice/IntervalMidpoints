@@ -25,6 +25,14 @@
             </intent-filter>
             <meta-data android:name="SuntimesMenuItemTitle" android:value="@string/app_name" />
 
+            <!-- tell Suntimes this app provides custom actions -->
+            <intent-filter>
+                <action android:name="suntimes.action.ADDON_ACTION" />
+                <category android:name="suntimes.SUNTIMES_ACTION" />
+            </intent-filter>
+            <meta-data android:name="ActionInfoProvider"
+                android:value="content://suntimes.intervalmidpoints.provider" />
+
         </activity>
 
         <activity android:name=".AlarmActivity">

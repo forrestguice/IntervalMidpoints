@@ -19,6 +19,7 @@
 
 package com.forrestguice.suntimes.intervalmidpoints.data;
 
+import com.forrestguice.suntimes.actions.SuntimesActionsContract;
 import com.forrestguice.suntimes.alarm.AlarmEventContract;
 
 public interface IntervalMidpointsProviderContract
@@ -42,6 +43,19 @@ public interface IntervalMidpointsProviderContract
             COLUMN_CONFIG_PROVIDER_VERSION, COLUMN_CONFIG_PROVIDER_VERSION_CODE,
             COLUMN_CONFIG_APP_VERSION, COLUMN_CONFIG_APP_VERSION_CODE
     };
+
+    /**
+     * ACTIONS
+     */
+    String COLUMN_ACTION_CLASS = SuntimesActionsContract.COLUMN_ACTION_CLASS;
+    String COLUMN_ACTION_DESC = SuntimesActionsContract.COLUMN_ACTION_DESC;
+    String COLUMN_ACTION_NAME = SuntimesActionsContract.COLUMN_ACTION_NAME;
+    String COLUMN_ACTION_TITLE = SuntimesActionsContract.COLUMN_ACTION_TITLE;
+    String COLUMN_ACTION_TYPE = SuntimesActionsContract.COLUMN_ACTION_TYPE;
+
+    String QUERY_ACTIONS = SuntimesActionsContract.QUERY_ACTIONS;
+    String[] QUERY_ACTION_PROJECTION_MIN = SuntimesActionsContract.QUERY_ACTION_PROJECTION_MIN;
+    String[] QUERY_ACTION_PROJECTION_FULL = SuntimesActionsContract.QUERY_ACTION_PROJECTION_FULL;
 
     /**
      * ALARMS
