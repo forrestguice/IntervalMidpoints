@@ -93,7 +93,7 @@ public class IntervalMidpointsProvider extends ContentProvider
 
         uriMatcher.addURI(AUTHORITY, QUERY_ACTIONS, URIMATCH_ACTION_INFO);
         uriMatcher.addURI(AUTHORITY, QUERY_ACTIONS + "/*", URIMATCH_ACTION_INFO_FOR_NAME);
-        
+
         uriMatcher.addURI(AUTHORITY, QUERY_EVENT_INFO, URIMATCH_EVENT_INFO);
         uriMatcher.addURI(AUTHORITY, QUERY_EVENT_INFO + "/*", URIMATCH_EVENT_INFO_FOR_NAME);
         uriMatcher.addURI(AUTHORITY, QUERY_EVENT_CALC + "/*", URIMATCH_EVENT_CALC_FOR_NAME);

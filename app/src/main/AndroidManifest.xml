@@ -37,19 +37,19 @@
 
         <activity android:name=".AlarmActivity">
 
-            <!-- tell Suntimes this activity can be used to choose alarms -->
+            <!-- tell Suntimes this activity can be used to choose alarm events -->
             <intent-filter>
-                <action android:name="suntimes.action.PICK_ALARM" />
+                <action android:name="suntimes.action.PICK_EVENT" />
                 <category android:name="suntimes.SUNTIMES_ADDON" />
             </intent-filter>
-            <meta-data android:name="SuntimesAlarmPickerTitle" android:value="@string/app_name" />
+            <meta-data android:name="SuntimesEventPickerTitle" android:value="@string/app_name" />
 
-            <!-- tell Suntimes this app provides addon alarms -->
+            <!-- tell Suntimes this app provides addon alarm events -->
             <intent-filter>
-                <action android:name="suntimes.action.ADDON_ALARM" />
+                <action android:name="suntimes.action.ADDON_EVENT" />
                 <category android:name="suntimes.SUNTIMES_ALARM" />
             </intent-filter>
-            <meta-data android:name="AlarmInfoProvider"
+            <meta-data android:name="EventInfoProvider"
                 android:value="content://suntimes.intervalmidpoints.provider" />
 
         </activity>
