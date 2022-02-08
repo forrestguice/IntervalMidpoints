@@ -1,0 +1,12 @@
+A midpoint calculator add-on for Suntimes.
+
+Features:
+* find the interval between two twilight events.
+* find interval midpoints; divide into 2, 3 or 4 parts.
+* schedule repeating alarms (or notifications).
+
+This is an add-on for Suntimes. It depends on <a href="https://f-droid.org/en/packages/com.forrestguice.suntimeswidget/">Suntimes v0.14.0</a> or later.
+
+The following permissions are required:
+* <small><u>suntimes.permission.READ_CALCULATOR</u></small> is used to read data from the Suntimes provider.
+
