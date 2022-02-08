@@ -19,6 +19,7 @@
 
 package com.forrestguice.suntimes.intervalmidpoints.ui;
 
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -66,6 +67,7 @@ public class AboutDialog extends BottomSheetDialogFragment
     {
         restoreInstanceState(savedState);
 
+        @SuppressLint("RestrictedApi")
         ContextThemeWrapper contextWrapper = new ContextThemeWrapper(getActivity(), themeResID);    // hack: contextWrapper required because base theme is not properly applied
         View dialogContent = inflater.cloneInContext(contextWrapper).inflate(R.layout.dialog_about, parent, false);
 
