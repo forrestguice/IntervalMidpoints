@@ -1,8 +1,6 @@
 # Interval Midpoints
 A midpoint calculator add-on for Suntimes. It depends on [Suntimes v0.14.0](https://f-droid.org/en/packages/com.forrestguice.suntimeswidget/) or later.
 
-ATTENTION! This app is `not-yet-released` and may depend on other components in a similar state. Alarm functionality currently depends on the [alarm-addon](https://github.com/forrestguice/SuntimesWidget/tree/alarm-addon) branch of Suntimes.
-
 [![GitHub release](https://img.shields.io/github/release/forrestguice/IntervalMidpoints.svg)](https://github.com/forrestguice/IntervalMidpoints/releases)
 
 * [Donations](#donations)
@@ -15,7 +13,7 @@ Features:
 * find interval midpoints; divide into 2, 3 or 4 parts.
 * schedule repeating alarms (or notifications).
 
-<img alt="screenshot1" src='fastlane/metadata/android/en-US/images/phoneScreenshots/1.png' width="280px" /> <img alt="screenshot1" src='fastlane/metadata/android/en-US/images/phoneScreenshots/2.png' width="280px" />
+<img alt="screenshot1" src='fastlane/metadata/android/en-US/images/phoneScreenshots/1.png' width="280px" />
 
 ## Donations ##
 Do you find value in this software? Please pay as you feel.
