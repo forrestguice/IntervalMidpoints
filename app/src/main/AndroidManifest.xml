@@ -3,6 +3,10 @@
 
     <uses-permission android:name="suntimes.permission.READ_CALCULATOR" />  <!-- required to interact w/ Suntimes provider -->
 
+    <!-- RECEIVE_BOOT_COMPLETED; -most likely not required- but some devices/versions/manufacturers may block?
+         This app doesn't respond to BOOT_COMPLETED directly. It's ContentProvider is triggered by Suntimes
+         while scheduling alarms during BOOT_COMPLETED. -->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <application
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
