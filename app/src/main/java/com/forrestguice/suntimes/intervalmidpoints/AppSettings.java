@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 /*
-    Copyright (C) 2021 Forrest Guice
+    Copyright (C) 2021-2022 Forrest Guice
     This file is part of Suntimes.
 
     Suntimes is free software: you can redistribute it and/or modify
@@ -19,10 +19,18 @@
 
 package com.forrestguice.suntimes.intervalmidpoints;
 
+import android.annotation.SuppressLint;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
+import android.os.Build;
+import android.os.PowerManager;
 import android.preference.PreferenceManager;
+import android.provider.Settings;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 public class AppSettings
 {
@@ -144,6 +152,38 @@ public class AppSettings
     {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         return prefs.getString(KEY_INTERVAL, DEF_INTERVAL);
+    }
+
+    public static boolean isIgnoringBatteryOptimizations(Context context)
+    {
+        if (Build.VERSION.SDK_INT >= 23)
+        {
+            PowerManager powerManager = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
+            if (powerManager != null)
+                return powerManager.isIgnoringBatteryOptimizations(context.getPackageName());
+            else return false;
+        } else return true;
+    }
+    public static void openBatteryOptimizationSettings(final Context context)
+    {
+        if (Build.VERSION.SDK_INT >= 23) {
+            try {
+                context.startActivity( new Intent(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS) );
+            } catch (ActivityNotFoundException e) {
+                Log.e("AppSettings", "Failed to launch battery optimization settings Intent: " + e);
+            }
+        }
+    }
+    @SuppressLint("BatteryLife")
+    public static void requestIgnoreBatteryOptimization(final Context context)
+    {
+        if (Build.VERSION.SDK_INT >= 23) {
+            try {
+                context.startActivity( new Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS, Uri.parse("package:" + context.getPackageName())) );
+            } catch (ActivityNotFoundException e) {
+                Log.e("AppSettings", "Failed to launch battery optimization request Intent: " + e);
+            }
+        }
     }
 
 }

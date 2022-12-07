@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2021 Forrest Guice
+    Copyright (C) 2021-2022 Forrest Guice
     This file is part of Suntimes.
 
     Suntimes is free software: you can redistribute it and/or modify
@@ -18,12 +18,15 @@
 
 package com.forrestguice.suntimes.intervalmidpoints;
 
+import android.Manifest;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.view.ActionMode;
@@ -455,9 +458,17 @@ public class MainActivity extends AppCompatActivity
         if (!SuntimesInfo.checkVersion(this, suntimesInfo))
         {
             View view = getWindow().getDecorView().findViewById(android.R.id.content);
-            if (!suntimesInfo.hasPermission && suntimesInfo.isInstalled)
+            if (!suntimesInfo.hasPermission && suntimesInfo.isInstalled) {
                 Messages.showPermissionDeniedMessage(this, view);
-            else Messages.showMissingDependencyMessage(this, view);
+            } else { Messages.showMissingDependencyMessage(this, view); }
+            return;
+        }
+
+        if (!AppSettings.isIgnoringBatteryOptimizations(this)) {
+            if (PackageManager.PERMISSION_GRANTED == ContextCompat.checkSelfPermission(this, Manifest.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS)) {
+                AppSettings.requestIgnoreBatteryOptimization(this);
+                return;
+            }
         }
     }
 

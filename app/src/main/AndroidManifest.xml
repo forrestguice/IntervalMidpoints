@@ -7,6 +7,9 @@
          This app doesn't respond to BOOT_COMPLETED directly. It's ContentProvider is triggered by Suntimes
          while scheduling alarms during BOOT_COMPLETED. -->
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
+    <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />  <!-- needed for reliable delivery of alarms and notifications -->
+
     <application
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
