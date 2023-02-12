@@ -1,5 +1,5 @@
 
-### v0.1.1 (2023-01-30)
+### v0.1.1 (2023-02-12)
 * adds app launcher icon.
 * adds permissions `RECEIVE_BOOT_COMPLETED` and `REQUEST_IGNORE_BATTERY_OPTIMIZATIONS` [permission].
 * fixes crash when running on Android 11+; adds package visibility queries to the manifest.
