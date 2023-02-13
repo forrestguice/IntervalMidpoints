@@ -230,8 +230,10 @@ public class MainActivity extends AppCompatActivity
         resultsCardAdapter.setSelectedIndex(position);
     }
 
-    private IntervalResultsViewHolder.IntervalResultsAdapterOptions getResultCardOptions(Context context) {
-        return new IntervalResultsViewHolder.IntervalResultsAdapterOptions(context, suntimesInfo, TimeZone.getTimeZone(suntimesInfo.timezone), suntimesInfo.getOptions(context).time_is24);
+    private IntervalResultsViewHolder.IntervalResultsAdapterOptions getResultCardOptions(Context context)
+    {
+        TimeZone tz = (suntimesInfo.timezone != null ? TimeZone.getTimeZone(suntimesInfo.timezone) : TimeZone.getDefault());
+        return new IntervalResultsViewHolder.IntervalResultsAdapterOptions(context, suntimesInfo, tz, suntimesInfo.getOptions(context).time_is24);
     }
 
     private View.OnClickListener getClickListener(final Spinner spinner) {
@@ -443,7 +445,9 @@ public class MainActivity extends AppCompatActivity
     {
         super.onResume();
         String appTheme = SuntimesInfo.queryAppTheme(getContentResolver());
-        if (appTheme != null && !appTheme.equals(suntimesInfo.appTheme)) {
+        if (appTheme != null && suntimesInfo != null && suntimesInfo.appTheme != null
+                && !appTheme.equals(suntimesInfo.appTheme))
+        {
             recreate();
         } else {
             suntimesInfo = SuntimesInfo.queryInfo(MainActivity.this);    // refresh suntimesInfo
