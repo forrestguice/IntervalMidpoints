@@ -358,7 +358,7 @@ public class MainActivity extends AppCompatActivity
         if (actionBar != null)
         {
             actionBar.setTitle(param_location != null ? param_location : createTitle(suntimesInfo));
-            actionBar.setSubtitle(SuntimesUtils.formatLocation(this, param_latitude, param_longitude, (options.use_altitude ? param_altitude : 0), 4, options.length_units));
+            actionBar.setSubtitle(param_location != null ? SuntimesUtils.formatLocation(this, param_latitude, param_longitude, (options.use_altitude ? param_altitude : 0), 4, options.length_units) : null);
         }
 
         TimeZone timezone = getTimeZone();
@@ -408,6 +408,7 @@ public class MainActivity extends AppCompatActivity
 
         } else {
             text_midpoints.setText("");
+            text_period.setText("");
         }
     }
 
