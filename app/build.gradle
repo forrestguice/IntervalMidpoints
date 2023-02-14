@@ -27,7 +27,7 @@ android {
 }
 
 dependencies {
-    implementation 'com.github.forrestguice:SuntimesAddon:v0.3.0'
+    implementation 'com.github.forrestguice:SuntimesAddon:6f43522994'
     //noinspection GradleCompatible
     implementation 'com.android.support:design:28.0.0'
     //noinspection GradleCompatible
