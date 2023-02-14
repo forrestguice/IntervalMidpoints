@@ -19,6 +19,7 @@
 package com.forrestguice.suntimes.intervalmidpoints;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
@@ -26,6 +27,7 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -43,6 +45,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.forrestguice.suntimes.addon.AddonHelper;
+import com.forrestguice.suntimes.addon.AppThemeInfo;
 import com.forrestguice.suntimes.addon.LocaleHelper;
 import com.forrestguice.suntimes.addon.SuntimesInfo;
 import com.forrestguice.suntimes.addon.ui.Messages;
@@ -82,6 +85,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void attachBaseContext(Context context)
     {
+        AppThemeInfo.setFactory(new AppThemes());
         suntimesInfo = SuntimesInfo.queryInfo(context);    // obtain Suntimes version info
         super.attachBaseContext( (suntimesInfo != null && suntimesInfo.appLocale != null) ?    // override the locale
                 LocaleHelper.loadLocale(context, suntimesInfo.appLocale) : context );
@@ -91,7 +95,7 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (suntimesInfo.appTheme != null) {    // override the theme
-            setTheme(getThemeResID(suntimesInfo.appTheme));
+            AppThemeInfo.setTheme(this, suntimesInfo.appTheme);
         }
         setContentView(R.layout.activity_main);
 
@@ -549,7 +553,7 @@ public class MainActivity extends AppCompatActivity
     {
         HelpDialog dialog = new HelpDialog();
         if (suntimesInfo != null && suntimesInfo.appTheme != null) {
-            dialog.setTheme(getThemeResID(suntimesInfo.appTheme));
+            dialog.setTheme(getThemeResID(MainActivity.this, suntimesInfo.appTheme));
         }
 
         String[] help = getResources().getStringArray(R.array.help_topics);
@@ -571,21 +575,14 @@ public class MainActivity extends AppCompatActivity
         if (suntimesInfo != null) {
             dialog.setVersion(suntimesInfo);
             if (suntimesInfo.appTheme != null) {
-                dialog.setTheme(getThemeResID(suntimesInfo.appTheme));
+                dialog.setTheme(getThemeResID(null, suntimesInfo.appTheme));
             }
         }
         return dialog;
     }
 
-    public static int getThemeResID(@NonNull String themeName)
-    {
-        String themePrefix = themeName.substring(0, themeName.lastIndexOf("_"));
-        switch (themePrefix)
-        {
-            case SuntimesInfo.THEME_SYSTEM: return R.style.AppTheme_System;
-            case SuntimesInfo.THEME_LIGHT: return R.style.AppTheme_Light;
-            case SuntimesInfo.THEME_DARK: default: return R.style.AppTheme_Dark;
-        }
+    public static int getThemeResID(Context context, @NonNull String themeName) {
+        return AppThemeInfo.themePrefToStyleId(context, themeName);
     }
 
     /**
