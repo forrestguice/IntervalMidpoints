@@ -10,7 +10,7 @@
         android:layout_width="wrap_content" android:layout_height="match_parent"
         android:layout_gravity="center">
 
-        <TextView tools:text="9:30 PM" style="@style/ChipText"
+        <TextView tools:text="9:30 PM" style="@style/ChipText" android:textSize="?attr/text_size_small"
             android:id="@+id/text_time" android:gravity="center" android:minHeight="32dp" android:minWidth="96dp"
             android:layout_width="wrap_content" android:layout_height="match_parent" />
 

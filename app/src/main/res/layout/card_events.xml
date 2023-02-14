@@ -15,10 +15,12 @@
 
     <TextView android:id="@+id/text_interval"
         android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:textSize="?attr/text_size_small"
         android:text="@string/interval_msg0"  android:layout_marginTop="8dp" />
 
     <TextView
         android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:textSize="?attr/text_size_small"
         android:text="@string/interval_msg1" android:layout_marginBottom="8dp" />
 
     <LinearLayout android:id="@+id/layout_startevent"
@@ -35,6 +37,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp" android:layout_marginLeft="8dp"
+            android:textSize="?attr/text_size_small"
             tools:text="from 5:33 PM" />
 
     </LinearLayout>
@@ -52,6 +55,7 @@
         <TextView android:id="@+id/text_endevent"
             android:layout_width="wrap_content" android:layout_height="wrap_content"
             android:layout_marginStart="8dp" android:layout_marginLeft="8dp"
+            android:textSize="?attr/text_size_small"
             tools:text="to 5:25 AM" />
 
     </LinearLayout>
