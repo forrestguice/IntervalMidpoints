@@ -438,7 +438,11 @@ public class MainActivity extends AppCompatActivity
         data = new IntervalMidpointsData(AppSettings.getIntervalID(eventValues[startPosition], eventValues[endPosition]), param_latitude, param_longitude, (options.use_altitude ? param_altitude : 0));
         data.setDate(Calendar.getInstance().getTimeInMillis());
         data.setDivideBy(divideBy);
-        calculator.calculateData(this, data);
+        try {
+            calculator.calculateData(this, data);
+        } catch (SecurityException e) {
+            Log.e("initData", "SecurityException: " + e);
+        }
     }
 
     @Override

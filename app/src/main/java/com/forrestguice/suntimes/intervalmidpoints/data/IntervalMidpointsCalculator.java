@@ -38,7 +38,7 @@ public class IntervalMidpointsCalculator
     public IntervalMidpointsCalculator() {
     }
 
-    public boolean calculateData(@NonNull Context context, @NonNull IntervalMidpointsData data)
+    public boolean calculateData(@NonNull Context context, @NonNull IntervalMidpointsData data) throws SecurityException
     {
         if (data.date == -1L) {
             data.date = Calendar.getInstance().getTimeInMillis();
@@ -90,7 +90,7 @@ public class IntervalMidpointsCalculator
         return result;
     }
 
-    public long[] queryTwilight(ContentResolver resolver, String[] projection, long date, double latitude, double longitude, double altitude)
+    public long[] queryTwilight(ContentResolver resolver, String[] projection, long date, double latitude, double longitude, double altitude) throws SecurityException
     {
         long[] retValue = new long[projection.length];
         Arrays.fill(retValue, -1);
