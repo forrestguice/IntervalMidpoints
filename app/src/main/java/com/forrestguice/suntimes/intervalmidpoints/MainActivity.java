@@ -477,10 +477,23 @@ public class MainActivity extends AppCompatActivity
 
         if (!AppSettings.isIgnoringBatteryOptimizations(this)) {
             if (PackageManager.PERMISSION_GRANTED == ContextCompat.checkSelfPermission(this, Manifest.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS)) {
-                AppSettings.requestIgnoreBatteryOptimization(this);
+                View view = getWindow().getDecorView().findViewById(android.R.id.content);
+                showBatteryOptimizationMessage(this, view);
                 return;
             }
         }
+    }
+
+    public static Snackbar showBatteryOptimizationMessage(final Activity context, View view)
+    {
+        CharSequence message = context.getString(R.string.battery_optimization_warning);
+        return Messages.showMessage(context, view, message, 18, 3, Snackbar.LENGTH_LONG, new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v) {
+                AppSettings.requestIgnoreBatteryOptimization(context);
+            }
+        });
     }
 
     @SuppressWarnings("RestrictedApi")

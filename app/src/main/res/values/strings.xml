@@ -103,4 +103,6 @@
     </string-array>
     <string name="help_configuration"><![CDATA[<h4>App Configuration</h4>The location and other options are configured from Suntimes.]]></string>
 
+    <string name="battery_optimization_warning">Battery optimization is enabled!</string> <!-- TODO -->
+
 </resources>
