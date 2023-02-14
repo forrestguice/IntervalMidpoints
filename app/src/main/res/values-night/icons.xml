@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <drawable name="ic_done_ref">@drawable/ic_done</drawable>
+    <drawable name="ic_help_ref">@drawable/ic_help</drawable>
+    <drawable name="ic_about_ref">@drawable/ic_about</drawable>
+
+    <drawable name="chip_ref">@drawable/chip_dark</drawable>
+    <drawable name="chip_tray_ref">@drawable/chip_tray_dark</drawable>
+</resources>

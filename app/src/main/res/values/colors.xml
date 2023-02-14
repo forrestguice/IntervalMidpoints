@@ -3,6 +3,14 @@
 
     <color name="ic_launcher_background">#212021</color>
 
+    <!-- night overrideable -->
+
+    <color name="colorDate">@color/colorDate_light</color>
+    <color name="colorLabel">@color/colorLabel_light</color>
+    <color name="colorTime">@color/colorTime_light</color>
+    <color name="colorValue">@color/colorValue_light</color>
+
+
     <!-- light theme colors -->
 
     <color name="colorPrimary_light">@color/grey_100</color>

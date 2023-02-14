@@ -564,8 +564,15 @@ public class MainActivity extends AppCompatActivity
         return dialog;
     }
 
-    public static int getThemeResID(@NonNull String themeName) {
-        return themeName.equals(SuntimesInfo.THEME_LIGHT) ? R.style.AppTheme_Light : R.style.AppTheme_Dark;
+    public static int getThemeResID(@NonNull String themeName)
+    {
+        String themePrefix = themeName.substring(0, themeName.lastIndexOf("_"));
+        switch (themePrefix)
+        {
+            case SuntimesInfo.THEME_SYSTEM: return R.style.AppTheme_System;
+            case SuntimesInfo.THEME_LIGHT: return R.style.AppTheme_Light;
+            case SuntimesInfo.THEME_DARK: default: return R.style.AppTheme_Dark;
+        }
     }
 
     /**

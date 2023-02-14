@@ -2,6 +2,25 @@
 
     <style name="AppTheme" parent="AppTheme.Dark" />
 
+    <!-- System Theme -->
+    <style name="AppTheme.System" parent="SuntimesAddonTheme.System">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorAction">@color/colorAction</item>
+        <item name="colorDisabled">@color/colorDisabled</item>
+        <item name="toolbarTheme">@style/ThemeOverlay.AppCompat.ActionBar</item>
+        <item name="chipBackground">@drawable/chip_ref</item>
+        <item name="chipTrayBackground">@drawable/chip_tray_ref</item>
+        <item name="icDone">@drawable/ic_done_ref</item>
+        <item name="icHelp">@drawable/ic_help_ref</item>
+        <item name="icAbout">@drawable/ic_about_ref</item>
+        <item name="colorDate">@color/colorDate</item>
+        <item name="colorLabel">@color/colorLabel</item>
+        <item name="colorSelect">@color/colorAccent</item>
+        <item name="windowActionModeOverlay">true</item>
+    </style>
+
     <!-- Dark Theme -->
     <style name="AppTheme.Dark" parent="SuntimesAddonTheme.Dark">
         <item name="colorPrimary">@color/colorPrimary_dark</item>
