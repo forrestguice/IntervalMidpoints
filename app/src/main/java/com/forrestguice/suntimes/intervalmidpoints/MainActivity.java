@@ -100,6 +100,7 @@ public class MainActivity extends AppCompatActivity
 
         initViews();
         loadUserInput();
+        checkVersion();    // check dependencies and display warnings
     }
 
     protected void initLocation(Intent intent)
@@ -351,7 +352,6 @@ public class MainActivity extends AppCompatActivity
 
     protected void updateViews()
     {
-        checkVersion();    // check dependencies and display warnings
         SuntimesInfo.SuntimesOptions options = suntimesInfo.getOptions(this);
 
         ActionBar actionBar = getSupportActionBar();
