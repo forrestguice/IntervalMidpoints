@@ -20,6 +20,36 @@
         <item name="colorSelect">@color/colorAccent</item>
         <item name="windowActionModeOverlay">true</item>
     </style>
+    <style name="AppTheme.System.Small" parent="AppTheme.System">
+        <item name="text_size_tiny">@dimen/smalltext_size_tiny</item>
+        <item name="text_size_xsmall">@dimen/smalltext_size_xsmall</item>
+        <item name="text_size_small">@dimen/smalltext_size_small</item>
+        <item name="text_size_medium">@dimen/smalltext_size_medium</item>
+        <item name="text_size_large">@dimen/smalltext_size_large</item>
+        <item name="text_size_xlarge">@dimen/smalltext_size_xlarge</item>
+        <item name="text_size_huge">@dimen/smalltext_size_huge</item>
+        <item name="text_size_enormous">@dimen/smalltext_size_enormous</item>
+    </style>
+    <style name="AppTheme.System.Large" parent="AppTheme.System">
+        <item name="text_size_tiny">@dimen/largetext_size_tiny</item>
+        <item name="text_size_xsmall">@dimen/largetext_size_xsmall</item>
+        <item name="text_size_small">@dimen/largetext_size_small</item>
+        <item name="text_size_medium">@dimen/largetext_size_medium</item>
+        <item name="text_size_large">@dimen/largetext_size_large</item>
+        <item name="text_size_xlarge">@dimen/largetext_size_xlarge</item>
+        <item name="text_size_huge">@dimen/largetext_size_huge</item>
+        <item name="text_size_enormous">@dimen/largetext_size_enormous</item>
+    </style>
+    <style name="AppTheme.System.XLarge" parent="AppTheme.System">
+        <item name="text_size_tiny">@dimen/xlargetext_size_tiny</item>
+        <item name="text_size_xsmall">@dimen/xlargetext_size_xsmall</item>
+        <item name="text_size_small">@dimen/xlargetext_size_small</item>
+        <item name="text_size_medium">@dimen/xlargetext_size_medium</item>
+        <item name="text_size_large">@dimen/xlargetext_size_large</item>
+        <item name="text_size_xlarge">@dimen/xlargetext_size_xlarge</item>
+        <item name="text_size_huge">@dimen/xlargetext_size_huge</item>
+        <item name="text_size_enormous">@dimen/xlargetext_size_enormous</item>
+    </style>
 
     <!-- Dark Theme -->
     <style name="AppTheme.Dark" parent="SuntimesAddonTheme.Dark">
@@ -39,6 +69,36 @@
         <item name="colorSelect">@color/deep_teal_500</item>
         <item name="windowActionModeOverlay">true</item>
     </style>
+    <style name="AppTheme.Dark.Small" parent="AppTheme.Dark">
+        <item name="text_size_tiny">@dimen/smalltext_size_tiny</item>
+        <item name="text_size_xsmall">@dimen/smalltext_size_xsmall</item>
+        <item name="text_size_small">@dimen/smalltext_size_small</item>
+        <item name="text_size_medium">@dimen/smalltext_size_medium</item>
+        <item name="text_size_large">@dimen/smalltext_size_large</item>
+        <item name="text_size_xlarge">@dimen/smalltext_size_xlarge</item>
+        <item name="text_size_huge">@dimen/smalltext_size_huge</item>
+        <item name="text_size_enormous">@dimen/smalltext_size_enormous</item>
+    </style>
+    <style name="AppTheme.Dark.Large" parent="AppTheme.Dark">
+        <item name="text_size_tiny">@dimen/largetext_size_tiny</item>
+        <item name="text_size_xsmall">@dimen/largetext_size_xsmall</item>
+        <item name="text_size_small">@dimen/largetext_size_small</item>
+        <item name="text_size_medium">@dimen/largetext_size_medium</item>
+        <item name="text_size_large">@dimen/largetext_size_large</item>
+        <item name="text_size_xlarge">@dimen/largetext_size_xlarge</item>
+        <item name="text_size_huge">@dimen/largetext_size_huge</item>
+        <item name="text_size_enormous">@dimen/largetext_size_enormous</item>
+    </style>
+    <style name="AppTheme.Dark.XLarge" parent="AppTheme.Dark">
+        <item name="text_size_tiny">@dimen/xlargetext_size_tiny</item>
+        <item name="text_size_xsmall">@dimen/xlargetext_size_xsmall</item>
+        <item name="text_size_small">@dimen/xlargetext_size_small</item>
+        <item name="text_size_medium">@dimen/xlargetext_size_medium</item>
+        <item name="text_size_large">@dimen/xlargetext_size_large</item>
+        <item name="text_size_xlarge">@dimen/xlargetext_size_xlarge</item>
+        <item name="text_size_huge">@dimen/xlargetext_size_huge</item>
+        <item name="text_size_enormous">@dimen/xlargetext_size_enormous</item>
+    </style>
 
     <!-- Light Theme -->
     <style name="AppTheme.Light" parent="SuntimesAddonTheme.Light">
@@ -57,6 +117,36 @@
         <item name="colorLabel">@color/colorLabel_light</item>
         <item name="colorSelect">@color/deep_teal_200</item>
         <item name="windowActionModeOverlay">true</item>
+    </style>
+    <style name="AppTheme.Light.Small" parent="AppTheme.Light">
+        <item name="text_size_tiny">@dimen/smalltext_size_tiny</item>
+        <item name="text_size_xsmall">@dimen/smalltext_size_xsmall</item>
+        <item name="text_size_small">@dimen/smalltext_size_small</item>
+        <item name="text_size_medium">@dimen/smalltext_size_medium</item>
+        <item name="text_size_large">@dimen/smalltext_size_large</item>
+        <item name="text_size_xlarge">@dimen/smalltext_size_xlarge</item>
+        <item name="text_size_huge">@dimen/smalltext_size_huge</item>
+        <item name="text_size_enormous">@dimen/smalltext_size_enormous</item>
+    </style>
+    <style name="AppTheme.Light.Large" parent="AppTheme.Light">
+        <item name="text_size_tiny">@dimen/largetext_size_tiny</item>
+        <item name="text_size_xsmall">@dimen/largetext_size_xsmall</item>
+        <item name="text_size_small">@dimen/largetext_size_small</item>
+        <item name="text_size_medium">@dimen/largetext_size_medium</item>
+        <item name="text_size_large">@dimen/largetext_size_large</item>
+        <item name="text_size_xlarge">@dimen/largetext_size_xlarge</item>
+        <item name="text_size_huge">@dimen/largetext_size_huge</item>
+        <item name="text_size_enormous">@dimen/largetext_size_enormous</item>
+    </style>
+    <style name="AppTheme.Light.XLarge" parent="AppTheme.Light">
+        <item name="text_size_tiny">@dimen/xlargetext_size_tiny</item>
+        <item name="text_size_xsmall">@dimen/xlargetext_size_xsmall</item>
+        <item name="text_size_small">@dimen/xlargetext_size_small</item>
+        <item name="text_size_medium">@dimen/xlargetext_size_medium</item>
+        <item name="text_size_large">@dimen/xlargetext_size_large</item>
+        <item name="text_size_xlarge">@dimen/xlargetext_size_xlarge</item>
+        <item name="text_size_huge">@dimen/xlargetext_size_huge</item>
+        <item name="text_size_enormous">@dimen/xlargetext_size_enormous</item>
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
