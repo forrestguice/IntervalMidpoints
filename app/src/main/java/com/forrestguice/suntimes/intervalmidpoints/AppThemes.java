@@ -20,11 +20,11 @@
 package com.forrestguice.suntimes.intervalmidpoints;
 
 import android.content.Context;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDelegate;
 
 import com.forrestguice.suntimes.addon.AppThemeInfo;
 import com.forrestguice.suntimes.addon.SuntimesInfo;
+import com.forrestguice.suntimes.annotation.Nullable;
 
 public class AppThemes extends AppThemeInfo.AppThemeInfoFactory
 {
