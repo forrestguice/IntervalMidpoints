@@ -95,7 +95,7 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (suntimesInfo.appTheme != null) {    // override the theme
-            AppThemeInfo.setTheme(this, suntimesInfo.appTheme);
+            AppThemeInfo.setTheme(this, suntimesInfo);
         }
         setContentView(R.layout.activity_main);
 

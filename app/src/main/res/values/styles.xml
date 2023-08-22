@@ -59,6 +59,57 @@
         <item name="bottomBarSize">@dimen/xlarge_bottombar_size</item>
     </style>
 
+    <!-- System Theme (Contrast) -->
+    <style name="AppTheme.System1" parent="AppTheme.System">
+        <item name="colorPrimary">@color/colorPrimary_contrast</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark_contrast</item>
+        <item name="colorAccent">@color/colorAccent_contrast</item>
+        <item name="colorAction">@color/colorAction_contrast</item>
+        <item name="colorDisabled">@color/colorDisabled_contrast</item>
+        <item name="chipBackground">@drawable/chip_ref</item>
+        <item name="chipTrayBackground">@drawable/chip_tray_ref</item>
+        <item name="colorDate">@color/colorDate_contrast</item>
+        <item name="colorLabel">@color/colorLabel_contrast</item>
+        <item name="colorSelect">@color/colorAccent_contrast</item>
+        <item name="android:windowBackground">@color/window_bg_contrast</item>
+    </style>
+    <style name="AppTheme.System1.Small" parent="AppTheme.System1">
+        <item name="text_size_tiny">@dimen/smalltext_size_tiny</item>
+        <item name="text_size_xsmall">@dimen/smalltext_size_xsmall</item>
+        <item name="text_size_small">@dimen/smalltext_size_small</item>
+        <item name="text_size_medium">@dimen/smalltext_size_medium</item>
+        <item name="text_size_large">@dimen/smalltext_size_large</item>
+        <item name="text_size_xlarge">@dimen/smalltext_size_xlarge</item>
+        <item name="text_size_huge">@dimen/smalltext_size_huge</item>
+        <item name="text_size_enormous">@dimen/smalltext_size_enormous</item>
+        <item name="actionBarSize">@dimen/small_actionbar_size</item>
+        <item name="bottomBarSize">@dimen/small_bottombar_size</item>
+    </style>
+    <style name="AppTheme.System1.Large" parent="AppTheme.System1">
+        <item name="text_size_tiny">@dimen/largetext_size_tiny</item>
+        <item name="text_size_xsmall">@dimen/largetext_size_xsmall</item>
+        <item name="text_size_small">@dimen/largetext_size_small</item>
+        <item name="text_size_medium">@dimen/largetext_size_medium</item>
+        <item name="text_size_large">@dimen/largetext_size_large</item>
+        <item name="text_size_xlarge">@dimen/largetext_size_xlarge</item>
+        <item name="text_size_huge">@dimen/largetext_size_huge</item>
+        <item name="text_size_enormous">@dimen/largetext_size_enormous</item>
+        <item name="actionBarSize">@dimen/large_actionbar_size</item>
+        <item name="bottomBarSize">@dimen/large_bottombar_size</item>
+    </style>
+    <style name="AppTheme.System1.XLarge" parent="AppTheme.System1">
+        <item name="text_size_tiny">@dimen/xlargetext_size_tiny</item>
+        <item name="text_size_xsmall">@dimen/xlargetext_size_xsmall</item>
+        <item name="text_size_small">@dimen/xlargetext_size_small</item>
+        <item name="text_size_medium">@dimen/xlargetext_size_medium</item>
+        <item name="text_size_large">@dimen/xlargetext_size_large</item>
+        <item name="text_size_xlarge">@dimen/xlargetext_size_xlarge</item>
+        <item name="text_size_huge">@dimen/xlargetext_size_huge</item>
+        <item name="text_size_enormous">@dimen/xlargetext_size_enormous</item>
+        <item name="actionBarSize">@dimen/xlarge_actionbar_size</item>
+        <item name="bottomBarSize">@dimen/xlarge_bottombar_size</item>
+    </style>
+
     <!-- Dark Theme -->
     <style name="AppTheme.Dark" parent="SuntimesAddonTheme.Dark">
         <item name="colorPrimary">@color/colorPrimary_dark</item>
@@ -116,6 +167,57 @@
         <item name="bottomBarSize">@dimen/xlarge_bottombar_size</item>
     </style>
 
+    <!-- Dark Theme (Contrast) -->
+    <style name="AppTheme.Dark1" parent="AppTheme.Dark">
+        <item name="colorPrimary">@color/colorPrimary_contrast_dark</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark_contrast_dark</item>
+        <item name="colorAccent">@color/colorAccent_contrast_dark</item>
+        <item name="colorAction">@color/colorAction_contrast_dark</item>
+        <item name="colorDisabled">@color/colorDisabled_contrast_dark</item>
+        <item name="chipBackground">@drawable/chip_dark</item>
+        <item name="chipTrayBackground">@drawable/chip_tray_dark</item>
+        <item name="colorDate">@color/colorDate_contrast_dark</item>
+        <item name="colorLabel">@color/colorLabel_contrast_dark</item>
+        <item name="colorSelect">@color/deep_teal_500</item>
+        <item name="android:windowBackground">@color/window_bg_contrast_dark</item>
+    </style>
+    <style name="AppTheme.Dark1.Small" parent="AppTheme.Dark1">
+        <item name="text_size_tiny">@dimen/smalltext_size_tiny</item>
+        <item name="text_size_xsmall">@dimen/smalltext_size_xsmall</item>
+        <item name="text_size_small">@dimen/smalltext_size_small</item>
+        <item name="text_size_medium">@dimen/smalltext_size_medium</item>
+        <item name="text_size_large">@dimen/smalltext_size_large</item>
+        <item name="text_size_xlarge">@dimen/smalltext_size_xlarge</item>
+        <item name="text_size_huge">@dimen/smalltext_size_huge</item>
+        <item name="text_size_enormous">@dimen/smalltext_size_enormous</item>
+        <item name="actionBarSize">@dimen/small_actionbar_size</item>
+        <item name="bottomBarSize">@dimen/small_bottombar_size</item>
+    </style>
+    <style name="AppTheme.Dark1.Large" parent="AppTheme.Dark1">
+        <item name="text_size_tiny">@dimen/largetext_size_tiny</item>
+        <item name="text_size_xsmall">@dimen/largetext_size_xsmall</item>
+        <item name="text_size_small">@dimen/largetext_size_small</item>
+        <item name="text_size_medium">@dimen/largetext_size_medium</item>
+        <item name="text_size_large">@dimen/largetext_size_large</item>
+        <item name="text_size_xlarge">@dimen/largetext_size_xlarge</item>
+        <item name="text_size_huge">@dimen/largetext_size_huge</item>
+        <item name="text_size_enormous">@dimen/largetext_size_enormous</item>
+        <item name="actionBarSize">@dimen/large_actionbar_size</item>
+        <item name="bottomBarSize">@dimen/large_bottombar_size</item>
+    </style>
+    <style name="AppTheme.Dark1.XLarge" parent="AppTheme.Dark1">
+        <item name="text_size_tiny">@dimen/xlargetext_size_tiny</item>
+        <item name="text_size_xsmall">@dimen/xlargetext_size_xsmall</item>
+        <item name="text_size_small">@dimen/xlargetext_size_small</item>
+        <item name="text_size_medium">@dimen/xlargetext_size_medium</item>
+        <item name="text_size_large">@dimen/xlargetext_size_large</item>
+        <item name="text_size_xlarge">@dimen/xlargetext_size_xlarge</item>
+        <item name="text_size_huge">@dimen/xlargetext_size_huge</item>
+        <item name="text_size_enormous">@dimen/xlargetext_size_enormous</item>
+        <item name="actionBarSize">@dimen/xlarge_actionbar_size</item>
+        <item name="bottomBarSize">@dimen/xlarge_bottombar_size</item>
+    </style>
+
     <!-- Light Theme -->
     <style name="AppTheme.Light" parent="SuntimesAddonTheme.Light">
         <item name="colorPrimary">@color/colorPrimary_light</item>
@@ -161,6 +263,57 @@
         <item name="bottomBarSize">@dimen/large_bottombar_size</item>
     </style>
     <style name="AppTheme.Light.XLarge" parent="AppTheme.Light">
+        <item name="text_size_tiny">@dimen/xlargetext_size_tiny</item>
+        <item name="text_size_xsmall">@dimen/xlargetext_size_xsmall</item>
+        <item name="text_size_small">@dimen/xlargetext_size_small</item>
+        <item name="text_size_medium">@dimen/xlargetext_size_medium</item>
+        <item name="text_size_large">@dimen/xlargetext_size_large</item>
+        <item name="text_size_xlarge">@dimen/xlargetext_size_xlarge</item>
+        <item name="text_size_huge">@dimen/xlargetext_size_huge</item>
+        <item name="text_size_enormous">@dimen/xlargetext_size_enormous</item>
+        <item name="actionBarSize">@dimen/xlarge_actionbar_size</item>
+        <item name="bottomBarSize">@dimen/xlarge_bottombar_size</item>
+    </style>
+
+    <!-- Light Theme (Contrast) -->
+    <style name="AppTheme.Light1" parent="AppTheme.Light">
+        <item name="colorPrimary">@color/colorPrimary_contrast_light</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark_contrast_light</item>
+        <item name="colorAccent">@color/colorAccent_contrast_light</item>
+        <item name="colorAction">@color/colorAction_contrast_light</item>
+        <item name="colorDisabled">@color/colorDisabled_contrast_light</item>
+        <item name="chipBackground">@drawable/chip_light</item>
+        <item name="chipTrayBackground">@drawable/chip_tray_light</item>
+        <item name="colorDate">@color/colorDate_contrast_light</item>
+        <item name="colorLabel">@color/colorLabel_contrast_light</item>
+        <item name="colorSelect">@color/deep_teal_200</item>
+        <item name="android:windowBackground">@color/window_bg_contrast_light</item>
+    </style>
+    <style name="AppTheme.Light1.Small" parent="AppTheme.Light1">
+        <item name="text_size_tiny">@dimen/smalltext_size_tiny</item>
+        <item name="text_size_xsmall">@dimen/smalltext_size_xsmall</item>
+        <item name="text_size_small">@dimen/smalltext_size_small</item>
+        <item name="text_size_medium">@dimen/smalltext_size_medium</item>
+        <item name="text_size_large">@dimen/smalltext_size_large</item>
+        <item name="text_size_xlarge">@dimen/smalltext_size_xlarge</item>
+        <item name="text_size_huge">@dimen/smalltext_size_huge</item>
+        <item name="text_size_enormous">@dimen/smalltext_size_enormous</item>
+        <item name="actionBarSize">@dimen/small_actionbar_size</item>
+        <item name="bottomBarSize">@dimen/small_bottombar_size</item>
+    </style>
+    <style name="AppTheme.Light1.Large" parent="AppTheme.Light1">
+        <item name="text_size_tiny">@dimen/largetext_size_tiny</item>
+        <item name="text_size_xsmall">@dimen/largetext_size_xsmall</item>
+        <item name="text_size_small">@dimen/largetext_size_small</item>
+        <item name="text_size_medium">@dimen/largetext_size_medium</item>
+        <item name="text_size_large">@dimen/largetext_size_large</item>
+        <item name="text_size_xlarge">@dimen/largetext_size_xlarge</item>
+        <item name="text_size_huge">@dimen/largetext_size_huge</item>
+        <item name="text_size_enormous">@dimen/largetext_size_enormous</item>
+        <item name="actionBarSize">@dimen/large_actionbar_size</item>
+        <item name="bottomBarSize">@dimen/large_bottombar_size</item>
+    </style>
+    <style name="AppTheme.Light1.XLarge" parent="AppTheme.Light1">
         <item name="text_size_tiny">@dimen/xlargetext_size_tiny</item>
         <item name="text_size_xsmall">@dimen/xlargetext_size_xsmall</item>
         <item name="text_size_small">@dimen/xlargetext_size_small</item>
