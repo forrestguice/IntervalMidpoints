@@ -70,6 +70,11 @@ public class AppThemes extends AppThemeInfo.AppThemeInfoFactory
         return R.style.AppTheme_Dark;
     }
 
+    @Override
+    public void setDefaultNightMode(int mode) {
+        AppCompatDelegate.setDefaultNightMode(mode);
+    }
+
     /* SystemThemeInfo */
     public static class SystemThemeInfo extends AppThemeInfo
     {
