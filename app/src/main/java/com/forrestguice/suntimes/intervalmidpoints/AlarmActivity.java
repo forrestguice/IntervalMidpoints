@@ -100,15 +100,11 @@ public class AlarmActivity extends MainActivity
     public boolean onOptionsItemSelected(MenuItem item)
     {
         int id = item.getItemId();
-        switch (id)
-        {
-            case android.R.id.home:
-                onBackPressed();
-                return true;
-
-            default:
-                return super.onOptionsItemSelected(item);
+        if (id == android.R.id.home) {
+            onBackPressed();
+            return true;
         }
+        return super.onOptionsItemSelected(item);
     }
 
     /**
@@ -136,12 +132,11 @@ public class AlarmActivity extends MainActivity
         {
             if (midpointID != null)
             {
-                switch (item.getItemId())
+                if (item.getItemId() == R.id.action_select)
                 {
-                    case R.id.action_select:
-                        onDone(midpointID);
-                        mode.finish();
-                        return true;
+                    onDone(midpointID);
+                    mode.finish();
+                    return true;
                 }
             }
             mode.finish();

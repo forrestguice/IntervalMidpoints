@@ -518,23 +518,19 @@ public class MainActivity extends AppCompatActivity
     public boolean onOptionsItemSelected(MenuItem item)
     {
         int id = item.getItemId();
-        switch (id)
-        {
-            case R.id.action_help:
-                showHelp();
-                return true;
+        if (id == R.id.action_help) {
+            showHelp();
+            return true;
 
-            case R.id.action_about:
-                showAbout();
-                return true;
+        } else if (id == R.id.action_about) {
+            showAbout();
+            return true;
 
-            case android.R.id.home:
-                AddonHelper.startSuntimesActivity(this);
-                return true;
-
-            default:
-                return super.onOptionsItemSelected(item);
+        } else if (id == android.R.id.home) {
+            AddonHelper.startSuntimesActivity(this);
+            return true;
         }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -609,21 +605,20 @@ public class MainActivity extends AppCompatActivity
         {
             if (midpointID != null)
             {
-                switch (item.getItemId())
+                int itemId = item.getItemId();
+                if (itemId == R.id.action_alarm || itemId == R.id.action_select)
                 {
-                    case R.id.action_alarm:
-                    case R.id.action_select:
-                        String midpointUri = AlarmHelper.getEventInfoUri(IntervalMidpointsProviderContract.AUTHORITY, midpointID);
-                        String label = IntervalMidpointsProvider.getEventTitle(MainActivity.this, midpointID);
-                        try {
-                            startActivity(AddonHelper.scheduleAlarm("ALARM", label, -1, -1, getTimeZone(), midpointUri));
+                    String midpointUri = AlarmHelper.getEventInfoUri(IntervalMidpointsProviderContract.AUTHORITY, midpointID);
+                    String label = IntervalMidpointsProvider.getEventTitle(MainActivity.this, midpointID);
+                    try {
+                        startActivity(AddonHelper.scheduleAlarm("ALARM", label, -1, -1, getTimeZone(), midpointUri));
 
-                        } catch (ActivityNotFoundException e) {
-                            Log.e(getClass().getSimpleName(), "Failed to schedule alarm: " + e);
-                            // TODO: display user visible error message?
-                        }
-                        mode.finish();
-                        return true;
+                    } catch (ActivityNotFoundException e) {
+                        Log.e(getClass().getSimpleName(), "Failed to schedule alarm: " + e);
+                        // TODO: display user visible error message?
+                    }
+                    mode.finish();
+                    return true;
                 }
             }
             mode.finish();
