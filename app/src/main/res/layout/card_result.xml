@@ -38,7 +38,7 @@
         android:textSize="?attr/text_size_small"
         tools:text="Midpoints occur at " />
 
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/resultsView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />

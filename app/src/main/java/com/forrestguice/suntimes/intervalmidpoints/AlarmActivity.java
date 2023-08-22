@@ -23,9 +23,9 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
-import android.support.v7.app.ActionBar;
-import android.support.v7.view.ActionMode;
-import android.support.v7.widget.Toolbar;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.view.ActionMode;
+import androidx.appcompat.widget.Toolbar;
 
 import android.view.Menu;
 import android.view.MenuItem;
@@ -128,7 +128,7 @@ public class AlarmActivity extends MainActivity
         }
 
         @Override
-        public boolean onActionItemClicked(android.support.v7.view.ActionMode mode, MenuItem item)
+        public boolean onActionItemClicked(androidx.appcompat.view.ActionMode mode, MenuItem item)
         {
             if (midpointID != null)
             {

@@ -25,16 +25,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.view.ActionMode;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import com.google.android.material.snackbar.Snackbar;
+import androidx.core.content.ContextCompat;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.view.ActionMode;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -601,7 +601,7 @@ public class MainActivity extends AppCompatActivity
         }
 
         @Override
-        public boolean onActionItemClicked(android.support.v7.view.ActionMode mode, MenuItem item)
+        public boolean onActionItemClicked(androidx.appcompat.view.ActionMode mode, MenuItem item)
         {
             if (midpointID != null)
             {
@@ -629,7 +629,7 @@ public class MainActivity extends AppCompatActivity
     /**
      * AlarmActionCompat
      */
-    public static abstract class MidpointActionCompat implements android.support.v7.view.ActionMode.Callback
+    public static abstract class MidpointActionCompat implements androidx.appcompat.view.ActionMode.Callback
     {
         public MidpointActionCompat() {}
         protected abstract int getMenuResId();
@@ -640,7 +640,7 @@ public class MainActivity extends AppCompatActivity
         }
 
         @Override
-        public boolean onCreateActionMode(android.support.v7.view.ActionMode mode, Menu menu)
+        public boolean onCreateActionMode(androidx.appcompat.view.ActionMode mode, Menu menu)
         {
             MenuInflater inflater = mode.getMenuInflater();
             inflater.inflate(getMenuResId(), menu);
@@ -648,7 +648,7 @@ public class MainActivity extends AppCompatActivity
         }
 
         @Override
-        public boolean onPrepareActionMode(android.support.v7.view.ActionMode mode, Menu menu)
+        public boolean onPrepareActionMode(androidx.appcompat.view.ActionMode mode, Menu menu)
         {
             Messages.forceActionBarIcons(menu);
             return false;

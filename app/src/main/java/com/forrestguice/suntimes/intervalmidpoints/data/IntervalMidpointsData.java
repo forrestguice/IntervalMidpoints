@@ -19,7 +19,7 @@
 
 package com.forrestguice.suntimes.intervalmidpoints.data;
 
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 import com.forrestguice.suntimes.intervalmidpoints.AppSettings;
 
