@@ -491,7 +491,7 @@ public class MainActivity extends AppCompatActivity
     public static Snackbar showBatteryOptimizationMessage(final Activity context, View view)
     {
         CharSequence message = context.getString(R.string.battery_optimization_warning);
-        return Messages.showMessage(context, view, message, 18, 3, Snackbar.LENGTH_LONG, new View.OnClickListener()
+        return Messages.showMessage(context, view, message, 18, 3, 12000, new View.OnClickListener()
         {
             @Override
             public void onClick(View v) {
