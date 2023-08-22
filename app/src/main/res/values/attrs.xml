@@ -6,4 +6,6 @@
     <attr name="colorDate" format="reference" />
     <attr name="colorLabel" format="reference" />
     <attr name="colorSelect" format="reference" />
+
+    <attr name="bottomBarSize" format="reference" />   <!-- TODO: move to SuntimesAddon -->
 </resources>

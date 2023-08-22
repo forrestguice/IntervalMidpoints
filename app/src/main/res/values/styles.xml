@@ -19,6 +19,8 @@
         <item name="colorLabel">@color/colorLabel</item>
         <item name="colorSelect">@color/colorAccent</item>
         <item name="windowActionModeOverlay">true</item>
+        <item name="actionBarSize">@dimen/normal_actionbar_size</item>
+        <item name="bottomBarSize">@dimen/normal_bottombar_size</item>
     </style>
     <style name="AppTheme.System.Small" parent="AppTheme.System">
         <item name="text_size_tiny">@dimen/smalltext_size_tiny</item>
@@ -29,6 +31,8 @@
         <item name="text_size_xlarge">@dimen/smalltext_size_xlarge</item>
         <item name="text_size_huge">@dimen/smalltext_size_huge</item>
         <item name="text_size_enormous">@dimen/smalltext_size_enormous</item>
+        <item name="actionBarSize">@dimen/small_actionbar_size</item>
+        <item name="bottomBarSize">@dimen/small_bottombar_size</item>
     </style>
     <style name="AppTheme.System.Large" parent="AppTheme.System">
         <item name="text_size_tiny">@dimen/largetext_size_tiny</item>
@@ -39,6 +43,8 @@
         <item name="text_size_xlarge">@dimen/largetext_size_xlarge</item>
         <item name="text_size_huge">@dimen/largetext_size_huge</item>
         <item name="text_size_enormous">@dimen/largetext_size_enormous</item>
+        <item name="actionBarSize">@dimen/large_actionbar_size</item>
+        <item name="bottomBarSize">@dimen/large_bottombar_size</item>
     </style>
     <style name="AppTheme.System.XLarge" parent="AppTheme.System">
         <item name="text_size_tiny">@dimen/xlargetext_size_tiny</item>
@@ -49,6 +55,8 @@
         <item name="text_size_xlarge">@dimen/xlargetext_size_xlarge</item>
         <item name="text_size_huge">@dimen/xlargetext_size_huge</item>
         <item name="text_size_enormous">@dimen/xlargetext_size_enormous</item>
+        <item name="actionBarSize">@dimen/xlarge_actionbar_size</item>
+        <item name="bottomBarSize">@dimen/xlarge_bottombar_size</item>
     </style>
 
     <!-- Dark Theme -->
@@ -68,6 +76,8 @@
         <item name="colorLabel">@color/colorLabel_dark</item>
         <item name="colorSelect">@color/deep_teal_500</item>
         <item name="windowActionModeOverlay">true</item>
+        <item name="actionBarSize">@dimen/normal_actionbar_size</item>
+        <item name="bottomBarSize">@dimen/normal_bottombar_size</item>
     </style>
     <style name="AppTheme.Dark.Small" parent="AppTheme.Dark">
         <item name="text_size_tiny">@dimen/smalltext_size_tiny</item>
@@ -78,6 +88,8 @@
         <item name="text_size_xlarge">@dimen/smalltext_size_xlarge</item>
         <item name="text_size_huge">@dimen/smalltext_size_huge</item>
         <item name="text_size_enormous">@dimen/smalltext_size_enormous</item>
+        <item name="actionBarSize">@dimen/small_actionbar_size</item>
+        <item name="bottomBarSize">@dimen/small_bottombar_size</item>
     </style>
     <style name="AppTheme.Dark.Large" parent="AppTheme.Dark">
         <item name="text_size_tiny">@dimen/largetext_size_tiny</item>
@@ -88,6 +100,8 @@
         <item name="text_size_xlarge">@dimen/largetext_size_xlarge</item>
         <item name="text_size_huge">@dimen/largetext_size_huge</item>
         <item name="text_size_enormous">@dimen/largetext_size_enormous</item>
+        <item name="actionBarSize">@dimen/large_actionbar_size</item>
+        <item name="bottomBarSize">@dimen/large_bottombar_size</item>
     </style>
     <style name="AppTheme.Dark.XLarge" parent="AppTheme.Dark">
         <item name="text_size_tiny">@dimen/xlargetext_size_tiny</item>
@@ -98,6 +112,8 @@
         <item name="text_size_xlarge">@dimen/xlargetext_size_xlarge</item>
         <item name="text_size_huge">@dimen/xlargetext_size_huge</item>
         <item name="text_size_enormous">@dimen/xlargetext_size_enormous</item>
+        <item name="actionBarSize">@dimen/xlarge_actionbar_size</item>
+        <item name="bottomBarSize">@dimen/xlarge_bottombar_size</item>
     </style>
 
     <!-- Light Theme -->
@@ -117,6 +133,8 @@
         <item name="colorLabel">@color/colorLabel_light</item>
         <item name="colorSelect">@color/deep_teal_200</item>
         <item name="windowActionModeOverlay">true</item>
+        <item name="actionBarSize">@dimen/normal_actionbar_size</item>
+        <item name="bottomBarSize">@dimen/normal_bottombar_size</item>
     </style>
     <style name="AppTheme.Light.Small" parent="AppTheme.Light">
         <item name="text_size_tiny">@dimen/smalltext_size_tiny</item>
@@ -127,6 +145,8 @@
         <item name="text_size_xlarge">@dimen/smalltext_size_xlarge</item>
         <item name="text_size_huge">@dimen/smalltext_size_huge</item>
         <item name="text_size_enormous">@dimen/smalltext_size_enormous</item>
+        <item name="actionBarSize">@dimen/small_actionbar_size</item>
+        <item name="bottomBarSize">@dimen/small_bottombar_size</item>
     </style>
     <style name="AppTheme.Light.Large" parent="AppTheme.Light">
         <item name="text_size_tiny">@dimen/largetext_size_tiny</item>
@@ -137,6 +157,8 @@
         <item name="text_size_xlarge">@dimen/largetext_size_xlarge</item>
         <item name="text_size_huge">@dimen/largetext_size_huge</item>
         <item name="text_size_enormous">@dimen/largetext_size_enormous</item>
+        <item name="actionBarSize">@dimen/large_actionbar_size</item>
+        <item name="bottomBarSize">@dimen/large_bottombar_size</item>
     </style>
     <style name="AppTheme.Light.XLarge" parent="AppTheme.Light">
         <item name="text_size_tiny">@dimen/xlargetext_size_tiny</item>
@@ -147,6 +169,8 @@
         <item name="text_size_xlarge">@dimen/xlargetext_size_xlarge</item>
         <item name="text_size_huge">@dimen/xlargetext_size_huge</item>
         <item name="text_size_enormous">@dimen/xlargetext_size_enormous</item>
+        <item name="actionBarSize">@dimen/xlarge_actionbar_size</item>
+        <item name="bottomBarSize">@dimen/xlarge_bottombar_size</item>
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
