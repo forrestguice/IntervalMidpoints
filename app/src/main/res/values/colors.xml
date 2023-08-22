@@ -15,6 +15,7 @@
     <color name="colorAccent_contrast">@color/colorAccent_contrast_light</color>
     <color name="colorAction_contrast">@color/colorAction_contrast_light</color>
     <color name="colorDisabled_contrast">@color/colorDisabled_contrast_light</color>
+    <color name="card_contrast">@color/card_contrast_light</color>
     <color name="window_bg_contrast">@color/window_bg_contrast_light</color>
 
     <color name="colorDate_contrast">@color/colorDate_contrast_light</color>
@@ -48,6 +49,7 @@
     <color name="colorAccent_contrast_light">@color/deep_teal_500</color>
     <color name="colorAction_contrast_light">@color/sun_setting_light</color>
     <color name="colorDisabled_contrast_light">#aaaaaa</color>
+    <color name="card_contrast_light">@color/grey_50</color>
     <color name="window_bg_contrast_light">@color/grey_50</color>
 
     <color name="colorDate_contrast_light">@color/colorDate_light</color>
@@ -80,6 +82,7 @@
     <color name="colorAccent_contrast_dark">@color/deep_teal_200</color>
     <color name="colorAction_contrast_dark">@color/sun_setting_dark</color>
     <color name="colorDisabled_contrast_dark">#aaaaaa</color>
+    <color name="card_contrast_dark">@color/grey_999</color>
     <color name="window_bg_contrast_dark">@color/grey_999</color>
 
     <color name="colorDate_contrast_dark">@color/colorDate_dark</color>

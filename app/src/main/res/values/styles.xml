@@ -68,6 +68,7 @@
         <item name="colorDisabled">@color/colorDisabled_contrast</item>
         <item name="chipBackground">@drawable/chip_ref</item>
         <item name="chipTrayBackground">@drawable/chip_tray_ref</item>
+        <item name="suntimesCardBackground">@color/card_contrast</item>
         <item name="colorDate">@color/colorDate_contrast</item>
         <item name="colorLabel">@color/colorLabel_contrast</item>
         <item name="colorSelect">@color/colorAccent_contrast</item>
@@ -176,6 +177,7 @@
         <item name="colorDisabled">@color/colorDisabled_contrast_dark</item>
         <item name="chipBackground">@drawable/chip_dark</item>
         <item name="chipTrayBackground">@drawable/chip_tray_dark</item>
+        <item name="suntimesCardBackground">@color/card_contrast_dark</item>
         <item name="colorDate">@color/colorDate_contrast_dark</item>
         <item name="colorLabel">@color/colorLabel_contrast_dark</item>
         <item name="colorSelect">@color/deep_teal_500</item>
@@ -284,6 +286,7 @@
         <item name="colorDisabled">@color/colorDisabled_contrast_light</item>
         <item name="chipBackground">@drawable/chip_light</item>
         <item name="chipTrayBackground">@drawable/chip_tray_light</item>
+        <item name="suntimesCardBackground">@color/card_contrast_light</item>
         <item name="colorDate">@color/colorDate_contrast_light</item>
         <item name="colorLabel">@color/colorLabel_contrast_light</item>
         <item name="colorSelect">@color/deep_teal_200</item>

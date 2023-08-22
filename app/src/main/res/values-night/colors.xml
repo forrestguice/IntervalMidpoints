@@ -10,5 +10,6 @@
     <color name="colorAccent_contrast">@color/colorAccent_contrast_dark</color>
     <color name="colorAction_contrast">@color/colorAction_contrast_dark</color>
     <color name="colorDisabled_contrast">@color/colorDisabled_contrast_dark</color>
+    <color name="card_contrast">@color/card_contrast_dark</color>
     <color name="window_bg_contrast">@color/window_bg_contrast_dark</color>
 </resources>
