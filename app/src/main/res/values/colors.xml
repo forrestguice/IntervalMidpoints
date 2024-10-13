@@ -10,6 +10,19 @@
     <color name="colorTime">@color/colorTime_light</color>
     <color name="colorValue">@color/colorValue_light</color>
 
+    <color name="colorPrimary_contrast">@color/colorPrimary_contrast_light</color>
+    <color name="colorPrimaryDark_contrast">@color/colorPrimaryDark_contrast_light</color>
+    <color name="colorAccent_contrast">@color/colorAccent_contrast_light</color>
+    <color name="colorAction_contrast">@color/colorAction_contrast_light</color>
+    <color name="colorDisabled_contrast">@color/colorDisabled_contrast_light</color>
+    <color name="card_contrast">@color/card_contrast_light</color>
+    <color name="window_bg_contrast">@color/window_bg_contrast_light</color>
+
+    <color name="colorDate_contrast">@color/colorDate_contrast_light</color>
+    <color name="colorLabel_contrast">@color/colorLabel_contrast_light</color>
+    <color name="colorTime_contrast">@color/colorTime_contrast_light</color>
+    <color name="colorValue_contrast">@color/colorValue_contrast_light</color>
+
 
     <!-- light theme colors -->
 
@@ -29,6 +42,21 @@
     <color name="colorTime_light">#FF4081</color>
     <color name="colorValue_light">#3F51B5</color>
 
+    <!-- light theme colors (contrast) -->
+
+    <color name="colorPrimary_contrast_light">@color/grey_100</color>
+    <color name="colorPrimaryDark_contrast_light">@color/grey_600</color>
+    <color name="colorAccent_contrast_light">@color/deep_teal_500</color>
+    <color name="colorAction_contrast_light">@color/sun_setting_light</color>
+    <color name="colorDisabled_contrast_light">#aaaaaa</color>
+    <color name="card_contrast_light">@color/grey_50</color>
+    <color name="window_bg_contrast_light">@color/grey_50</color>
+
+    <color name="colorDate_contrast_light">@color/colorDate_light</color>
+    <color name="colorLabel_contrast_light">@color/colorLabel_light</color>
+    <color name="colorTime_contrast_light">@color/colorTime_light</color>
+    <color name="colorValue_contrast_light">@color/colorValue_light</color>
+
     <!-- dark theme colors -->
 
     <color name="colorPrimary_dark">@color/grey_900</color>
@@ -46,6 +74,21 @@
     <color name="colorLabel_dark">#FFFFFF</color>
     <color name="colorTime_dark">#FFFFFF</color>
     <color name="colorValue_dark">#3F51B5</color>
+
+    <!-- dark theme colors (contrast) -->
+
+    <color name="colorPrimary_contrast_dark">@color/grey_900</color>
+    <color name="colorPrimaryDark_contrast_dark">@android:color/black</color>
+    <color name="colorAccent_contrast_dark">@color/deep_teal_200</color>
+    <color name="colorAction_contrast_dark">@color/sun_setting_dark</color>
+    <color name="colorDisabled_contrast_dark">#aaaaaa</color>
+    <color name="card_contrast_dark">@color/grey_999</color>
+    <color name="window_bg_contrast_dark">@color/grey_999</color>
+
+    <color name="colorDate_contrast_dark">@color/colorDate_dark</color>
+    <color name="colorLabel_contrast_dark">@color/colorLabel_dark</color>
+    <color name="colorTime_contrast_dark">@color/colorTime_dark</color>
+    <color name="colorValue_contrast_dark">@color/colorValue_dark</color>
 
     <color name="grey_700">#616161</color>
 
