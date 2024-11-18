@@ -1,0 +1,6 @@
+- adds support for system theme (night mode), high contrast themes, and "text size" settings.
+- fixes bug where app icon is not displayed (#5).
+- fixes bug where battery optimization message is displayed repeatedly (#6).
+- fixes crash when Suntimes is not installed (#7).
+- fixes ANR when Suntimes ContentProvider fails to respond.
+- updates targetSdkVersion (30 -> 33), and migrates app to AndroidX.
