@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 /*
-    Copyright (C) 2021 Forrest Guice
+    Copyright (C) 2021-2024 Forrest Guice
     This file is part of Suntimes.
 
     Suntimes is free software: you can redistribute it and/or modify
@@ -19,8 +19,7 @@
 
 package com.forrestguice.suntimes.intervalmidpoints.data;
 
-import androidx.annotation.Nullable;
-
+import com.forrestguice.suntimes.annotation.Nullable;
 import com.forrestguice.suntimes.intervalmidpoints.AppSettings;
 
 import java.util.Calendar;
@@ -112,5 +111,10 @@ public class IntervalMidpointsData
         this.endEvent = interval[1];
         this.divideBy = Integer.parseInt(interval[2]);
         this.index = Integer.parseInt(interval[3]);
+    }
+
+    protected boolean isCalculated = false;
+    public boolean isCalculated() {
+        return isCalculated;
     }
 }

@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 /*
-    Copyright (C) 2021 Forrest Guice
+    Copyright (C) 2021-2024 Forrest Guice
     This file is part of Suntimes.
 
     Suntimes is free software: you can redistribute it and/or modify
@@ -26,8 +26,8 @@ import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.MatrixCursor;
 import android.net.Uri;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+import com.forrestguice.suntimes.annotation.NonNull;
+import com.forrestguice.suntimes.annotation.Nullable;
 import android.util.Log;
 
 import com.forrestguice.suntimes.actions.SuntimesActionsContract;

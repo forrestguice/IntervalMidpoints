@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 /*
-    Copyright (C) 2021 Forrest Guice
+    Copyright (C) 2021-2024 Forrest Guice
     This file is part of Suntimes.
 
     Suntimes is free software: you can redistribute it and/or modify
@@ -23,7 +23,10 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
-import androidx.annotation.NonNull;
+import android.util.Log;
+
+import com.forrestguice.suntimes.annotation.NonNull;
+import com.forrestguice.suntimes.annotation.Nullable;
 
 import com.forrestguice.suntimes.calculator.core.CalculatorProviderContract;
 import com.forrestguice.suntimes.intervalmidpoints.R;
@@ -31,6 +34,13 @@ import com.forrestguice.suntimes.intervalmidpoints.R;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 public class IntervalMidpointsCalculator
 {
@@ -43,28 +53,43 @@ public class IntervalMidpointsCalculator
             data.date = Calendar.getInstance().getTimeInMillis();
         }
 
-        Calendar today = Calendar.getInstance();
-        today.setTimeInMillis(data.date);
-
-        Calendar other = Calendar.getInstance();
-        other.setTimeInMillis(data.date);
-
-        ArrayList<String> eventCollection = new ArrayList<>(Arrays.asList(context.getResources().getStringArray(R.array.event_values)));
-        int startPosition = eventCollection.indexOf(data.startEvent);
-        int endPosition = eventCollection.indexOf(data.endEvent);
-        if (startPosition >= endPosition) {
-            other.add(Calendar.DAY_OF_YEAR, 1);
-        }
-
         ContentResolver resolver = context.getContentResolver();
-        long[] startData = queryTwilight(resolver, new String[] { data.startEvent }, today.getTimeInMillis(), data.latitude, data.longitude, data.altitude);
-        long[] endData = queryTwilight(resolver, new String[] { data.endEvent }, other.getTimeInMillis(), data.latitude, data.longitude, data.altitude);
+        if (resolver != null)
+        {
+            Calendar today = Calendar.getInstance();
+            today.setTimeInMillis(data.date);
 
-        data.startTime = startData[0];
-        data.endTime = endData[0];
-        //Log.d("DEBUG", "startTime: " + data.startTime + " .. endTime: " + data.endTime);
-        calculateMidpoints(context, data);
-        return true;
+            Calendar other = Calendar.getInstance();
+            other.setTimeInMillis(data.date);
+
+            ArrayList<String> eventCollection = new ArrayList<>(Arrays.asList(context.getResources().getStringArray(R.array.event_values)));
+            int startPosition = eventCollection.indexOf(data.startEvent);
+            int endPosition = eventCollection.indexOf(data.endEvent);
+            if (startPosition >= endPosition) {
+                other.add(Calendar.DAY_OF_YEAR, 1);
+            }
+
+            long[] startData = queryTwilightWithTimeout(resolver, new String[] { data.startEvent }, today.getTimeInMillis(), data.latitude, data.longitude, data.altitude, MAX_WAIT_MS);
+            long[] endData = queryTwilightWithTimeout(resolver, new String[] { data.endEvent }, other.getTimeInMillis(), data.latitude, data.longitude, data.altitude, MAX_WAIT_MS);
+
+            if (startData != null && startData.length != 0 || endData != null && endData.length != 0)
+            {
+                data.startTime = startData[0];
+                data.endTime = endData[0];
+                //Log.d("DEBUG", "startTime: " + data.startTime + " .. endTime: " + data.endTime);
+                data.isCalculated = calculateMidpoints(context, data);
+                return data.isCalculated;
+
+            } else {
+                Log.e("calculateData", "queryTwilight failed! result is null or empty!");
+                data.isCalculated = false;
+                return false;
+            }
+        } else {
+            Log.e("calculateData", "queryTwilight failed! contentResolver is null!");
+            data.isCalculated = false;
+            return false;
+        }
     }
 
     public boolean calculateMidpoints(@NonNull Context context, @NonNull IntervalMidpointsData data)
@@ -111,6 +136,32 @@ public class IntervalMidpointsCalculator
             cursor.close();
         }
         return retValue;
+    }
+
+    protected static final long MAX_WAIT_MS = 1000;
+    @Nullable
+    public long[] queryTwilightWithTimeout(ContentResolver resolver, final String[] projection, final long date, final double latitude, final double longitude, final double altitude, long timeoutAfter) throws SecurityException
+    {
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        final Future<long[]> task = executor.submit(new Callable<long[]>()
+        {
+            @Override
+            public long[] call() throws SecurityException {
+                return queryTwilight(resolver, projection, date, latitude, longitude, altitude);
+            }
+        });
+
+        try {
+            return task.get(timeoutAfter, TimeUnit.MILLISECONDS);
+
+        } catch (TimeoutException | InterruptedException | ExecutionException e) {
+            Log.e("calculateData", "queryTwilightWithTimeout: getResult: failed! " + e);
+            return null;
+
+        } finally {
+            task.cancel(true);
+            executor.shutdownNow();
+        }
     }
 
 }

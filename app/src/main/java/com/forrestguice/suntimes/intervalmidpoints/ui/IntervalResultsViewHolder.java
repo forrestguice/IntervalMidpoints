@@ -21,7 +21,6 @@ package com.forrestguice.suntimes.intervalmidpoints.ui;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
-import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -31,6 +30,7 @@ import android.widget.TextView;
 
 import com.forrestguice.suntimes.addon.SuntimesInfo;
 import com.forrestguice.suntimes.addon.ui.SuntimesUtils;
+import com.forrestguice.suntimes.annotation.NonNull;
 import com.forrestguice.suntimes.intervalmidpoints.R;
 
 import java.lang.ref.WeakReference;

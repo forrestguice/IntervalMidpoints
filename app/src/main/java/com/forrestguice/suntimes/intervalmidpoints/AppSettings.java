@@ -29,8 +29,9 @@ import android.os.Build;
 import android.os.PowerManager;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
-import androidx.annotation.Nullable;
 import android.util.Log;
+
+import com.forrestguice.suntimes.annotation.Nullable;
 
 public class AppSettings
 {
