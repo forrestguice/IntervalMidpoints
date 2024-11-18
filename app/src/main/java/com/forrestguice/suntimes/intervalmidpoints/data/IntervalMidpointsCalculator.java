@@ -64,14 +64,19 @@ public class IntervalMidpointsCalculator
             long[] startData = queryTwilight(resolver, new String[] { data.startEvent }, today.getTimeInMillis(), data.latitude, data.longitude, data.altitude);
             long[] endData = queryTwilight(resolver, new String[] { data.endEvent }, other.getTimeInMillis(), data.latitude, data.longitude, data.altitude);
 
-            data.startTime = startData[0];
-            data.endTime = endData[0];
-            //Log.d("DEBUG", "startTime: " + data.startTime + " .. endTime: " + data.endTime);
-            calculateMidpoints(context, data);
-            return true;
+            if (startData != null && startData.length != 0 || endData != null && endData.length != 0)
+            {
+                data.startTime = startData[0];
+                data.endTime = endData[0];
+                //Log.d("DEBUG", "startTime: " + data.startTime + " .. endTime: " + data.endTime);
+                return calculateMidpoints(context, data);
 
+            } else {
+                Log.e("calculateData", "queryTwilight failed! result is null or empty!");
+                return false;
+            }
         } else {
-            Log.e("calculateData", "contentResolver is null!");
+            Log.e("calculateData", "queryTwilight failed! contentResolver is null!");
             return false;
         }
     }
