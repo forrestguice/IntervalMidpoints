@@ -26,6 +26,7 @@ import android.net.Uri;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.forrestguice.suntimes.calculator.core.CalculatorProviderContract;
 import com.forrestguice.suntimes.intervalmidpoints.R;
@@ -33,6 +34,13 @@ import com.forrestguice.suntimes.intervalmidpoints.R;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 public class IntervalMidpointsCalculator
 {
@@ -61,8 +69,8 @@ public class IntervalMidpointsCalculator
                 other.add(Calendar.DAY_OF_YEAR, 1);
             }
 
-            long[] startData = queryTwilight(resolver, new String[] { data.startEvent }, today.getTimeInMillis(), data.latitude, data.longitude, data.altitude);
-            long[] endData = queryTwilight(resolver, new String[] { data.endEvent }, other.getTimeInMillis(), data.latitude, data.longitude, data.altitude);
+            long[] startData = queryTwilightWithTimeout(resolver, new String[] { data.startEvent }, today.getTimeInMillis(), data.latitude, data.longitude, data.altitude, MAX_WAIT_MS);
+            long[] endData = queryTwilightWithTimeout(resolver, new String[] { data.endEvent }, other.getTimeInMillis(), data.latitude, data.longitude, data.altitude, MAX_WAIT_MS);
 
             if (startData != null && startData.length != 0 || endData != null && endData.length != 0)
             {
@@ -125,6 +133,33 @@ public class IntervalMidpointsCalculator
             cursor.close();
         }
         return retValue;
+    }
+
+    protected static final long MAX_WAIT_MS = 1000;
+
+    @Nullable
+    public long[] queryTwilightWithTimeout(ContentResolver resolver, final String[] projection, final long date, final double latitude, final double longitude, final double altitude, long timeoutAfter)
+    {
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        final Future<long[]> task = executor.submit(new Callable<long[]>()
+        {
+            @Override
+            public long[] call() {
+                return queryTwilight(resolver, projection, date, latitude, longitude, altitude);
+            }
+        });
+
+        try {
+            return task.get(timeoutAfter, TimeUnit.MILLISECONDS);
+
+        } catch (TimeoutException | InterruptedException | ExecutionException e) {
+            Log.e("calculateData", "queryTwilightWithTimeout: getResult: failed! " + e);
+            return null;
+
+        } finally {
+            task.cancel(true);
+            executor.shutdownNow();
+        }
     }
 
 }
