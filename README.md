@@ -33,7 +33,7 @@ Interval Midpoints does not collect, store, or transmit personal user data. It c
 __Interval Midpoints is an add-on for Suntimes.__ It uses the `suntimes.permission.READ_CALCULATOR` permission in order to access data provided by this app. https://github.com/forrestguice/SuntimesWidget/wiki/Privacy
 
 ## Legal Stuff
-Copyright (C) 2021-2023 **Forrest Guice**
+Copyright (C) 2021-2024 **Forrest Guice**
 ```
 Interval Midpoints is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
