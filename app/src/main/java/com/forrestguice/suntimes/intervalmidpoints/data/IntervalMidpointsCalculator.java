@@ -25,8 +25,8 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.util.Log;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+import com.forrestguice.suntimes.annotation.NonNull;
+import com.forrestguice.suntimes.annotation.Nullable;
 
 import com.forrestguice.suntimes.calculator.core.CalculatorProviderContract;
 import com.forrestguice.suntimes.intervalmidpoints.R;

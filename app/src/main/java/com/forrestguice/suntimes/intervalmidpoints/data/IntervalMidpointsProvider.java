@@ -26,8 +26,8 @@ import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.MatrixCursor;
 import android.net.Uri;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+import com.forrestguice.suntimes.annotation.NonNull;
+import com.forrestguice.suntimes.annotation.Nullable;
 import android.util.Log;
 
 import com.forrestguice.suntimes.actions.SuntimesActionsContract;

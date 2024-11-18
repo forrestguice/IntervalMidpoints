@@ -19,8 +19,7 @@
 
 package com.forrestguice.suntimes.intervalmidpoints.data;
 
-import androidx.annotation.Nullable;
-
+import com.forrestguice.suntimes.annotation.Nullable;
 import com.forrestguice.suntimes.intervalmidpoints.AppSettings;
 
 import java.util.Calendar;
