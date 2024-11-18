@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 /*
-    Copyright (C) 2021 Forrest Guice
+    Copyright (C) 2021-2024 Forrest Guice
     This file is part of Suntimes.
 
     Suntimes is free software: you can redistribute it and/or modify

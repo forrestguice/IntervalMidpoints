@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 /*
-    Copyright (C) 2021 Forrest Guice
+    Copyright (C) 2021-2024 Forrest Guice
     This file is part of Suntimes.
 
     Suntimes is free software: you can redistribute it and/or modify
@@ -77,14 +77,17 @@ public class IntervalMidpointsCalculator
                 data.startTime = startData[0];
                 data.endTime = endData[0];
                 //Log.d("DEBUG", "startTime: " + data.startTime + " .. endTime: " + data.endTime);
-                return calculateMidpoints(context, data);
+                data.isCalculated = calculateMidpoints(context, data);
+                return data.isCalculated;
 
             } else {
                 Log.e("calculateData", "queryTwilight failed! result is null or empty!");
+                data.isCalculated = false;
                 return false;
             }
         } else {
             Log.e("calculateData", "queryTwilight failed! contentResolver is null!");
+            data.isCalculated = false;
             return false;
         }
     }
@@ -136,15 +139,14 @@ public class IntervalMidpointsCalculator
     }
 
     protected static final long MAX_WAIT_MS = 1000;
-
     @Nullable
-    public long[] queryTwilightWithTimeout(ContentResolver resolver, final String[] projection, final long date, final double latitude, final double longitude, final double altitude, long timeoutAfter)
+    public long[] queryTwilightWithTimeout(ContentResolver resolver, final String[] projection, final long date, final double latitude, final double longitude, final double altitude, long timeoutAfter) throws SecurityException
     {
         ExecutorService executor = Executors.newSingleThreadExecutor();
         final Future<long[]> task = executor.submit(new Callable<long[]>()
         {
             @Override
-            public long[] call() {
+            public long[] call() throws SecurityException {
                 return queryTwilight(resolver, projection, date, latitude, longitude, altitude);
             }
         });
