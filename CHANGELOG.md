@@ -1,9 +1,10 @@
 
-### v0.1.2 (2024-10-14)
+### v0.1.2 (2024-11-18)
 * adds support for system theme (night mode), high contrast themes, and "text size" settings.
 * fixes bug where app icon is not displayed (#5).
 * fixes bug where battery optimization message is displayed repeatedly (#6).
 * fixes crash when Suntimes is not installed (#7).
+* fixes ANR when Suntimes ContentProvider fails to respond.
 * updates build; targetSdkVersion 30 -> 33; Gradle 5.6.4 -> 6.5; Android Gradle Plugin 3.6.1 -> 4.1.3; migrates from legacy support libraries to AndroidX.
 * updates SuntimesAddon dependency (v0.4.0).
 
