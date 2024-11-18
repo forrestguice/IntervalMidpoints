@@ -23,6 +23,8 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 
 import com.forrestguice.suntimes.calculator.core.CalculatorProviderContract;
@@ -43,28 +45,35 @@ public class IntervalMidpointsCalculator
             data.date = Calendar.getInstance().getTimeInMillis();
         }
 
-        Calendar today = Calendar.getInstance();
-        today.setTimeInMillis(data.date);
-
-        Calendar other = Calendar.getInstance();
-        other.setTimeInMillis(data.date);
-
-        ArrayList<String> eventCollection = new ArrayList<>(Arrays.asList(context.getResources().getStringArray(R.array.event_values)));
-        int startPosition = eventCollection.indexOf(data.startEvent);
-        int endPosition = eventCollection.indexOf(data.endEvent);
-        if (startPosition >= endPosition) {
-            other.add(Calendar.DAY_OF_YEAR, 1);
-        }
-
         ContentResolver resolver = context.getContentResolver();
-        long[] startData = queryTwilight(resolver, new String[] { data.startEvent }, today.getTimeInMillis(), data.latitude, data.longitude, data.altitude);
-        long[] endData = queryTwilight(resolver, new String[] { data.endEvent }, other.getTimeInMillis(), data.latitude, data.longitude, data.altitude);
+        if (resolver != null)
+        {
+            Calendar today = Calendar.getInstance();
+            today.setTimeInMillis(data.date);
 
-        data.startTime = startData[0];
-        data.endTime = endData[0];
-        //Log.d("DEBUG", "startTime: " + data.startTime + " .. endTime: " + data.endTime);
-        calculateMidpoints(context, data);
-        return true;
+            Calendar other = Calendar.getInstance();
+            other.setTimeInMillis(data.date);
+
+            ArrayList<String> eventCollection = new ArrayList<>(Arrays.asList(context.getResources().getStringArray(R.array.event_values)));
+            int startPosition = eventCollection.indexOf(data.startEvent);
+            int endPosition = eventCollection.indexOf(data.endEvent);
+            if (startPosition >= endPosition) {
+                other.add(Calendar.DAY_OF_YEAR, 1);
+            }
+
+            long[] startData = queryTwilight(resolver, new String[] { data.startEvent }, today.getTimeInMillis(), data.latitude, data.longitude, data.altitude);
+            long[] endData = queryTwilight(resolver, new String[] { data.endEvent }, other.getTimeInMillis(), data.latitude, data.longitude, data.altitude);
+
+            data.startTime = startData[0];
+            data.endTime = endData[0];
+            //Log.d("DEBUG", "startTime: " + data.startTime + " .. endTime: " + data.endTime);
+            calculateMidpoints(context, data);
+            return true;
+
+        } else {
+            Log.e("calculateData", "contentResolver is null!");
+            return false;
+        }
     }
 
     public boolean calculateMidpoints(@NonNull Context context, @NonNull IntervalMidpointsData data)
