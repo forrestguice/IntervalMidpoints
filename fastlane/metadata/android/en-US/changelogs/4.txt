@@ -8,3 +8,7 @@ v0.1.2
 - fixes crash when Suntimes is not installed (#7).
 - fixes ANR when Suntimes ContentProvider fails to respond.
 - updates targetSdkVersion (30 -> 33), and migrates app to AndroidX.
+
+v0.1.1
+- adds app launcher icon.
+- fixes crash when running on Android 11+
