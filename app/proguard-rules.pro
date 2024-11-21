@@ -18,3 +18,5 @@
 -keepclassmembers class **.MenuBuilder {
     void setOptionalIconsVisible(boolean);
 }
+
+-keep class com.google.android.material.snackbar.** { *; }
