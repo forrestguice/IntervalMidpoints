@@ -1,4 +1,7 @@
 
+### v0.1.3 (2024-11-21)
+* fixes app crash (#9).
+
 ### v0.1.2 (2024-11-18)
 * adds support for system theme (night mode), high contrast themes, and "text size" settings.
 * fixes bug where app icon is not displayed (#5).
