@@ -1,6 +1,6 @@
 
 ### v0.1.3 (2024-11-21)
-* fixes app crash (#9).
+* fixes app crash in release apk caused by proguard-rules (#9).
 
 ### v0.1.2 (2024-11-18)
 * adds support for system theme (night mode), high contrast themes, and "text size" settings.
