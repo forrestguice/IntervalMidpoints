@@ -7,8 +7,8 @@ android {
         applicationId "com.forrestguice.suntimes.intervalmidpoints"
         minSdkVersion 14
         targetSdkVersion 33
-        versionCode 3
-        versionName "0.1.2"
+        versionCode 4
+        versionName "0.1.3"
         buildConfigField "String", "GIT_HASH", "\"${getGitHash()}\""
 
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
