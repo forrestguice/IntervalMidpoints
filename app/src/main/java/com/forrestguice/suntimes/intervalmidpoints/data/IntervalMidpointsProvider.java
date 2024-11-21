@@ -198,7 +198,9 @@ public class IntervalMidpointsProvider extends ContentProvider
 
     public Cursor queryActionInfo(@Nullable String actionName, @NonNull Uri uri, @Nullable String[] projection, HashMap<String, String> selectionMap, @Nullable String sortOrder)
     {
-        Log.d("DEBUG", "queryActionInfo: " + actionName);
+        if (BuildConfig.DEBUG) {
+            Log.d("DEBUG", "queryActionInfo: " + actionName);
+        }
         String[] columns = (projection != null ? projection : SuntimesActionsContract.QUERY_ACTION_PROJECTION_MIN);
         MatrixCursor cursor = new MatrixCursor(columns);
 
@@ -216,7 +218,7 @@ public class IntervalMidpointsProvider extends ContentProvider
                 cursor.addRow(row);
             }
 
-        } else Log.d("DEBUG", "context is null!");
+        } else Log.e("IntervalMidpoints", "queryActionInfo: context is null!");
         return cursor;
     }
 
@@ -225,7 +227,9 @@ public class IntervalMidpointsProvider extends ContentProvider
      */
     public Cursor queryEventInfo(@Nullable String eventName, @NonNull Uri uri, @Nullable String[] projection, HashMap<String, String> selectionMap, @Nullable String sortOrder)
     {
-        Log.d("DEBUG", "queryEventInfo: " + eventName);
+        if (BuildConfig.DEBUG) {
+            Log.d("DEBUG", "queryEventInfo: " + eventName);
+        }
         String[] columns = (projection != null ? projection : QUERY_EVENT_INFO_PROJECTION);
         MatrixCursor cursor = new MatrixCursor(columns);
 
@@ -263,7 +267,7 @@ public class IntervalMidpointsProvider extends ContentProvider
                 cursor.addRow(row);
             }
 
-        } else Log.d("DEBUG", "context is null!");
+        } else Log.e("IntervalMidpoints", "queryEventInfo: context is null!");
         return cursor;
     }
 
@@ -310,7 +314,9 @@ public class IntervalMidpointsProvider extends ContentProvider
 
     public Cursor queryEventTime(@Nullable String eventName, @NonNull Uri uri, @Nullable String[] projection, HashMap<String, String> selectionMap, @Nullable String sortOrder)
     {
-        Log.d("DEBUG", "queryEventTime: " + eventName);
+        if (BuildConfig.DEBUG) {
+            Log.d("DEBUG", "queryEventTime: " + eventName);
+        }
         String[] columns = (projection != null ? projection : QUERY_EVENT_CALC_PROJECTION);
         MatrixCursor cursor = new MatrixCursor(columns);
 
@@ -337,7 +343,7 @@ public class IntervalMidpointsProvider extends ContentProvider
             }
             cursor.addRow(row);
 
-        } else Log.d("DEBUG", "context is null!");
+        } else Log.e("IntervalMidpoints", "queryEventTime: context is null!");
         return cursor;
     }
 
@@ -368,8 +374,10 @@ public class IntervalMidpointsProvider extends ContentProvider
                 altitude = Double.parseDouble(info.location[3]);
             }
 
-            Log.d("DEBUG", "calculateAlarmTime: now: " + nowMillis + ", offset: " + offset + ", repeat: " + repeating + ", repeatDays: " + selectionMap.get(EXTRA_ALARM_REPEAT_DAYS)
-                    + ", latitude: " + latitude + ", longitude: " + longitude + ", altitude: " + altitude);
+            if (BuildConfig.DEBUG) {
+                Log.d("DEBUG", "calculateAlarmTime: now: " + nowMillis + ", offset: " + offset + ", repeat: " + repeating + ", repeatDays: " + selectionMap.get(EXTRA_ALARM_REPEAT_DAYS)
+                        + ", latitude: " + latitude + ", longitude: " + longitude + ", altitude: " + altitude);
+            }
 
             IntervalMidpointsCalculator calculator = new IntervalMidpointsCalculator();
             IntervalMidpointsData data = new IntervalMidpointsData(eventName, latitude, longitude, altitude);
@@ -398,7 +406,9 @@ public class IntervalMidpointsProvider extends ContentProvider
                     return -1L;
                 }
 
-                Log.w(getClass().getSimpleName(), "updateAlarmTime: advancing by 1 day..");
+                if (BuildConfig.DEBUG) {
+                    Log.d(getClass().getSimpleName(), "updateAlarmTime: advancing by 1 day..");
+                }
                 day.add(Calendar.DAY_OF_YEAR, 1);
                 data.setDate(day.getTimeInMillis());
                 calculator.calculateData(context, data);
@@ -461,7 +471,7 @@ public class IntervalMidpointsProvider extends ContentProvider
             }
             cursor.addRow(row);
 
-        } else Log.d("DEBUG", "context is null!");
+        } else Log.e("IntervalMidpoints", "queryConfig: context is null!");
         return cursor;
     }
     

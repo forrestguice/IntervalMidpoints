@@ -269,7 +269,7 @@ public class MainActivity extends AppCompatActivity
 
     protected void loadUserInput(String intervalID, boolean animate)
     {
-        Log.d("DEBUG", "loadUserInput: " + intervalID);
+        //Log.d("DEBUG", "loadUserInput: " + intervalID);
         String[] events = getResources().getStringArray(R.array.event_values);
         String[] interval = AppSettings.getInterval(intervalID);
 
@@ -310,7 +310,7 @@ public class MainActivity extends AppCompatActivity
     {
         @Override
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-            Log.d("DEBUG", "input changed");
+            //Log.d("DEBUG", "input changed");
             saveUserInput();
             finishActionMode();
             updateViews();
