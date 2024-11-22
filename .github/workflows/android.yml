@@ -40,10 +40,10 @@ jobs:
             ${{ runner.os }}-gradle-
       
     - name: Build with Gradle
-      run: ./gradlew build
+      run: ./gradlew assembleAndroidxRelease
     
     - name: Build with Gradle (Unit tests)
-      run: ./gradlew testRelease
+      run: ./gradlew testAndroidxRelease
     
     - name: Build with Gradle (lintVitalRelease)
       run: ./gradlew lintVitalRelease
