@@ -41,6 +41,7 @@
     <string name="units_meters_short">m</string>
 
     <string-array name="event_display">
+        <item>Solar Midnight</item>
         <item>Morning Astronomical Twilight</item>
         <item>Morning Nautical Twilight</item>
         <item>Morning Civil Twilight</item>
@@ -52,6 +53,7 @@
         <item>Evening Astronomical Twilight</item>
     </string-array>  <!-- TODO -->
     <string-array name="event_values" translatable="false">  <!-- must be indexed in order of occurrence -->
+        <item>midnight</item>
         <item>astrorise</item>
         <item>nauticalrise</item>
         <item>civilrise</item>
