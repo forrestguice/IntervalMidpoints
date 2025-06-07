@@ -8,4 +8,8 @@
     <attr name="colorSelect" format="reference" />
 
     <attr name="bottomBarSize" format="reference" />   <!-- TODO: move to SuntimesAddon -->
+
+    <declare-styleable name="IntervalResultsView">
+        <attr name="colorSelect" />
+    </declare-styleable>
 </resources>

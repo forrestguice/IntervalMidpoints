@@ -73,9 +73,8 @@ public class IntervalResultsViewHolder extends RecyclerView.ViewHolder
 
         if (isSelected)
         {
-            int[] colorAttrs = { R.attr.colorSelect };
-            TypedArray typedArray = context.obtainStyledAttributes(colorAttrs);
-            card1.setBackgroundColor(ContextCompat.getColor(context, typedArray.getResourceId(0, R.color.card_dark_selected)));
+            TypedArray typedArray = context.obtainStyledAttributes(R.styleable.IntervalResultsView);
+            card1.setBackgroundColor(ContextCompat.getColor(context, typedArray.getResourceId(R.styleable.IntervalResultsView_colorSelect, R.color.card_dark_selected)));
             typedArray.recycle();
 
         } else {
