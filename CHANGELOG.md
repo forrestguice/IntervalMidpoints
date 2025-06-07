@@ -1,4 +1,9 @@
 
+### v0.1.4 (2025-06-16)
+* adds support for `solar midnight` (#11).
+* updates build; SuntimesAddon dependency 0.4.0 -> 0.4.3.
+* updates build; Gradle 6.5 -> 7.3.3; Android Gradle Plugin 4.1.3 -> 7.2.2, updates AndroidX libraries.
+
 ### v0.1.3 (2024-11-21)
 * fixes app crash in release apk caused by proguard-rules (#9).
 
@@ -8,8 +13,8 @@
 * fixes bug where battery optimization message is displayed repeatedly (#6).
 * fixes crash when Suntimes is not installed (#7).
 * fixes ANR when Suntimes ContentProvider fails to respond.
+* updates build; SuntimesAddon dependency (v0.4.0).
 * updates build; targetSdkVersion 30 -> 33; Gradle 5.6.4 -> 6.5; Android Gradle Plugin 3.6.1 -> 4.1.3; migrates from legacy support libraries to AndroidX.
-* updates SuntimesAddon dependency (v0.4.0).
 
 ### v0.1.1 (2023-02-12)
 * adds app launcher icon.
