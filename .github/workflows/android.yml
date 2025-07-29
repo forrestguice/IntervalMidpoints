@@ -46,7 +46,7 @@ jobs:
       run: ./gradlew testFdroidRelease
     
     - name: Build with Gradle (lintVitalRelease)
-      run: ./gradlew lintVitalRelease
+      run: ./gradlew lintVitalFdroidRelease
     
     - name: Upload artifacts (apk)
       uses: actions/upload-artifact@v4
