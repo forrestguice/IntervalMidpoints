@@ -1,12 +1,9 @@
-name: Android CI
+name: F-Droid Nightly
 
 on: 
   workflow_dispatch:
   push:
     branches:
-      - main
-  pull_request:
-    branches: 
       - main
 
 jobs:
@@ -40,22 +37,13 @@ jobs:
             ${{ runner.os }}-gradle-
       
     - name: Build with Gradle
-      run: ./gradlew assembleFdroidRelease
-    
-    - name: Build with Gradle (Unit tests)
-      run: ./gradlew testFdroidRelease
-    
-    - name: Build with Gradle (lintVitalRelease)
-      run: ./gradlew lintVitalFdroidRelease
-    
-    - name: Upload artifacts (apk)
-      uses: actions/upload-artifact@v4
-      with:
-        name: app
-        path: app/build/outputs/apk/debug/app-debug.apk
-        
-    - name: Upload artifacts (lint results)
-      uses: actions/upload-artifact@v4
-      with:
-        name: lint-results.html
-        path: app/build/reports/lint-results.html
+      run: ./gradlew assembleNightlyDebug
+
+    - name: Publish nightly debug
+      run: |
+        python -m venv fdroidserver-env 
+        . fdroidserver-env/bin/activate
+        pip install git+https://github.com/forrestguice/fdroidserver.git
+        fdroid nightly --archive-older 10
+      env:
+        DEBUG_KEYSTORE: ${{ secrets.DEBUG_KEYSTORE }}

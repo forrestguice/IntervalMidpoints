@@ -10,6 +10,9 @@ android {
         targetSdkVersion 33
         versionCode 5
         versionName "0.1.4"
+
+        manifestPlaceholders = [suntimesApplicationId:"com.forrestguice.suntimeswidget", suntimesPermissionRoot:"suntimes",
+                                intervalMidpointsAuthorityRoot:"suntimes.intervalmidpoints"]
         buildConfigField "String", "GIT_HASH", "\"${getGitHash()}\""
 
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
@@ -23,6 +26,27 @@ android {
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+    }
+
+    flavorDimensions "versiontype"
+    productFlavors {
+        fdroid {
+            dimension "versiontype"
+            getIsDefault().set(true)
+        }
+        nightly {
+            dimension "versiontype"
+            applicationIdSuffix ".nightly"
+            versionNameSuffix "-nightly"
+            manifestPlaceholders = [suntimesApplicationId:"com.forrestguice.suntimeswidget", suntimesPermissionRoot:"suntimes",
+                                    intervalMidpointsAuthorityRoot:"suntimes.intervalmidpoints.nightly"]
+            def nightlyVersionCode = new Date().format('yyyyMMddhh') as int
+            versionCode nightlyVersionCode
+        }
+    }
+
+    lintOptions {
+        disable 'MissingTranslation'//,'WrongRegion','ObsoleteSdkInt'
     }
 
     compileOptions {

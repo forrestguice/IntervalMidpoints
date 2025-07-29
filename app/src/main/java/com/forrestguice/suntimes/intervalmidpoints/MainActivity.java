@@ -33,6 +33,7 @@ import androidx.core.content.ContextCompat;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.ActionMode;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.widget.Toolbar;
@@ -467,6 +468,22 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    @Override
+    protected void onResumeFragments()
+    {
+        super.onResumeFragments();
+        restoreDialogs();
+    }
+
+    protected void restoreDialogs()
+    {
+        final FragmentManager fragments = getSupportFragmentManager();
+        HelpDialog helpDialog = (HelpDialog) fragments.findFragmentByTag(DIALOG_HELP);
+        if (helpDialog != null) {
+            helpDialog.setNeutralButtonListener(HelpDialog.getOnlineHelpClickListener(this, HELP_PATH_ID), DIALOG_HELP);
+        }
+    }
+
     protected void checkVersion()
     {
         if (!SuntimesInfo.checkVersion(this, suntimesInfo))
@@ -520,7 +537,7 @@ public class MainActivity extends AppCompatActivity
     {
         int id = item.getItemId();
         if (id == R.id.action_help) {
-            showHelp();
+            showHelp(MainActivity.this);
             return true;
 
         } else if (id == R.id.action_about) {
@@ -546,12 +563,17 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    protected void showHelp()
+    private static final int HELP_PATH_ID = R.string.help_main_path;
+
+    protected void showHelp(Context context)
     {
         HelpDialog dialog = new HelpDialog();
         if (suntimesInfo != null && suntimesInfo.appTheme != null) {
             dialog.setTheme(getThemeResID(MainActivity.this, suntimesInfo.appTheme));
         }
+
+        dialog.setShowNeutralButton(context.getString(R.string.action_onlineHelp));
+        dialog.setNeutralButtonListener(HelpDialog.getOnlineHelpClickListener(context, HELP_PATH_ID), DIALOG_HELP);
 
         String[] help = getResources().getStringArray(R.array.help_topics);
         String helpContent = help[0];
