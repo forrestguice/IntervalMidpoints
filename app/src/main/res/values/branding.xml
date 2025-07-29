@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Interval Midpoints</string>
+    <string name="app_desc">A midpoint calculator add-on for Suntimes.</string>
+    <color name="ic_launcher_background">#212021</color>
+</resources>
