@@ -28,6 +28,23 @@ android {
         }
     }
 
+    flavorDimensions "versiontype"
+    productFlavors {
+        fdroid {
+            dimension "versiontype"
+            getIsDefault().set(true)
+        }
+        nightly {
+            dimension "versiontype"
+            applicationIdSuffix ".nightly"
+            versionNameSuffix "-nightly"
+            manifestPlaceholders = [suntimesApplicationId:"com.forrestguice.suntimeswidget", suntimesPermissionRoot:"suntimes",
+                                    intervalMidpointsAuthorityRoot:"suntimes.intervalmidpoints.nightly"]
+            def nightlyVersionCode = new Date().format('yyyyMMddhh') as int
+            versionCode nightlyVersionCode
+        }
+    }
+
     lintOptions {
         disable 'MissingTranslation'//,'WrongRegion','ObsoleteSdkInt'
     }
