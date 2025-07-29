@@ -43,7 +43,7 @@
                 <category android:name="suntimes.SUNTIMES_ACTION" />
             </intent-filter>
             <meta-data android:name="ActionInfoProvider"
-                android:value="content://${intervalMidpointsAuthority}.provider" />
+                android:value="content://${intervalMidpointsAuthorityRoot}.provider" />
 
         </activity>
 
@@ -65,7 +65,7 @@
                 <category android:name="suntimes.SUNTIMES_ALARM" />
             </intent-filter>
             <meta-data android:name="EventInfoProvider"
-                android:value="content://${intervalMidpointsAuthority}.provider" />
+                android:value="content://${intervalMidpointsAuthorityRoot}.provider" />
 
         </activity>
 
