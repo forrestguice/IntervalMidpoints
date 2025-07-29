@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.forrestguice.suntimes.intervalmidpoints">
 
-    <uses-permission android:name="suntimes.permission.READ_CALCULATOR" />  <!-- required to interact w/ Suntimes provider -->
+    <uses-permission android:name="${suntimesPermissionRoot}.permission.READ_CALCULATOR" />  <!-- required to interact w/ Suntimes provider -->
 
     <!-- RECEIVE_BOOT_COMPLETED; -most likely not required- but some devices/versions/manufacturers may block?
          This app doesn't respond to BOOT_COMPLETED directly. It's ContentProvider is triggered by Suntimes
@@ -43,7 +43,7 @@
                 <category android:name="suntimes.SUNTIMES_ACTION" />
             </intent-filter>
             <meta-data android:name="ActionInfoProvider"
-                android:value="content://suntimes.intervalmidpoints.provider" />
+                android:value="content://${intervalMidpointsAuthority}.provider" />
 
         </activity>
 
@@ -65,21 +65,21 @@
                 <category android:name="suntimes.SUNTIMES_ALARM" />
             </intent-filter>
             <meta-data android:name="EventInfoProvider"
-                android:value="content://suntimes.intervalmidpoints.provider" />
+                android:value="content://${intervalMidpointsAuthority}.provider" />
 
         </activity>
 
         <!-- Content Provider -->
         <provider
             android:name="com.forrestguice.suntimes.intervalmidpoints.data.IntervalMidpointsProvider"
-            android:authorities="suntimes.intervalmidpoints.provider"
-            android:exported="true" android:permission="suntimes.permission.READ_CALCULATOR"
+            android:authorities="${intervalMidpointsAuthorityRoot}.provider"
+            android:exported="true" android:permission="${suntimesPermissionRoot}.permission.READ_CALCULATOR"
             android:syncable="false" />
 
     </application>
 
     <queries>
-        <package android:name="com.forrestguice.suntimeswidget" />    <!-- package visibility api 30+ -->
+        <package android:name="${suntimesApplicationId}" />    <!-- package visibility api 30+ -->
     </queries>
 
 </manifest>
