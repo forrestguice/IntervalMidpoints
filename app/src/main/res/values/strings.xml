@@ -43,11 +43,19 @@
         <item>Solar Midnight</item>
         <item>Morning Astronomical Twilight</item>
         <item>Morning Nautical Twilight</item>
+        <item>Blue Hour 8° (rising)</item>
         <item>Morning Civil Twilight</item>
+        <item>Blue Hour 4° (rising)</item>
+
         <item>Sunrise</item>
+        <item>Morning Golden Hour</item>
         <item>Solar Noon</item>
+        <item>Evening Golden Hour</item>
         <item>Sunset</item>
+
+        <item>Blue Hour 4° (setting)</item>
         <item>Evening Civil Twilight</item>
+        <item>Blue Hour 8° (setting)</item>
         <item>Evening Nautical Twilight</item>
         <item>Evening Astronomical Twilight</item>
     </string-array>  <!-- TODO -->
@@ -55,11 +63,19 @@
         <item>midnight</item>
         <item>astrorise</item>
         <item>nauticalrise</item>
+        <item>blue8rise</item>
         <item>civilrise</item>
+        <item>blue4rise</item>
+
         <item>sunrise</item>
+        <item>goldenmorning</item>
         <item>solarnoon</item>
+        <item>goldenevening</item>
         <item>sunset</item>
+
+        <item>blue4set</item>
         <item>civilset</item>
+        <item>blue8set</item>
         <item>nauticalset</item>
         <item>astroset</item>
     </string-array>  <!-- TODO -->
