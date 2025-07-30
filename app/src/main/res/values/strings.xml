@@ -41,23 +41,23 @@
 
     <string-array name="event_display">
         <item>Solar Midnight</item>
-        <item>Morning Astronomical Twilight</item>
-        <item>Morning Nautical Twilight</item>
-        <item>Blue Hour 8° (rising)</item>
-        <item>Morning Civil Twilight</item>
-        <item>Blue Hour 4° (rising)</item>
+        <item>Astronomical Twilight (-18° rising)</item>
+        <item>Nautical Twilight (-12° rising)</item>
+        <item>Blue Hour (-8° rising)</item>
+        <item>Civil Twilight (-6° rising)</item>
+        <item>Blue Hour (-4° rising)</item>
 
         <item>Sunrise</item>
-        <item>Morning Golden Hour</item>
+        <item>Golden Hour (°6 rising)</item>
         <item>Solar Noon</item>
-        <item>Evening Golden Hour</item>
+        <item>Golden Hour (°6 setting)</item>
         <item>Sunset</item>
 
-        <item>Blue Hour 4° (setting)</item>
-        <item>Evening Civil Twilight</item>
-        <item>Blue Hour 8° (setting)</item>
-        <item>Evening Nautical Twilight</item>
-        <item>Evening Astronomical Twilight</item>
+        <item>Blue Hour (-4° setting)</item>
+        <item>Civil Twilight (-6° setting)</item>
+        <item>Blue Hour (-8° setting)</item>
+        <item>Nautical Twilight (-12° setting)</item>
+        <item>Astronomical Twilight (-18° setting)</item>
     </string-array>  <!-- TODO -->
     <string-array name="event_values" translatable="false">  <!-- must be indexed in order of occurrence -->
         <item>midnight</item>
