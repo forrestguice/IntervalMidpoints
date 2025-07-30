@@ -117,9 +117,13 @@
 
     <string-array name="help_topics">      <!-- in order of appearance -->
         <item>@string/help_configuration</item>
+        <item>@string/help_alarms</item>
     </string-array>
     <string name="help_configuration"><![CDATA[<h4>App Configuration</h4>The location and other options are configured from Suntimes.]]></string>
-
+    <string name="help_alarms"><![CDATA[
+        <h4>Alarms</h4>
+        Choose the <b>start event</b>, <b>end event</b>, and number of <b>periods</b>, then select a midpoint and click <b><large>✓</large> accept</b> to add an alarm.
+    ]]></string>
     <string name="battery_optimization_warning">Battery optimization is enabled!</string> <!-- TODO -->
 
 </resources>
