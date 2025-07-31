@@ -1,8 +1,10 @@
 
-### v0.1.4 (2025-06-16)
-* adds support for `solar midnight` (#11).
-* updates build; SuntimesAddon dependency 0.4.0 -> 0.4.3.
+### v0.1.4 (2025-07-30)
+* adds support for `solar midnight`, `blue hour`, and `golden hour` (#11).
+* adds `online help` button to the help dialog.
+* updates build: adds `nightly` flavor; adds git submodule; removes dependency on jitpack.io.
 * updates build; Gradle 6.5 -> 7.3.3; Android Gradle Plugin 4.1.3 -> 7.2.2, updates AndroidX libraries.
+* updates build; SuntimesAddon dependency 0.4.0 -> 0.4.3.
 
 ### v0.1.3 (2024-11-21)
 * fixes app crash in release apk caused by proguard-rules (#9).
