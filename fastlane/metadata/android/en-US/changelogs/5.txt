@@ -1,0 +1,1 @@
+- adds support for `solar midnight`, `blue hour`, and `golden hour` (#11).
