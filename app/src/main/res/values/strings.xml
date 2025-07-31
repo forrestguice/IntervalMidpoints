@@ -41,25 +41,41 @@
 
     <string-array name="event_display">
         <item>Solar Midnight</item>
-        <item>Morning Astronomical Twilight</item>
-        <item>Morning Nautical Twilight</item>
-        <item>Morning Civil Twilight</item>
+        <item>Astronomical Twilight (-18° rising)</item>
+        <item>Nautical Twilight (-12° rising)</item>
+        <item>Blue Hour (-8° rising)</item>
+        <item>Civil Twilight (-6° rising)</item>
+        <item>Blue Hour (-4° rising)</item>
+
         <item>Sunrise</item>
+        <item>Golden Hour (°6 rising)</item>
         <item>Solar Noon</item>
+        <item>Golden Hour (°6 setting)</item>
         <item>Sunset</item>
-        <item>Evening Civil Twilight</item>
-        <item>Evening Nautical Twilight</item>
-        <item>Evening Astronomical Twilight</item>
+
+        <item>Blue Hour (-4° setting)</item>
+        <item>Civil Twilight (-6° setting)</item>
+        <item>Blue Hour (-8° setting)</item>
+        <item>Nautical Twilight (-12° setting)</item>
+        <item>Astronomical Twilight (-18° setting)</item>
     </string-array>  <!-- TODO -->
     <string-array name="event_values" translatable="false">  <!-- must be indexed in order of occurrence -->
         <item>midnight</item>
         <item>astrorise</item>
         <item>nauticalrise</item>
+        <item>blue8rise</item>
         <item>civilrise</item>
+        <item>blue4rise</item>
+
         <item>sunrise</item>
+        <item>goldenmorning</item>
         <item>solarnoon</item>
+        <item>goldenevening</item>
         <item>sunset</item>
+
+        <item>blue4set</item>
         <item>civilset</item>
+        <item>blue8set</item>
         <item>nauticalset</item>
         <item>astroset</item>
     </string-array>  <!-- TODO -->
@@ -101,9 +117,13 @@
 
     <string-array name="help_topics">      <!-- in order of appearance -->
         <item>@string/help_configuration</item>
+        <item>@string/help_alarms</item>
     </string-array>
     <string name="help_configuration"><![CDATA[<h4>App Configuration</h4>The location and other options are configured from Suntimes.]]></string>
-
+    <string name="help_alarms"><![CDATA[
+        <h4>Alarms</h4>
+        Choose the <b>start event</b>, <b>end event</b>, and number of <b>periods</b>, then select a midpoint and click <b><large>✓</large> accept</b> to add an alarm.
+    ]]></string>
     <string name="battery_optimization_warning">Battery optimization is enabled!</string> <!-- TODO -->
 
 </resources>
