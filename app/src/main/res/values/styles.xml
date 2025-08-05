@@ -15,6 +15,7 @@
         <item name="icDone">@drawable/ic_done_ref</item>
         <item name="icHelp">@drawable/ic_help_ref</item>
         <item name="icAbout">@drawable/ic_about_ref</item>
+        <item name="icSettings">@drawable/ic_settings_ref</item>
         <item name="colorDate">@color/colorDate</item>
         <item name="colorLabel">@color/colorLabel</item>
         <item name="colorSelect">@color/colorAccent</item>
@@ -124,6 +125,7 @@
         <item name="icDone">@drawable/ic_done</item>
         <item name="icHelp">@drawable/ic_help</item>
         <item name="icAbout">@drawable/ic_about</item>
+        <item name="icSettings">@drawable/ic_settings</item>
         <item name="colorDate">@color/colorDate_dark</item>
         <item name="colorLabel">@color/colorLabel_dark</item>
         <item name="colorSelect">@color/deep_teal_500</item>
@@ -233,6 +235,7 @@
         <item name="icDone">@drawable/ic_done_light</item>
         <item name="icHelp">@drawable/ic_help_light</item>
         <item name="icAbout">@drawable/ic_about_light</item>
+        <item name="icSettings">@drawable/ic_settings_light</item>
         <item name="colorDate">@color/colorDate_light</item>
         <item name="colorLabel">@color/colorLabel_light</item>
         <item name="colorSelect">@color/deep_teal_200</item>
