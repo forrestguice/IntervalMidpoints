@@ -123,7 +123,22 @@
     <string name="notificationChannel_main_desc">Main notification channel</string>
 
     <string name="pref_category_general">General</string>
+    <string name="pref_category_alarms">Alarms</string>
     <string name="pref_category_advanced">Advanced</string>
+
+    <string name="pref_summary_alarms_optWhiteList">Battery Optimization</string>
+    <string name="pref_summary_alarms_optWhiteList_listed">Not optimized (recommended)</string>
+    <string name="pref_summary_alarms_optWhiteList_unlisted">Optimizing battery use.\nAlarms may be delayed up to 15 minutes.</string>
+    <string name="pref_summary_alarms_optWhiteList_unlisted_aggressive">Optimizing battery use.\nAlarms may fail to work reliably.</string>
+
+    <string name="pref_title_alarms_autostart">Autostart</string>
+    <string name="pref_summary_alarms_autostart_on">On</string>
+    <string name="pref_summary_alarms_autostart_off">Off.\nAlarms may fail to work after reboot.</string>
+    <string name="pref_summary_alarms_autostart_summary">%1$s</string>
+
+    <string name="pref_title_alarms_notifications">Notifications</string>
+    <string name="pref_summary_alarms_notifications_on">On</string>
+    <string name="pref_summary_alarms_notifications_off">Off.\nPermission is required to display boot sequence notifications.</string>
 
     <string name="pref_title_autolaunch">Show notification during boot sequence</string>
     <string name="pref_summary_autolaunch">Some devices may need this option to reschedule alarms after a reboot (but most do not require it).</string>
@@ -137,6 +152,23 @@
         <h4>Alarms</h4>
         Choose the <b>start event</b>, <b>end event</b>, and number of <b>periods</b>, then select a midpoint and click <b><large>✓</large> accept</b> to add an alarm.
     ]]></string>
-    <string name="battery_optimization_warning">Battery optimization is enabled!</string> <!-- TODO -->
+    <string name="battery_optimization_warning">Battery optimization is enabled!</string>
+    <string-array name="aggressive_battery_known_offenders" translatable="false">    <!-- device manufacturer id; a warning will be displayed for these devices -->
+        <item>Samsung</item>
+        <item>OnePlus</item>
+        <item>Huawei</item>
+        <item>Xiaomi</item>
+        <item>Meizu</item>
+        <item>Asus</item>
+        <item>WIKO</item>
+        <item>LENOVO</item>
+        <item>OPPO</item>
+        <item>Vivo</item>
+        <item>realme</item>
+        <item>Blackview</item>
+        <item>Sony</item>
+        <item>Unihertz</item>
+        <!--<item>Google</item>--> <!-- uncomment to test with emulator -->
+    </string-array>
 
 </resources>

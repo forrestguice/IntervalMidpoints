@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 /*
-    Copyright (C) 2021-2022 Forrest Guice
+    Copyright (C) 2021-2025 Forrest Guice
     This file is part of Suntimes.
 
     Suntimes is free software: you can redistribute it and/or modify
@@ -21,6 +21,7 @@ package com.forrestguice.suntimes.intervalmidpoints;
 
 import android.annotation.SuppressLint;
 import android.content.ActivityNotFoundException;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -30,8 +31,10 @@ import android.os.PowerManager;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.forrestguice.suntimes.annotation.Nullable;
+import com.forrestguice.suntimes.intervalmidpoints.xiomi.XiomiAutostartDetect;
 
 public class AppSettings
 {
@@ -187,10 +190,97 @@ public class AppSettings
         }
     }
 
+    /***
+     * Some device manufacturers are worse than others; https://dontkillmyapp.com/
+     * This method checks the device manufacturer against a list of known offenders.
+     * @return true this device is likely to have aggressive (alarm breaking) battery optimizations
+     */
+    public static boolean aggressiveBatteryOptimizations(Context context)
+    {
+        String[] manufacturers = context.getResources().getStringArray(R.array.aggressive_battery_known_offenders);
+        for (String manufacturer : manufacturers) {
+            if (manufacturer != null && manufacturer.equalsIgnoreCase(Build.MANUFACTURER)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public static final String KEY_AUTO_LAUNCH = "autolaunch";
     public static boolean showNotificationOnBootCompleted(Context context) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         return prefs.getBoolean(KEY_AUTO_LAUNCH, context.getResources().getBoolean(R.bool.def_autolaunch));
+    }
+
+    public static final String PREF_KEY_ALARM_CATEGORY = "app_alarms_category";
+    public static final String PREF_KEY_ALARM_AUTOSTART = "app_alarms_autostart";
+    public static final String PREF_KEY_ALARM_BATTERYOPT = "app_alarms_batterytopt";
+    public static final String PREF_KEY_ALARM_NOTIFICATIONS = "app_alarms_notifications";
+
+    /**
+     * https://dontkillmyapp.com/xiomi
+     * @return true autostart is disabled (xiomi devices only)
+     */
+    public static boolean isAutostartDisabled(Context context)
+    {
+        if (isXiomi()) {
+            return (XiomiAutostartDetect.getAutostartState_xiomi(context) == XiomiAutostartDetect.STATE_DISABLED);
+        } else return false;
+    }
+    public static boolean hasAutostartSettings(Context context) {
+        return isXiomi();
+    }
+    public static void openAutostartSettings(Context context)
+    {
+        Intent intent = getAutostartSettingsIntent(context);
+        if (intent != null) {
+            try {
+                context.startActivity(intent);
+            } catch (ActivityNotFoundException e) {
+                Log.e("AlarmSettings", "Failed to launch autostart settings Intent: " + e);
+            }
+        } else Log.e("AlarmSettings", "Failed to launch autostart settings Intent: null");
+    }
+
+    @Nullable
+    public static Intent getAutostartSettingsIntent(Context context) {
+        if (isXiomi()) {
+            return getAutostartSettingsIntent_xiomi(context);
+        } else return null;
+    }
+
+    public static Intent getAutostartSettingsIntent_xiomi(Context context) {
+        return new Intent().setComponent(new ComponentName("com.miui.securitycenter", "com.miui.permcenter.autostart.AutoStartManagementActivity"));
+    }
+    public static boolean isXiomi() {
+        return "xiomi".equalsIgnoreCase(Build.MANUFACTURER);
+    }
+
+    /**
+     * https://stackoverflow.com/questions/32366649/any-way-to-link-to-the-android-notification-settings-for-my-app
+     * @param context
+     */
+    public static void openNotificationSettings(Context context)
+    {
+        Intent intent = new Intent();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+        {
+            intent.setAction("android.settings.APP_NOTIFICATION_SETTINGS");
+            intent.putExtra("app_package", context.getPackageName());                           // Android 5-7
+            intent.putExtra("app_uid", context.getApplicationInfo().uid);                       // Android 5-7
+            intent.putExtra("android.provider.extra.APP_PACKAGE", context.getPackageName());    // Android 8+
+
+        } else {
+            intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+            intent.addCategory(Intent.CATEGORY_DEFAULT);
+            intent.setData(Uri.parse("package:" + context.getPackageName()));
+        }
+        try {
+            context.startActivity(intent);
+        } catch (ActivityNotFoundException e) {
+            Log.e("AppSettings", "Failed to open notification settings! " + e);
+            Toast.makeText(context, e.getClass().getSimpleName() + "!", Toast.LENGTH_SHORT).show();
+        }
     }
 
 }

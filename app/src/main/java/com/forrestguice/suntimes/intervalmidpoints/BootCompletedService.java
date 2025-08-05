@@ -40,6 +40,7 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
 
 /**
@@ -257,6 +258,29 @@ public class BootCompletedService extends Service
             builder = new NotificationCompat.Builder(context);
         }
         return builder;
+    }
+
+    public static boolean isChannelMuted(Context context)
+    {
+        if (Build.VERSION.SDK_INT >= 26)
+        {
+            NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+            if (notificationManager != null)
+            {
+                String channelID = createNotificationChannel(context);
+                NotificationChannel channel = notificationManager.getNotificationChannel(channelID);
+                return (channel.getImportance() == NotificationManager.IMPORTANCE_NONE);
+            }
+        }
+        return false;
+    }
+
+    public static boolean areNotificationsPaused(Context context)
+    {
+        if (Build.VERSION.SDK_INT >= 29) {
+            NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+            return notificationManager.areNotificationsPaused();
+        } else return false;
     }
 
 }
