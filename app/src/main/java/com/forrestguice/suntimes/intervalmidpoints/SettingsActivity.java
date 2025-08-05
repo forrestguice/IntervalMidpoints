@@ -39,6 +39,7 @@ import com.forrestguice.suntimes.addon.LocaleHelper;
 import com.forrestguice.suntimes.addon.SuntimesInfo;
 import com.forrestguice.suntimes.addon.ui.SuntimesUtils;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -281,13 +282,17 @@ public class SettingsActivity extends AppCompatActivity
             this.info = info;
         }
 
-        public static final String PERMISSION_POST_NOTIFICATIONS = Manifest.permission.POST_NOTIFICATIONS;
+        public static final String PERMISSION_POST_NOTIFICATIONS;
+        static {
+            if (Build.VERSION.SDK_INT >= 33) {
+                PERMISSION_POST_NOTIFICATIONS = Manifest.permission.POST_NOTIFICATIONS;
+            } else PERMISSION_POST_NOTIFICATIONS = "android.permission.POST_NOTIFICATIONS";
+        }
         public static final int REQUEST_PERMISSION_POST_NOTIFICATIONS = 100;
 
         @Override
-        public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults)
+        public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults)
         {
-
             switch (requestCode)
             {
                 case REQUEST_PERMISSION_POST_NOTIFICATIONS:
