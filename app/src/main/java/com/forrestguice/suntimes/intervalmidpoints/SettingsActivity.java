@@ -19,9 +19,11 @@
 
 package com.forrestguice.suntimes.intervalmidpoints;
 
+import android.Manifest;
 import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.TypedArray;
 import android.os.Build;
 import android.os.Bundle;
@@ -39,6 +41,7 @@ import com.forrestguice.suntimes.addon.ui.SuntimesUtils;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationManagerCompat;
 
 public class SettingsActivity extends AppCompatActivity
@@ -114,6 +117,14 @@ public class SettingsActivity extends AppCompatActivity
                     @Override
                     public boolean onPreferenceChange(Preference preference, Object o)
                     {
+                        if (Build.VERSION.SDK_INT >= 33)
+                        {
+                            boolean value = (Boolean) o;
+                            if (value && (ActivityCompat.checkSelfPermission(context, PERMISSION_POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED)) {
+                                requestPermissions(new String[] { PERMISSION_POST_NOTIFICATIONS }, REQUEST_PERMISSION_POST_NOTIFICATIONS);
+                            }
+                        }
+
                         View v = getView();
                         if (v != null) {
                             getView().post(new Runnable() {
@@ -268,6 +279,23 @@ public class SettingsActivity extends AppCompatActivity
         protected SuntimesInfo info;
         public void setSuntimesInfo(SuntimesInfo info) {
             this.info = info;
+        }
+
+        public static final String PERMISSION_POST_NOTIFICATIONS = Manifest.permission.POST_NOTIFICATIONS;
+        public static final int REQUEST_PERMISSION_POST_NOTIFICATIONS = 100;
+
+        @Override
+        public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults)
+        {
+
+            switch (requestCode)
+            {
+                case REQUEST_PERMISSION_POST_NOTIFICATIONS:
+                    if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                        updatePrefs();
+                    }
+                    break;
+            }
         }
     }
 
