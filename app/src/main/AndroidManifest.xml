@@ -3,10 +3,10 @@
 
     <uses-permission android:name="${suntimesPermissionRoot}.permission.READ_CALCULATOR" />  <!-- required to interact w/ Suntimes provider -->
 
-    <!-- RECEIVE_BOOT_COMPLETED; -most likely not required- but some devices/versions/manufacturers may block?
-         This app doesn't respond to BOOT_COMPLETED directly. It's ContentProvider is triggered by Suntimes
-         while scheduling alarms during BOOT_COMPLETED. -->
+    <!-- RECEIVE_BOOT_COMPLETED; this app's ContentProvider is triggered by Suntimes while scheduling alarms during BOOT_COMPLETED. -->
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />  <!-- needed for reliable delivery of alarms and notifications -->
 
@@ -76,6 +76,15 @@
             android:exported="true" android:permission="${suntimesPermissionRoot}.permission.READ_CALCULATOR"
             android:syncable="false" />
 
+        <!-- Boot Completed Receiver -->
+        <receiver android:name="com.forrestguice.suntimes.intervalmidpoints.BootCompletedReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+        <service android:name="com.forrestguice.suntimes.intervalmidpoints.BootCompletedService"
+            android:exported="false" />
     </application>
 
     <queries>

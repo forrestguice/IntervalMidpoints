@@ -542,6 +542,7 @@ public class MainActivity extends AppCompatActivity
 
         } else if (id == R.id.action_about) {
             showAbout();
+            startService(new Intent(MainActivity.this, BootCompletedService.class));
             return true;
 
         } else if (id == android.R.id.home) {
