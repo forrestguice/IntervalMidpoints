@@ -94,12 +94,15 @@ public class BootCompletedService extends Service
     {
         if (action != null)
         {
-            if (action.equals(ACTION_MAIN))
+            if (action.equals(ACTION_MAIN) || (action.equals(ACTION_EXIT)))
             {
                 Log.d(TAG, "onStartCommand: " + action);
-                Intent mainActivity = new Intent(getApplicationContext(), MainActivity.class);
-                mainActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(mainActivity);
+                if (action.equals(ACTION_MAIN))
+                {
+                    Intent mainActivity = new Intent(getApplicationContext(), MainActivity.class);
+                    mainActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(mainActivity);
+                }
 
                 updateNotification(NOTIFICATION_MAIN, createExitNotification(this, getExitNotificationMessage(this)).build());
                 new Handler(Looper.getMainLooper()).postDelayed(new Runnable()
@@ -110,12 +113,6 @@ public class BootCompletedService extends Service
                         stopSelf();
                     }
                 }, 500);
-
-            } else if (action.equals(ACTION_EXIT)) {
-                Log.d(TAG, "onStartCommand: " + action);
-                updateNotification(NOTIFICATION_MAIN, createExitNotification(this, getExitNotificationMessage(this)).build());
-                stopForeground(true);
-                stopSelf();
 
             } else {
                 Log.w(TAG, "onStartCommand: unrecognized action: " + action);

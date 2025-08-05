@@ -153,13 +153,11 @@ public class IntervalMidpointsProvider extends ContentProvider
             case URIMATCH_EVENT_INFO:
                 Log.i(getClass().getSimpleName(), "URIMATCH_EVENT_INFO");
                 cursor = queryEventInfo(null, uri, projection, selectionMap, sortOrder);
-                signalProviderWasUsed(getContext());
                 break;
 
             case URIMATCH_EVENT_INFO_FOR_NAME:
                 Log.i(getClass().getSimpleName(), "URIMATCH_EVENT_INFO_FOR_NAME");
                 cursor = queryEventInfo(uri.getLastPathSegment(), uri, projection, selectionMap, sortOrder);
-                signalProviderWasUsed(getContext());
                 break;
 
             case URIMATCH_EVENT_CALC_FOR_NAME:
@@ -180,9 +178,11 @@ public class IntervalMidpointsProvider extends ContentProvider
         return cursor;
     }
 
-    protected void signalProviderWasUsed(Context context) {
-        Log.d(getClass().getSimpleName(), "signal provider used");
-        context.sendBroadcast(BootCompletedService.getServiceIntent(context, BootCompletedService.ACTION_EXIT));
+    protected void signalProviderWasUsed(Context context)
+    {
+        if (context != null) {
+            context.sendBroadcast(BootCompletedService.getServiceIntent(context, BootCompletedService.ACTION_EXIT));
+        }
     }
 
     public static final String ACTION_INTERVAL_MIDPOINTS = "INTERVAL_MIDPOINTS";
