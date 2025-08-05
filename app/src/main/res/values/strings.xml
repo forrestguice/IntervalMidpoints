@@ -117,7 +117,7 @@
     <string name="interval_msg0">An interval of %s</string>    <!-- displayed above event selection ui --> <!-- TODO -->
     <string name="interval_msg1">between..</string>    <!-- displayed above event selection ui --> <!-- TODO -->
 
-    <string name="notification_message">Waiting for pending interaction with Suntimes.</string>
+    <string name="notification_message">Waiting for interaction with Suntimes.</string>
     <string name="notification_message1">Finishing up …</string>
     <string name="notificationChannel_main_title">Main</string>
     <string name="notificationChannel_main_desc">Main notification channel</string>

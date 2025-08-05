@@ -19,27 +19,12 @@
 
 package com.forrestguice.suntimes.intervalmidpoints;
 
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.app.Service;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
-
-import android.content.pm.ServiceInfo;
-import android.net.Uri;
 import android.os.Binder;
-import android.os.Build;
-import android.os.Handler;
 import android.os.IBinder;
-import android.os.Looper;
-import android.util.Log;
 
 import androidx.annotation.Nullable;
-import androidx.core.app.NotificationCompat;
-import androidx.core.content.ContextCompat;
 
 /**
  * This is a foreground service that runs on BOOT_COMPLETED. It displays a notification while
@@ -47,94 +32,42 @@ import androidx.core.content.ContextCompat;
  * This is done because on some devices the query to the content-provider times-out and alarms are
  * never rescheduled.
  */
-public class BootCompletedService extends Service
+public class BootCompletedService extends BootCompletedService0
 {
-    public static String TAG = "IntervalMidpoints";
+    public static final String CHANNEL_ID_MAIN = "intervalmidpoints.notification.channel";
+    public static final int NOTIFICATION_MAIN = -10;
 
-    public static String ACTION_MAIN = Intent.ACTION_MAIN;
-    public static String ACTION_EXIT = "exit";
+    public String getNotificationChannelID() {
+        return CHANNEL_ID_MAIN;
+    }
+    @Override
+    public int getNotificationID() {
+        return NOTIFICATION_MAIN;
+    }
 
     @Override
-    public void onCreate()
-    {
-        super.onCreate();
-        ContextCompat.registerReceiver(BootCompletedService.this, receiver, getIntentFilter(), ContextCompat.RECEIVER_NOT_EXPORTED);
+    public Intent getMainActivityIntent() {
+        return new Intent(getApplicationContext(), MainActivity.class);
     }
 
     @Override
-    public void onDestroy()
-    {
-        unregisterReceiver(receiver);
-        super.onDestroy();
+    protected String getNotificationMessage(Context context) {
+        return context.getString(R.string.notification_message);
     }
 
-    /**
-     * onStart
-     */
     @Override
-    public int onStartCommand(Intent intent, int flags, int startId)
-    {
-        NotificationCompat.Builder notification = createMainNotification(this, getNotificationMessage(this));
-
-        // api34+...
-        // if (Build.VERSION.SDK_INT >= 34) {
-        //    ServiceCompat.startForeground(this, NOTIFICATION_MAIN, notification.build(), FOREGROUND_SERVICE_TYPE);   // we are obligated to startForeground within 5s
-        //} else
-
-        if (Build.VERSION.SDK_INT >= 29) {
-            startForeground(NOTIFICATION_MAIN, notification.build(), ServiceInfo.FOREGROUND_SERVICE_TYPE_NONE);   // we are obligated to startForeground within 5s
-        }
-
-        handleAction(((intent != null) ? intent.getAction() : null));
-        return START_NOT_STICKY;
+    protected String getNotificationExitMessage(Context context) {
+        return context.getString(R.string.notification_message1);
     }
 
-    protected void handleAction(String action)
-    {
-        if (action != null)
-        {
-            if (action.equals(ACTION_MAIN) || (action.equals(ACTION_EXIT)))
-            {
-                Log.d(TAG, "onStartCommand: " + action);
-                if (action.equals(ACTION_MAIN))
-                {
-                    Intent mainActivity = new Intent(getApplicationContext(), MainActivity.class);
-                    mainActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(mainActivity);
-                }
-
-                updateNotification(NOTIFICATION_MAIN, createExitNotification(this, getExitNotificationMessage(this)).build());
-                new Handler(Looper.getMainLooper()).postDelayed(new Runnable()
-                {
-                    @Override
-                    public void run() {
-                        stopForeground(true);
-                        stopSelf();
-                    }
-                }, 500);
-
-            } else {
-                Log.w(TAG, "onStartCommand: unrecognized action: " + action);
-            }
-        } else {
-            Log.w(TAG, "onStartCommand: null action");
-        }
+    @Override
+    protected String getNotificationChannelTitle(Context context) {
+        return context.getString(R.string.notificationChannel_main_title);
     }
 
-    private final BroadcastReceiver receiver = new BroadcastReceiver()
-    {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            Log.d(TAG, "onReceive: " + intent);
-            onStartCommand(intent, 0, -1);
-        }
-    };
-    protected static IntentFilter getIntentFilter()
-    {
-        IntentFilter filter = new IntentFilter();
-        filter.addAction(ACTION_MAIN);
-        filter.addAction(ACTION_EXIT);
-        return filter;
+    @Override
+    protected String getNotificationChannelDescription(Context context) {
+        return context.getString(R.string.notificationChannel_main_desc);
     }
 
     /**
@@ -153,128 +86,19 @@ public class BootCompletedService extends Service
         }
     }
 
-    /////////////////////////////////////////////////////////////////
-    /////////////////////////////////////////////////////////////////
-
-    /**
-     * Notifications
-     */
-    public static final int NOTIFICATION_MAIN = -10;
-
-    protected void updateNotification(int id, Notification notification)
-    {
-        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.notify(id, notification);
-    }
-
-    private static NotificationCompat.Builder createMainNotification(Context context, String message)
-    {
-        NotificationCompat.Builder notification = Notifications.createNotificationBuilder(context, createNotificationChannel(context));
-        notification.setContentTitle(context.getString(R.string.app_name))
-                .setPriority(NotificationCompat.PRIORITY_HIGH)
-                .setSilent(true)
-                .setContentText(message)
-                .setSmallIcon(R.drawable.ic_about)
-                .setOngoing(true);
-        notification.addAction(R.drawable.ic_done, context.getString(R.string.action_dismiss), getServicePendingIntent(context, ACTION_MAIN));
-        return notification;
-    }
-
-    private static NotificationCompat.Builder createExitNotification(Context context, String message)
-    {
-        NotificationCompat.Builder notification = Notifications.createNotificationBuilder(context, createNotificationChannel(context));
-        notification.setContentTitle(context.getString(R.string.app_name))
-                .setPriority(NotificationCompat.PRIORITY_HIGH)
-                .setProgress(1, 0, true)
-                .setSilent(true)
-                .setContentText(message)
-                .setSmallIcon(R.drawable.ic_done)
-                .setOngoing(true);
-        return notification;
-    }
-
-    protected static String getNotificationMessage(Context context) {
-        return context.getString(R.string.notification_message);
-    }
-
-    protected static String getExitNotificationMessage(Context context) {
-        return context.getString(R.string.notification_message1);
-    }
-
-    public static Intent getServiceIntent(Context context, String action)
-    {
-        Intent intent = new Intent(action);
-        intent.setPackage(context.getPackageName());
-        return intent;
-    }
-
-    private static PendingIntent getServicePendingIntent(Context context, String action)
-    {
-        Intent intent = getServiceIntent(context, action);
-        return PendingIntent.getBroadcast(context, 0, intent,  PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
-    }
-
-    private static PendingIntent getMainActivityPendingIntent(Context context)
-    {
-        Intent intent = new Intent(context, MainActivity.class);
-        return PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
-    }
-
-    /**
-     * Notification Channels
-     */
-    public static final String CHANNEL_ID_MAIN = "intervalmidpoints.notification.channel";
-
-    @Nullable
-    protected static String createNotificationChannel(Context context)
-    {
-        if (Build.VERSION.SDK_INT >= 26) {
-            return Notifications.createNotificationChannel(context, CHANNEL_ID_MAIN, R.string.notificationChannel_main_title, R.string.notificationChannel_main_desc, NotificationManager.IMPORTANCE_DEFAULT);
-        } else return null;
-    }
-
     /**
      * BootCompletedReceiver
      */
-    public static class BootCompletedReceiver extends BroadcastReceiver
+    public static class BootCompletedReceiver extends com.forrestguice.suntimes.intervalmidpoints.BootCompletedReceiver
     {
-        public static final String TAG = "IntervalMidpoints";
+        @Override
+        protected Intent getBootCompletedServiceIntent(Context context ) {
+            return new Intent(context, BootCompletedService0.class);
+        }
 
         @Override
-        public void onReceive(Context context, Intent intent)
-        {
-            final String action = intent.getAction();
-            Uri data = intent.getData();
-            if (BuildConfig.DEBUG) {
-                Log.d(TAG, "onReceive: " + action + ", " + data);
-            }
-
-            if (action != null) {
-                if (Intent.ACTION_BOOT_COMPLETED.equals(action)) {
-                    onBootCompleted(context, intent);
-
-                } else Log.w(TAG, "onReceive: `" + action + "` is not a recognized action!");
-            } else Log.w(TAG, "onReceive: null action!");
-        }
-
-        protected void onBootCompleted(Context context, Intent intent)
-        {
-            if (AppSettings.showNotificationOnBootCompleted(context))
-            {
-                if (Build.VERSION.SDK_INT >= 26) {
-                    Log.i(TAG, "onReceive: BOOT COMPLETED; starting foreground service...");
-                    context.startForegroundService(new Intent(context, BootCompletedService.class));
-
-                } else {
-                    Log.i(TAG, "onReceive: BOOT COMPLETED; starting background service...");
-                    context.startService(new Intent(context, BootCompletedService.class));
-
-                /*Log.i(TAG, "onReceive: BOOT COMPLETED; starting activity...");
-                // api29+; starting activities from background no longer works because of https://developer.android.com/guide/components/activities/background-starts#exceptions
-                context.startActivity(new Intent(context, MainActivity.class));*/
-                }
-            }
+        protected boolean showNotificationOnBootCompleted(Context context) {
+            return AppSettings.showNotificationOnBootCompleted(context);
         }
     }
-
 }
