@@ -13,6 +13,7 @@ android {
 
         manifestPlaceholders = [suntimesApplicationId:"com.forrestguice.suntimeswidget", suntimesPermissionRoot:"suntimes",
                                 intervalMidpointsAuthorityRoot:"suntimes.intervalmidpoints"]
+        buildConfigField "String", "AUTHORITY_ROOT", "\"suntimes.intervalmidpoints\""
         buildConfigField "String", "GIT_HASH", "\"${getGitHash()}\""
 
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
@@ -38,8 +39,10 @@ android {
             dimension "versiontype"
             applicationIdSuffix ".nightly"
             versionNameSuffix "-nightly"
+            def authorityRoot = "suntimes.intervalmidpoints.nightly"
             manifestPlaceholders = [suntimesApplicationId:"com.forrestguice.suntimeswidget", suntimesPermissionRoot:"suntimes",
-                                    intervalMidpointsAuthorityRoot:"suntimes.intervalmidpoints.nightly"]
+                                    intervalMidpointsAuthorityRoot:"$authorityRoot"]
+            buildConfigField "String", "AUTHORITY_ROOT", "\"$authorityRoot\""
             def nightlyVersionCode = new Date().format('yyyyMMddhh') as int
             versionCode nightlyVersionCode
         }

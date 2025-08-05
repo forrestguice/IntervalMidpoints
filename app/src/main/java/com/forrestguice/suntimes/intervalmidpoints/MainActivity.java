@@ -631,7 +631,7 @@ public class MainActivity extends AppCompatActivity
                 int itemId = item.getItemId();
                 if (itemId == R.id.action_alarm || itemId == R.id.action_select)
                 {
-                    String midpointUri = AlarmHelper.getEventInfoUri(IntervalMidpointsProviderContract.AUTHORITY, midpointID);
+                    String midpointUri = AlarmHelper.getEventInfoUri(IntervalMidpointsProvider.getAuthority(), midpointID);
                     String label = IntervalMidpointsProvider.getEventTitle(MainActivity.this, midpointID);
                     try {
                         startActivity(AddonHelper.scheduleAlarm("ALARM", label, -1, -1, getTimeZone(), midpointUri));

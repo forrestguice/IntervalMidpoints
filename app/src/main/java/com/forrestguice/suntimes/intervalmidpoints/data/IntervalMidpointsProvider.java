@@ -50,7 +50,6 @@ import static com.forrestguice.suntimes.intervalmidpoints.data.IntervalMidpoints
 import static com.forrestguice.suntimes.intervalmidpoints.data.IntervalMidpointsProviderContract.COLUMN_ACTION_TITLE;
 import static com.forrestguice.suntimes.intervalmidpoints.data.IntervalMidpointsProviderContract.COLUMN_ACTION_TYPE;
 
-import static com.forrestguice.suntimes.intervalmidpoints.data.IntervalMidpointsProviderContract.AUTHORITY;
 import static com.forrestguice.suntimes.intervalmidpoints.data.IntervalMidpointsProviderContract.COLUMN_CONFIG_APP_VERSION;
 import static com.forrestguice.suntimes.intervalmidpoints.data.IntervalMidpointsProviderContract.COLUMN_CONFIG_APP_VERSION_CODE;
 import static com.forrestguice.suntimes.intervalmidpoints.data.IntervalMidpointsProviderContract.COLUMN_CONFIG_PROVIDER;
@@ -89,14 +88,18 @@ public class IntervalMidpointsProvider extends ContentProvider
     private static final UriMatcher uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
     static
     {
-        uriMatcher.addURI(AUTHORITY, QUERY_CONFIG, URIMATCH_CONFIG);
+        uriMatcher.addURI(getAuthority(), QUERY_CONFIG, URIMATCH_CONFIG);
 
-        uriMatcher.addURI(AUTHORITY, QUERY_ACTIONS, URIMATCH_ACTION_INFO);
-        uriMatcher.addURI(AUTHORITY, QUERY_ACTIONS + "/*", URIMATCH_ACTION_INFO_FOR_NAME);
+        uriMatcher.addURI(getAuthority(), QUERY_ACTIONS, URIMATCH_ACTION_INFO);
+        uriMatcher.addURI(getAuthority(), QUERY_ACTIONS + "/*", URIMATCH_ACTION_INFO_FOR_NAME);
 
-        uriMatcher.addURI(AUTHORITY, QUERY_EVENT_INFO, URIMATCH_EVENT_INFO);
-        uriMatcher.addURI(AUTHORITY, QUERY_EVENT_INFO + "/*", URIMATCH_EVENT_INFO_FOR_NAME);
-        uriMatcher.addURI(AUTHORITY, QUERY_EVENT_CALC + "/*", URIMATCH_EVENT_CALC_FOR_NAME);
+        uriMatcher.addURI(getAuthority(), QUERY_EVENT_INFO, URIMATCH_EVENT_INFO);
+        uriMatcher.addURI(getAuthority(), QUERY_EVENT_INFO + "/*", URIMATCH_EVENT_INFO_FOR_NAME);
+        uriMatcher.addURI(getAuthority(), QUERY_EVENT_CALC + "/*", URIMATCH_EVENT_CALC_FOR_NAME);
+    }
+
+    public static String getAuthority() {
+        return BuildConfig.AUTHORITY_ROOT + ".provider";     //return IntervalMidpointsProviderContract.AUTHORITY;
     }
 
     @Override
@@ -445,7 +448,7 @@ public class IntervalMidpointsProvider extends ContentProvider
                 switch (columns[i])
                 {
                     case COLUMN_CONFIG_PROVIDER:
-                        row[i] = AUTHORITY;
+                        row[i] = getAuthority();
                         break;
 
                     case COLUMN_CONFIG_PROVIDER_VERSION:
