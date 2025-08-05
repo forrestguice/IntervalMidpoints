@@ -19,9 +19,7 @@
 
 package com.forrestguice.suntimes.intervalmidpoints;
 
-import android.annotation.TargetApi;
 import android.app.Notification;
-import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -171,7 +169,7 @@ public class BootCompletedService extends Service
 
     private static NotificationCompat.Builder createMainNotification(Context context, String message)
     {
-        NotificationCompat.Builder notification = createNotificationBuilder(context);
+        NotificationCompat.Builder notification = Notifications.createNotificationBuilder(context, createNotificationChannel(context));
         notification.setContentTitle(context.getString(R.string.app_name))
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setSilent(true)
@@ -184,7 +182,7 @@ public class BootCompletedService extends Service
 
     private static NotificationCompat.Builder createExitNotification(Context context, String message)
     {
-        NotificationCompat.Builder notification = createNotificationBuilder(context);
+        NotificationCompat.Builder notification = Notifications.createNotificationBuilder(context, createNotificationChannel(context));
         notification.setContentTitle(context.getString(R.string.app_name))
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setProgress(1, 0, true)
@@ -227,52 +225,12 @@ public class BootCompletedService extends Service
      */
     public static final String CHANNEL_ID_MAIN = "intervalmidpoints.notification.channel";
 
-    @TargetApi(26)
+    @Nullable
     protected static String createNotificationChannel(Context context)
     {
-        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        if (notificationManager != null)
-        {
-            String channelID = CHANNEL_ID_MAIN;
-            String title = context.getString(R.string.notificationChannel_main_title);
-            String desc = context.getString(R.string.notificationChannel_main_desc);
-            int importance = NotificationManager.IMPORTANCE_DEFAULT;
-
-            NotificationChannel channel = new NotificationChannel(channelID, title, importance);
-            channel.setDescription(desc);
-            channel.setSound(null, null);
-            notificationManager.createNotificationChannel(channel);
-            return channelID;
-        }
-        return "";
-    }
-
-    public static NotificationCompat.Builder createNotificationBuilder(Context context)
-    {
-        NotificationCompat.Builder builder;
-        if (Build.VERSION.SDK_INT >= 26)
-        {
-            builder = new NotificationCompat.Builder(context, createNotificationChannel(context));
-            builder.setOnlyAlertOnce(true);
-        } else {
-            builder = new NotificationCompat.Builder(context);
-        }
-        return builder;
-    }
-
-    public static boolean isChannelMuted(Context context)
-    {
-        if (Build.VERSION.SDK_INT >= 26)
-        {
-            NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-            if (notificationManager != null)
-            {
-                String channelID = createNotificationChannel(context);
-                NotificationChannel channel = notificationManager.getNotificationChannel(channelID);
-                return (channel.getImportance() == NotificationManager.IMPORTANCE_NONE);
-            }
-        }
-        return false;
+        if (Build.VERSION.SDK_INT >= 26) {
+            return Notifications.createNotificationChannel(context, CHANNEL_ID_MAIN, R.string.notificationChannel_main_title, R.string.notificationChannel_main_desc, NotificationManager.IMPORTANCE_DEFAULT);
+        } else return null;
     }
 
     /**

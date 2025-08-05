@@ -19,19 +19,63 @@
 
 package com.forrestguice.suntimes.intervalmidpoints;
 
+import android.annotation.TargetApi;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
+import android.media.AudioAttributes;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.Settings;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.forrestguice.suntimes.annotation.Nullable;
+
+import androidx.core.app.NotificationCompat;
+
 public class Notifications
 {
+    @TargetApi(26)
+    protected static String createNotificationChannel(Context context, String channelID, int titleResID, int descResID, int importance) {
+        return createNotificationChannel(context, channelID, context.getString(titleResID), context.getString(descResID), importance, null, null);
+    }
+
+    @TargetApi(26)
+    protected static String createNotificationChannel(Context context, String channelID, int titleResID, int descResID, int importance, @Nullable Uri soundUri, @Nullable AudioAttributes audioAttribs) {
+        return createNotificationChannel(context, channelID, context.getString(titleResID), context.getString(descResID), importance, soundUri, audioAttribs);
+    }
+
+    @TargetApi(26)
+    protected static String createNotificationChannel(Context context, String channelID, String title, String desc, int importance, @Nullable Uri soundUri, @Nullable AudioAttributes audioAttribs)
+    {
+        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        if (notificationManager != null)
+        {
+            NotificationChannel channel = new NotificationChannel(channelID, title, importance);
+            channel.setDescription(desc);
+            channel.setSound(soundUri, audioAttribs);
+            notificationManager.createNotificationChannel(channel);
+            return channelID;
+        }
+        return "";
+    }
+
+    public static NotificationCompat.Builder createNotificationBuilder(Context context, String channelID)
+    {
+        NotificationCompat.Builder builder;
+        if (Build.VERSION.SDK_INT >= 26)
+        {
+            builder = new NotificationCompat.Builder(context, channelID);
+            builder.setOnlyAlertOnce(true);
+        } else {
+            builder = new NotificationCompat.Builder(context);
+        }
+        return builder;
+    }
+
     public static boolean isChannelMuted(Context context, String channelID)
     {
         if (Build.VERSION.SDK_INT >= 26)
