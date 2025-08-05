@@ -527,8 +527,18 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
         getMenuInflater().inflate(R.menu.menu_main0, menu);
+
+        if (BuildConfig.DEBUG) {
+            MenuItem testItem = menu.findItem(R.id.action_notification_test);
+            if (testItem != null) {
+                testItem.setEnabled(true);
+                testItem.setVisible(true);
+            }
+        }
+
         return true;
     }
 
@@ -540,13 +550,20 @@ public class MainActivity extends AppCompatActivity
             showHelp(MainActivity.this);
             return true;
 
+        } else if (id == R.id.action_settings) {
+            showSettings(MainActivity.this);
+            return true;
+
         } else if (id == R.id.action_about) {
             showAbout();
-            startService(new Intent(MainActivity.this, BootCompletedService.class));
             return true;
 
         } else if (id == android.R.id.home) {
             AddonHelper.startSuntimesActivity(this);
+            return true;
+
+        } else if (BuildConfig.DEBUG && id == R.id.action_notification_test) {
+            startService(new Intent(MainActivity.this, BootCompletedService.class));
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -562,6 +579,14 @@ public class MainActivity extends AppCompatActivity
                 Log.w(getClass().getSimpleName(), "unhandled result: " + requestCode);
                 break;
         }
+    }
+
+    protected void showSettings(Context context)
+    {
+        Intent intent = new Intent(context, SettingsActivity.class);
+        intent.setAction(Intent.ACTION_MAIN);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
     }
 
     private static final int HELP_PATH_ID = R.string.help_main_path;

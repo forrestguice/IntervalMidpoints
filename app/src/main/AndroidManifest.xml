@@ -47,6 +47,10 @@
 
         </activity>
 
+        <activity android:name=".SettingsActivity" android:label="@string/app_name"
+            android:icon="@mipmap/ic_launcher_round"
+            android:exported="false" />
+
         <activity android:name=".AlarmActivity"
             android:label="@string/app_name"
             android:icon="@mipmap/ic_launcher"

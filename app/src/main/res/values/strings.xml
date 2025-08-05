@@ -20,6 +20,7 @@
     <string name="action_alarm">Set Alarm</string>
     <string name="action_select">Select</string>
     <string name="action_dismiss">Dismiss</string>
+    <string name="action_settings">Settings</string>
     <string name="action_help">Help</string>
     <string name="action_onlineHelp">Online Help</string>
     <string name="action_about">About</string>
@@ -120,6 +121,12 @@
     <string name="notification_message1">Finishing up …</string>
     <string name="notificationChannel_main_title">Main</string>
     <string name="notificationChannel_main_desc">Main notification channel</string>
+
+    <string name="pref_category_general">General</string>
+    <string name="pref_category_advanced">Advanced</string>
+
+    <string name="pref_title_autolaunch">Show notification during boot sequence</string>
+    <string name="pref_summary_autolaunch">Some devices may need this option to reschedule alarms after a reboot (but most do not require it).</string>
 
     <string-array name="help_topics">      <!-- in order of appearance -->
         <item>@string/help_configuration</item>

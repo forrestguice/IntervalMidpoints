@@ -1,0 +1,13 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory
+        android:title="@string/pref_category_advanced">
+
+        <CheckBoxPreference android:key="autolaunch"
+            android:title="@string/pref_title_autolaunch" android:defaultValue="@bool/def_autolaunch"
+            android:summary="@string/pref_summary_autolaunch" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>
