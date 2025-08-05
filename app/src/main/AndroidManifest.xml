@@ -81,7 +81,7 @@
             android:syncable="false" />
 
         <!-- Boot Completed Receiver -->
-        <receiver android:name="com.forrestguice.suntimes.intervalmidpoints.BootCompletedReceiver"
+        <receiver android:name="com.forrestguice.suntimes.intervalmidpoints.BootCompletedService$BootCompletedReceiver"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />

@@ -256,31 +256,4 @@ public class AppSettings
         return "xiomi".equalsIgnoreCase(Build.MANUFACTURER);
     }
 
-    /**
-     * https://stackoverflow.com/questions/32366649/any-way-to-link-to-the-android-notification-settings-for-my-app
-     * @param context
-     */
-    public static void openNotificationSettings(Context context)
-    {
-        Intent intent = new Intent();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-        {
-            intent.setAction("android.settings.APP_NOTIFICATION_SETTINGS");
-            intent.putExtra("app_package", context.getPackageName());                           // Android 5-7
-            intent.putExtra("app_uid", context.getApplicationInfo().uid);                       // Android 5-7
-            intent.putExtra("android.provider.extra.APP_PACKAGE", context.getPackageName());    // Android 8+
-
-        } else {
-            intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-            intent.addCategory(Intent.CATEGORY_DEFAULT);
-            intent.setData(Uri.parse("package:" + context.getPackageName()));
-        }
-        try {
-            context.startActivity(intent);
-        } catch (ActivityNotFoundException e) {
-            Log.e("AppSettings", "Failed to open notification settings! " + e);
-            Toast.makeText(context, e.getClass().getSimpleName() + "!", Toast.LENGTH_SHORT).show();
-        }
-    }
-
 }

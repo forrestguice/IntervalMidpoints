@@ -180,7 +180,7 @@ public class SettingsActivity extends AppCompatActivity
 
                 if (NotificationManagerCompat.from(context).areNotificationsEnabled())
                 {
-                    if (BootCompletedService.areNotificationsPaused(context) || BootCompletedService.isChannelMuted(context)) {
+                    if (Notifications.areNotificationsPaused(context) || Notifications.isChannelMuted(context, BootCompletedService.CHANNEL_ID_MAIN)) {
                         notificationPrefs.setSummary(warning);
                     } else {
                         notificationPrefs.setSummary(context.getString(R.string.pref_summary_alarms_notifications_on));
@@ -254,7 +254,7 @@ public class SettingsActivity extends AppCompatActivity
                 @Override
                 public boolean onPreferenceClick(Preference preference)
                 {
-                    AppSettings.openNotificationSettings(context);
+                    Notifications.openNotificationSettings(context);
                     return false;
                 }
             };

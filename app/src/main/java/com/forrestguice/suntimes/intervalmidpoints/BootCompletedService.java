@@ -31,6 +31,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 
 import android.content.pm.ServiceInfo;
+import android.net.Uri;
 import android.os.Binder;
 import android.os.Build;
 import android.os.Handler;
@@ -40,7 +41,6 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
 
 /**
@@ -275,12 +275,48 @@ public class BootCompletedService extends Service
         return false;
     }
 
-    public static boolean areNotificationsPaused(Context context)
+    /**
+     * BootCompletedReceiver
+     */
+    public static class BootCompletedReceiver extends BroadcastReceiver
     {
-        if (Build.VERSION.SDK_INT >= 29) {
-            NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-            return notificationManager.areNotificationsPaused();
-        } else return false;
+        public static final String TAG = "IntervalMidpoints";
+
+        @Override
+        public void onReceive(Context context, Intent intent)
+        {
+            final String action = intent.getAction();
+            Uri data = intent.getData();
+            if (BuildConfig.DEBUG) {
+                Log.d(TAG, "onReceive: " + action + ", " + data);
+            }
+
+            if (action != null) {
+                if (Intent.ACTION_BOOT_COMPLETED.equals(action)) {
+                    onBootCompleted(context, intent);
+
+                } else Log.w(TAG, "onReceive: `" + action + "` is not a recognized action!");
+            } else Log.w(TAG, "onReceive: null action!");
+        }
+
+        protected void onBootCompleted(Context context, Intent intent)
+        {
+            if (AppSettings.showNotificationOnBootCompleted(context))
+            {
+                if (Build.VERSION.SDK_INT >= 26) {
+                    Log.i(TAG, "onReceive: BOOT COMPLETED; starting foreground service...");
+                    context.startForegroundService(new Intent(context, BootCompletedService.class));
+
+                } else {
+                    Log.i(TAG, "onReceive: BOOT COMPLETED; starting background service...");
+                    context.startService(new Intent(context, BootCompletedService.class));
+
+                /*Log.i(TAG, "onReceive: BOOT COMPLETED; starting activity...");
+                // api29+; starting activities from background no longer works because of https://developer.android.com/guide/components/activities/background-starts#exceptions
+                context.startActivity(new Intent(context, MainActivity.class));*/
+                }
+            }
+        }
     }
 
 }
