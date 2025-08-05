@@ -188,11 +188,9 @@ public class AppSettings
     }
 
     public static final String KEY_AUTO_LAUNCH = "autolaunch";
-    public static final boolean DEF_AUTO_LAUNCH = true;    // TODO: configurable
-
     public static boolean showNotificationOnBootCompleted(Context context) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        return prefs.getBoolean(KEY_AUTO_LAUNCH, DEF_AUTO_LAUNCH);
+        return prefs.getBoolean(KEY_AUTO_LAUNCH, context.getResources().getBoolean(R.bool.def_autolaunch));
     }
 
 }
