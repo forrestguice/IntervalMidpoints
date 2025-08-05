@@ -7,9 +7,14 @@
     <attr name="colorDate" format="reference" />
     <attr name="colorLabel" format="reference" />
     <attr name="colorSelect" format="reference" />
+    <attr name="colorWarning" format="reference" />
 
     <declare-styleable name="IntervalResultsView">
         <attr name="colorSelect" />
+    </declare-styleable>
+
+    <declare-styleable name="WarningView">
+        <attr name="colorWarning" />
     </declare-styleable>
 
 </resources>

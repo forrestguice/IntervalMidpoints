@@ -19,6 +19,7 @@
         <item name="colorDate">@color/colorDate</item>
         <item name="colorLabel">@color/colorLabel</item>
         <item name="colorSelect">@color/colorAccent</item>
+        <item name="colorWarning">@color/colorWarning</item>
         <item name="windowActionModeOverlay">true</item>
         <item name="actionBarSize">@dimen/normal_actionbar_size</item>
         <item name="bottomBarSize">@dimen/normal_bottombar_size</item>
@@ -129,6 +130,7 @@
         <item name="colorDate">@color/colorDate_dark</item>
         <item name="colorLabel">@color/colorLabel_dark</item>
         <item name="colorSelect">@color/deep_teal_500</item>
+        <item name="colorWarning">@color/colorWarning_dark</item>
         <item name="windowActionModeOverlay">true</item>
         <item name="actionBarSize">@dimen/normal_actionbar_size</item>
         <item name="bottomBarSize">@dimen/normal_bottombar_size</item>
@@ -239,6 +241,7 @@
         <item name="colorDate">@color/colorDate_light</item>
         <item name="colorLabel">@color/colorLabel_light</item>
         <item name="colorSelect">@color/deep_teal_200</item>
+        <item name="colorWarning">@color/colorWarning_light</item>
         <item name="windowActionModeOverlay">true</item>
         <item name="actionBarSize">@dimen/normal_actionbar_size</item>
         <item name="bottomBarSize">@dimen/normal_bottombar_size</item>
