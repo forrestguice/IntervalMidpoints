@@ -84,7 +84,7 @@ public class Notifications
             if (notificationManager != null)
             {
                 NotificationChannel channel = notificationManager.getNotificationChannel(channelID);
-                return (channel.getImportance() == NotificationManager.IMPORTANCE_NONE);
+                return (channel != null && channel.getImportance() == NotificationManager.IMPORTANCE_NONE);
             }
         }
         return false;
