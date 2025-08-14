@@ -93,7 +93,7 @@ public class BootCompletedService extends BootCompletedService0
     {
         @Override
         protected Intent getBootCompletedServiceIntent(Context context ) {
-            return new Intent(context, BootCompletedService0.class);
+            return new Intent(context, BootCompletedService.class);
         }
 
         @Override
