@@ -43,7 +43,7 @@ android {
             manifestPlaceholders = [suntimesApplicationId:"com.forrestguice.suntimeswidget", suntimesPermissionRoot:"suntimes",
                                     intervalMidpointsAuthorityRoot:"$authorityRoot"]
             buildConfigField "String", "AUTHORITY_ROOT", "\"$authorityRoot\""
-            def nightlyVersionCode = new Date().format('yyyyMMddhh') as int
+            def nightlyVersionCode = new Date().format('yyyyMMddHH') as int
             versionCode nightlyVersionCode
         }
     }
