@@ -68,7 +68,7 @@ jobs:
       uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f  #7.0.0
       with:
         name: lint-results.html
-        path: app/build/reports/lint-results-FdroidRelease.html
+        path: app/build/reports/lint-results-fdroidRelease.html
 
     - name: Upload artifacts (unit test results)
       if: success() || failure()
