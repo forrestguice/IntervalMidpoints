@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="action_alarm">Imposta sveglia</string>
+    <string name="action_select">Seleziona</string>
+    <string name="action_help">Aiuto</string>
+    <string name="action_onlineHelp">Aiuto online</string>
+    <string name="action_about">Informazioni</string>
+    <string name="format_date0">d MMMM</string>
+    <string name="format_date0_long">d MMMM yyyy</string>
+    <string name="format_date">d MMMM\nEEEE</string>
+    <string name="format_date_long">d MMMM yyyy\nEEEE</string>
+    <string name="format_location">%1$s, %2$s</string>
+    <string name="format_location_long">%1$s, %2$s %3$s</string>
+    <string name="format_location_altitude">%1$s%2$s</string>
+    <string name="format_tag">[%1$s]</string>
+    <string name="format_summary_minutes">%s minuti</string>
+    <string name="units_feet">piedi</string>
+    <string name="units_feet_short">ft</string>
+    <string name="units_meters">metri</string>
+    <string name="units_meters_short">m</string>
+    <string name="alarm_title_format_short">%1$s ¦ %2$s</string>
+    <string name="alarm_title_format_long">%1$s ¦ %2$s [%3$s]</string>
+    <string name="alarm_title_tag_format">%1$s/%2$s</string>
+    <string name="alarm_summary_format">@string/app_name</string>
+    <string name="divideby_msg">Diviso in</string>
+    <string name="period_msg">di %s</string>
+    <string name="event_at">alle %s</string>
+    <string name="event_from">da %s</string>
+    <string name="event_to">a %s</string>
+    <string name="event_dne">non si verifica</string>
+    <string name="midpoints_msg">I punti medi sono alle</string>
+    <string name="interval_msg0">Un intervallo di %s</string>
+    <string name="interval_msg1">tra...</string>
+    <string name="battery_optimization_warning">L\'ottimizzazione della batteria è attivata!</string>
+    <string name="app_legal1"><![CDATA[
+        <b>Codice sorgente:</b><br />
+        Copyright &#169 2021-2025 Forrest Guice <br />
+        Codice sorgente disponibile sotto licenza GPLv3.
+    ]]></string>
+    <string name="app_version"><![CDATA[<b>Versione:</b>]]> %s</string>
+    <string name="app_provider_version"><![CDATA[<b>Suntimes:</b>]]> %s</string>
+    <string name="app_support_url"><![CDATA[
+        <b>Supporto:</b> visita il
+        <a href="https://github.com/forrestguice/IntervalMidpoints/issues">tracker delle segnalazioni</a> per inviare una richiesta.
+    ]]></string>
+    <string name="format_help"><![CDATA[%1$s<br/><br/>%2$s]]></string>
+    <string-array name="event_display">
+        <item>Mezzanotte solare</item>
+        <item>Alba astronomica (-18°)</item>
+        <item>Alba nautica (-12°)</item>
+        <item>Ora blu (-8°, mattina)</item>
+        <item>Alba civile (-6°)</item>
+        <item>Ora blu (-4°, mattina)</item>
+        <item>Alba</item>
+        <item>Ora d\'oro (6°, mattina)</item>
+        <item>Mezzogiorno solare</item>
+        <item>Ora d\'oro (6°, sera)</item>
+        <item>Tramonto</item>
+        <item>Ora blu (-4°, sera)</item>
+        <item>Crepuscolo civile (-6°)</item>
+        <item>Ora blu (-8°, sera)</item>
+        <item>Crepuscolo nautico (-12°)</item>
+        <item>Crepuscolo astronomico (-18°)</item>
+    </string-array>
+    <string-array name="divideby_display">
+        <item>2 periodi</item>
+        <item>3 periodi</item>
+        <item>4 periodi</item>
+    </string-array>
+    <plurals name="midpoints_plural">
+        <item quantity="one">Il punto medio è alle</item>
+        <item quantity="other">I punti medi sono alle</item>
+    </plurals>
+    <string name="help_configuration"><![CDATA[<h4>Configurazione</h4>La posizione e le altre opzioni sono configurate da Suntimes.]]></string>
+    <string name="help_alarms"><![CDATA[
+        <h4>Sveglie</h4>
+        Scegli l'<b>evento di inizio</b>, l'<b>evento di fine</b> e il numero di <b>periodi</b>, quindi seleziona un punto medio e tocca <b><large>✓</large> accetta</b> per aggiungere una sveglia.
+    ]]></string>
+</resources>
